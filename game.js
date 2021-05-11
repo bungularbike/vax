@@ -921,6 +921,16 @@ function resultsOne(t) {
 	}
 	$("#candidate" + trial + " select").removeAttr("disabled");
 	$("#candidate" + trial + " td:last-child").html("Effectiveness: " + toPlaces((initial + modify) * 100, 2) + "%");
+	for (var j in relations) {
+		if (relations[j] + (0.8 * ((initial + modify) - eff)) >= 8.5 && relations[j] + (0.8 * ((initial + modify) - eff)) <= 1) {
+			relations[j] += (0.8 * ((initial + modify) - eff));
+		} else if (relations[j] + (0.8 * ((initial + modify) - eff)) >= 8.5) {
+			relations[j] = 8.5;
+		} else if (relations[j] + (0.8 * ((initial + modify) - eff)) <= 1) {
+			relations[j] = 1;
+		}
+		$("#" + j + "_r").html("WTC " + toPlaces(relations[j], 1) + " / 10");
+	}
 	if (initial + modify > eff) {
 		$("#eff").html("Effectiveness: " + toPlaces((initial + modify) * 100, 2) + "%");
 		$("#console").append("<p><b class = 'text-success'>" + toDate(currentDate) + " " + name + " concludes phase I trials of candidate " + trial + " with " + toPlaces((initial + modify) * 100, 2) + "% effectiveness (+" + toPlaces((initial + modify - eff), 2) + "%)</b></p>");
