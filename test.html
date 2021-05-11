@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Testing Ground</title>
+<style>
+	input {
+		font-family: monospace !important;
+		text-align: center !important;
+	}
+</style>
+</head>
+<body>
+<div style = "float: left">
+	<table id = "n" style = "margin-right: 50px">
+	</table>
+</div>
+<div style = "float: right">
+	<table id = "p">
+	</table>
+</div>
+<div style = "clear: both">
+	<img src = "table.jpeg" style = "height: 300px; margin-top: 30px">
+	<br>
+	<p><button onclick = "hint()">Hint</button> <button onclick = "check()">Check</button><br><br><span id = "r"></span></p>
+</div>
+<script src = "jquery-3.6.0.min.js"></script>
+<script>
+	const CODON = [
+		{
+			l: "Phe",
+			n: ["UUU", "UUC"],
+			s: "F"
+		},
+		{
+			l: "Leu",
+			n: ["UUA", "UUG", "CU*"],
+			s: "L"
+		},
+		{
+			l: "Ser",
+			n: ["UC*", "AGU", "AGC"],
+			s: "S"
+		},
+		{
+			l: "Tyr",
+			n: ["UAU", "UAC"],
+			s: "Y"
+		},
+		{
+			l: "Cys",
+			n: ["UGU", "UGC"],
+			s: "C"
+		},
+		{
+			l: "Trp",
+			n: ["UGG"],
+			s: "W"
+		},
+		{
+			l: "Pro",
+			n: ["CC*"],
+			s: "P"
+		},
+		{
+			l: "His",
+			n: ["CAU", "CAC"],
+			s: "H"
+		},
+		{
+			l: "Gln",
+			n: ["CAA", "CAG"],
+			s: "Q"
+		},
+		{
+			l: "Arg",
+			n: ["CG*", "AGA", "AGG"],
+			s: "R"
+		},
+		{
+			l: "Ile",
+			n: ["AUU", "AUC", "AUA"],
+			s: "I"
+		},
+		{
+			l: "Met",
+			n: ["AUG"],
+			s: "M"
+		},
+		{
+			l: "Thr",
+			n: ["AC*"],
+			s: "T"
+		},
+		{
+			l: "Asn",
+			n: ["AAU", "AAC"],
+			s: "N"
+		},
+		{
+			l: "Lys",
+			n: ["AAA", "AAG"],
+			s: "K"
+		},
+		{
+			l: "Val",
+			n: ["GU*"],
+			s: "V"
+		},
+		{
+			l: "Ala",
+			n: ["GC*"],
+			s: "A"
+		},
+		{
+			l: "Asp",
+			n: ["GAU", "GAC"],
+			s: "D"
+		},
+		{
+			l: "Glu",
+			n: ["GAA", "GAG"],
+			s: "E"
+		},
+		{
+			l: "Gly",
+			n: ["GG*"],
+			s: "G"
+		},
+		{
+			l: "TER",
+			n: ["UAA", "UAG", "UGA"],
+			s: "*"
+		}
+	];
+	var d = ["A", "C", "U", "G"];
+	var seq_c = "AUG";
+	var seq_p = "M";
+	const COUNT = 25;
+	for (var i = 0; i < (COUNT - 2); i++) {
+		var o = CODON[Math.floor(Math.random() * 20)];
+		var a = o.n[Math.floor(Math.random() * o.n.length)];
+		if (a.charAt(2) == "*") {
+			a = a.substring(0, 2) + d[Math.floor(Math.random() * 4)];
+		}
+		seq_c += (a);
+		seq_p += (o.s);
+	}
+	seq_c += (CODON[20].n)[Math.floor(Math.random() * 3)];
+	seq_p += "*";
+	for (var j = 0; j < 5; j++) {
+		var n = "";
+		var p = "";
+		for (var k = 0; k < 5; k++) {
+			n += "<td><input type = 'text' size = '3' id = 'n" + ((j * 5) + k) + "' value = '---' readonly></td>";
+			p += "<td><input type = 'text' size = '3' id = 'p" + ((j * 5) + k) + "'></td>";
+		}
+		$("#n").append("<tr>" + n + "</tr>");
+		$("#p").append("<tr>" + p + "</tr>");
+	}
+	function hint() {
+		var c = "";
+		for (var l = 0; l < COUNT; l++) {
+			c += $("#n" + l).val();
+		}
+		var v = [];
+		for (var m = 0; m < c.length; m++) {
+			if (c.charAt(m) == "-") {
+				v[v.length] = m;
+			}
+		}
+		if (v.length == 0) {
+			clearInterval(a);
+			return false;
+		} else {
+			var h = v[Math.floor(Math.random() * v.length)];
+			var t = $("#n" + Math.floor(h / 3)).val();
+			var p = "";
+			for (var q = 0; q < 3; q++) {
+				if (q == (h % 3)) {
+					p += seq_c.charAt(h);
+				} else {
+					p += t.charAt(q);
+				}
+			}
+			$("#n" + Math.floor(h / 3)).val(p);
+		}
+	}
+	function check() {
+		var c = "";
+		for (var l = 0; l < COUNT; l++) {
+			c += ($("#p" + l).val() == "" ? " " : $("#p" + l).val());
+		}
+		var v = 0;
+		for (var m = 0; m < c.length; m++) {
+			if (c.charAt(m) == seq_p.charAt(m)) {
+				v++;
+			}
+		}
+		$("#r").html("Match: " + (Math.round(((v * 100 / COUNT) + Number.EPSILON) * 100) / 100) + "%");
+	}
+	var a = setInterval(hint, 10000);
+	$("body").keydown(function(event) {
+		if (event.keyCode == 13) {
+			check();
+		}
+	});
+</script>
+</body>
+</html>

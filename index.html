@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>VAX</title>
+	<link rel = "stylesheet" href = "bootstrap-4.6.0-dist/css/bootstrap.min.css" type = "text/css" />
+	<style>
+		body {
+			background-color: rgba(0, 123, 255, 0.8);
+			overflow-x: hidden;
+		}
+		#background {
+			z-index: 1;
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100vw;
+			height: 100vh;
+			opacity: 0.15;
+			font-size: 65vh;
+		}
+		#info {
+			z-index: 2;
+			position: relative;
+			background-color: rgb(180, 180, 180, 0.5);
+			border: 2px solid black;
+			border-radius: 5px;
+		}
+		select, input {
+			background-color: rgba(0, 0, 0, 0) !important;
+			border-color: black !important;
+			color: black !important;
+			border-top-left-radius: 5px;
+			border-top-right-radius: 5px;
+		}
+		input::placeholder, select {
+			color: rgba(25, 25, 25, 0.5) !important;
+		}
+		.black {
+			color: black !important;
+		}
+	</style>
+	<meta name = "viewport" content = "width=device-width, initial-scale=1, shrink-to-fit=no">
+</head>
+<body>
+	<div id = "background">
+		<p class = "mb-0 text-center my-auto">VAX</p>
+	</div>
+	<div id = "info" class = "m-5 p-5 text-center">
+		<h3>Welcome to VAX</h3>
+		<br>
+		<p>It is June 1, 2020. The pandemic has been spreading for 6 months now without end.</p>
+		<p>Major pharmaceutical companies all over the world have failed in their effort to develop an effective vaccine against the virus.</p>
+		<p>In response, <select class = "custom-select custom-select-sm mx-2" style = "width: auto !important"><option selected value = "null" disabled>Country...</option></select> has pooled its resources together into one final effort: <input type = "text" class = "form-control form-control-sm d-inline-block mx-2" placeholder = "Company name..." style = "width: auto !important" autocomplete = "off">.</p>
+		<p>Composed of the nothing but the best and brightest <span id = "demonym"></span> minds, <span id = "company">they are</span> the world's last hope.</p>
+		<p>Do you have what it takes to develop a vaccine and save the world?</p>
+		<p class = "mb-5"><button class = "btn btn-primary" disabled>Yes- let's get started!</button></p>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<p class = "mt-5 small">v0.9. Created by Jack Rong and Joseph Belman.</p>
+	</div>
+	<script src = "jquery-3.6.0.min.js"></script>
+	<script src = "bootstrap-4.6.0-dist/js/bootstrap.bundle.min.js"></script>
+	<script>
+		setTimeout(function() { $("select").val("null") }, 10);
+		var countries = [
+		    {
+		        "country": "United States",
+		        "id": "USA",
+		        "demonym": "American"
+		    },
+		    {
+		        "country": "Brazil",
+		        "id": "BRA",
+		        "demonym": "Brazilian"
+		    },
+		    {
+		        "country": "Russia",
+		        "id": "RUS",
+		        "demonym": "Russian"
+		    },
+		    {
+		        "country": "United Kingdom",
+		        "id": "GBR",
+		        "demonym": "British"
+		    },
+		    {
+		        "country": "Spain",
+		        "id": "ESP",
+		        "demonym": "Spanish"
+		    },
+		    {
+		        "country": "Italy",
+		        "id": "ITA",
+		        "demonym": "Italian"
+		    },
+		    {
+		        "country": "India",
+		        "id": "IND",
+		        "demonym": "Indian"
+		    },
+		    {
+		        "country": "France",
+		        "id": "FRA",
+		        "demonym": "French"
+		    },
+		    {
+		        "country": "Germany",
+		        "id": "DEU",
+		        "demonym": "German"
+		    },
+		    {
+		        "country": "Peru",
+		        "id": "PER",
+		        "demonym": "Peruvian"
+		    },
+		    {
+		        "country": "Turkey",
+		        "id": "TUR",
+		        "demonym": "Turkish"
+		    },
+		    {
+		        "country": "Iran",
+		        "id": "IRN",
+		        "demonym": "Iranian"
+		    },
+		    {
+		        "country": "Chile",
+		        "id": "CHL",
+		        "demonym": "Chilean"
+		    },
+		    {
+		        "country": "Mexico",
+		        "id": "MEX",
+		        "demonym": "Mexican"
+		    },
+		    {
+		        "country": "Canada",
+		        "id": "CAN",
+		        "demonym": "Canadian"
+		    },
+		    {
+		        "country": "Saudi Arabia",
+		        "id": "SAU",
+		        "demonym": "Saudi"
+		    },
+		    {
+		        "country": "China",
+		        "id": "CHN",
+		        "demonym": "Chinese"
+		    },
+		    {
+		        "country": "Pakistan",
+		        "id": "PAK",
+		        "demonym": "Pakistani"
+		    }
+		];
+		const RELATIONS = JSON.parse("[[\"usa\",\"bra\",3.5],[\"usa\",\"rus\",1.5],[\"usa\",\"gbr\",4],[\"usa\",\"esp\",3.8],[\"usa\",\"ita\",3.8],[\"usa\",\"ind\",3.5],[\"usa\",\"fra\",4],[\"usa\",\"deu\",4],[\"usa\",\"per\",3.5],[\"usa\",\"tur\",2.3],[\"usa\",\"irn\",1],[\"usa\",\"chl\",3.5],[\"usa\",\"mex\",3.2],[\"usa\",\"can\",4],[\"usa\",\"sau\",2.9],[\"usa\",\"chn\",1.5],[\"usa\",\"pak\",2.8],[\"bra\",\"rus\",3.4],[\"bra\",\"gbr\",3.5],[\"bra\",\"esp\",3.5],[\"bra\",\"ita\",3.5],[\"bra\",\"ind\",3.8],[\"bra\",\"fra\",3.5],[\"bra\",\"deu\",3.5],[\"bra\",\"per\",3.8],[\"bra\",\"tur\",3.5],[\"bra\",\"irn\",3],[\"bra\",\"chl\",3.8],[\"bra\",\"mex\",3.8],[\"bra\",\"can\",3.5],[\"bra\",\"sau\",3.5],[\"bra\",\"chn\",3.5],[\"bra\",\"pak\",3.5],[\"rus\",\"gbr\",2.8],[\"rus\",\"esp\",3.2],[\"rus\",\"ita\",3.4],[\"rus\",\"ind\",3.8],[\"rus\",\"fra\",3.4],[\"rus\",\"deu\",2.8],[\"rus\",\"per\",3.4],[\"rus\",\"tur\",2.8],[\"rus\",\"irn\",3.8],[\"rus\",\"chl\",3.4],[\"rus\",\"mex\",3.5],[\"rus\",\"can\",3.2],[\"rus\",\"sau\",3.6],[\"rus\",\"chn\",3.7],[\"rus\",\"pak\",3.3],[\"gbr\",\"esp\",3.5],[\"gbr\",\"ita\",3.6],[\"gbr\",\"ind\",3.6],[\"gbr\",\"fra\",3.8],[\"gbr\",\"deu\",3.6],[\"gbr\",\"per\",3.5],[\"gbr\",\"tur\",3.6],[\"gbr\",\"irn\",2.8],[\"gbr\",\"chl\",3.5],[\"gbr\",\"mex\",3.5],[\"gbr\",\"can\",4],[\"gbr\",\"sau\",3.4],[\"gbr\",\"chn\",2],[\"gbr\",\"pak\",3.5],[\"esp\",\"ita\",3.8],[\"esp\",\"ind\",3.5],[\"esp\",\"fra\",3.8],[\"esp\",\"deu\",3.8],[\"esp\",\"per\",3.5],[\"esp\",\"tur\",3.6],[\"esp\",\"irn\",3],[\"esp\",\"chl\",3.5],[\"esp\",\"mex\",3.4],[\"esp\",\"can\",3.8],[\"esp\",\"sau\",3.5],[\"esp\",\"chn\",3],[\"esp\",\"pak\",3.5],[\"ita\",\"ind\",3.5],[\"ita\",\"fra\",4],[\"ita\",\"deu\",4],[\"ita\",\"per\",3.6],[\"ita\",\"tur\",3.5],[\"ita\",\"irn\",3.4],[\"ita\",\"chl\",3.5],[\"ita\",\"mex\",3.5],[\"ita\",\"can\",3.8],[\"ita\",\"sau\",3.5],[\"ita\",\"chn\",3.4],[\"ita\",\"pak\",3.5],[\"ind\",\"fra\",3.8],[\"ind\",\"deu\",3.5],[\"ind\",\"per\",3.5],[\"ind\",\"tur\",2.8],[\"ind\",\"irn\",3.3],[\"ind\",\"chl\",3.5],[\"ind\",\"mex\",3.8],[\"ind\",\"can\",3.5],[\"ind\",\"sau\",3.6],[\"ind\",\"chn\",2.5],[\"ind\",\"pak\",1],[\"fra\",\"deu\",4],[\"fra\",\"per\",3.5],[\"fra\",\"tur\",3.2],[\"fra\",\"irn\",2.8],[\"fra\",\"chl\",3.5],[\"fra\",\"mex\",3.5],[\"fra\",\"can\",4],[\"fra\",\"sau\",3.7],[\"fra\",\"chn\",3],[\"fra\",\"pak\",3.2],[\"deu\",\"per\",3.5],[\"deu\",\"tur\",3.2],[\"deu\",\"irn\",2.7],[\"deu\",\"chl\",3.5],[\"deu\",\"mex\",3.5],[\"deu\",\"can\",3.5],[\"deu\",\"sau\",3.3],[\"deu\",\"chn\",3.5],[\"deu\",\"pak\",3.4],[\"per\",\"tur\",3.5],[\"per\",\"irn\",3.3],[\"per\",\"chl\",3.4],[\"per\",\"mex\",3.8],[\"per\",\"can\",3.5],[\"per\",\"sau\",3.5],[\"per\",\"chn\",3.5],[\"per\",\"pak\",3.5],[\"tur\",\"irn\",3.3],[\"tur\",\"chl\",3.5],[\"tur\",\"mex\",3.6],[\"tur\",\"can\",3.3],[\"tur\",\"sau\",2.7],[\"tur\",\"chn\",3.5],[\"tur\",\"pak\",3.7],[\"irn\",\"chl\",3.3],[\"irn\",\"mex\",3.4],[\"irn\",\"can\",2],[\"irn\",\"sau\",1],[\"irn\",\"chn\",3.6],[\"irn\",\"pak\",3.4],[\"chl\",\"mex\",4],[\"chl\",\"can\",3.8],[\"chl\",\"sau\",3.5],[\"chl\",\"chn\",3.5],[\"chl\",\"pak\",3.3],[\"mex\",\"can\",3.5],[\"mex\",\"sau\",3.5],[\"mex\",\"chn\",3.8],[\"mex\",\"pak\",3.6],[\"can\",\"sau\",3.2],[\"can\",\"chn\",2.8],[\"can\",\"pak\",3.6],[\"sau\",\"chn\",3.8],[\"sau\",\"pak\",3.8],[\"chn\",\"pak\",3.7]]");
+		const CODON = [
+			{
+				l: "Phe",
+				n: ["UUU", "UUC"],
+				s: "F"
+			},
+			{
+				l: "Leu",
+				n: ["UUA", "UUG", "CU*"],
+				s: "L"
+			},
+			{
+				l: "Ser",
+				n: ["UC*", "AGU", "AGC"],
+				s: "S"
+			},
+			{
+				l: "Tyr",
+				n: ["UAU", "UAC"],
+				s: "Y"
+			},
+			{
+				l: "Cys",
+				n: ["UGU", "UGC"],
+				s: "C"
+			},
+			{
+				l: "Trp",
+				n: ["UGG"],
+				s: "W"
+			},
+			{
+				l: "Pro",
+				n: ["CC*"],
+				s: "P"
+			},
+			{
+				l: "His",
+				n: ["CAU", "CAC"],
+				s: "H"
+			},
+			{
+				l: "Gln",
+				n: ["CAA", "CAG"],
+				s: "Q"
+			},
+			{
+				l: "Arg",
+				n: ["CG*", "AGA", "AGG"],
+				s: "R"
+			},
+			{
+				l: "Ile",
+				n: ["AUU", "AUC", "AUA"],
+				s: "I"
+			},
+			{
+				l: "Met",
+				n: ["AUG"],
+				s: "M"
+			},
+			{
+				l: "Thr",
+				n: ["AC*"],
+				s: "T"
+			},
+			{
+				l: "Asn",
+				n: ["AAU", "AAC"],
+				s: "N"
+			},
+			{
+				l: "Lys",
+				n: ["AAA", "AAG"],
+				s: "K"
+			},
+			{
+				l: "Val",
+				n: ["GU*"],
+				s: "V"
+			},
+			{
+				l: "Ala",
+				n: ["GC*"],
+				s: "A"
+			},
+			{
+				l: "Asp",
+				n: ["GAU", "GAC"],
+				s: "D"
+			},
+			{
+				l: "Glu",
+				n: ["GAA", "GAG"],
+				s: "E"
+			},
+			{
+				l: "Gly",
+				n: ["GG*"],
+				s: "G"
+			},
+			{
+				l: "TER",
+				n: ["UAA", "UAG", "UGA"],
+				s: "*"
+			}
+		];
+		for (var i = 0; i < countries.length; i++) {
+			$("select").append("<option value = '" + i + "'>" + ((countries[i].id == "USA" || countries[i].id == "GBR") ? "the " + countries[i].country : countries[i].country) + "</option>");
+		};
+		function canStart() {
+			if ($("select").val() != "null" && $("input").val().length != "") {
+				$("button").removeAttr("disabled");
+			} else {
+				$("button").attr("disabled", "true");
+			}
+		}
+		$("select").change(function() {
+			$("#demonym").html(countries[$("select").val()].demonym);
+			canStart();
+		});
+		$("input").on("input", function() {
+			$("#company").html($("input").val() == "" ? "they are" : $("input").val() + " is");
+			canStart();
+		});
+		$("button").click(function() {
+			var d = ["A", "C", "U", "G"];
+			var seq_c = "AUG";
+			var seq_p = "M";
+			for (var i = 0; i < (144 - 2); i++) {
+				var o = CODON[Math.floor(Math.random() * 20)];
+				var a = o.n[Math.floor(Math.random() * o.n.length)];
+				if (a.charAt(2) == "*") {
+					a = a.substring(0, 2) + d[Math.floor(Math.random() * 4)];
+				}
+				seq_c += (a);
+				seq_p += (o.s);
+			}
+			seq_c += (CODON[20].n)[Math.floor(Math.random() * 3)];
+			seq_p += "*";
+			localStorage.setItem("seq_c", seq_c);
+			localStorage.setItem("seq_p", seq_p);
+			localStorage.setItem("company", $("input").val());
+			localStorage.setItem("facilities", JSON.stringify([[countries[$("select").val()].id.toLowerCase(), 2]]));
+			localStorage.setItem("initial", Math.random() * (0.65 - 0.5) + 0.5);
+			window.open("game.html", "_self");
+		});
+		$("select").change(function() {
+			$("select").addClass("black");
+		});
+	</script>
+</body>
+</html>

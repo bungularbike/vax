@@ -1,0 +1,112 @@
+@font-face {
+	font-family: Ubuntu;
+	src: url("Ubuntu/Ubuntu-Regular.ttf");
+}
+
+* {
+	font-family: Ubuntu;
+}
+
+#pause {
+	border-color: rgba(255, 255, 255, .5);
+	color: rgba(255, 255, 255, .5);
+}
+#fullscreen {
+	border-color: rgba(255, 255, 255, 0);
+	color: rgba(255, 255, 255, .5);
+}
+#pause:hover, #fullscreen:hover {
+	background-color: rgba(255, 255, 255, .5);
+}
+
+#console {
+	height: 45vh;
+	overflow-y: scroll;
+	font-size: 0.75em;
+}
+#console p {
+	margin-bottom: 0.5rem;
+}
+
+#mini table td {
+	font-family: monospace;
+	font-size: 7px;
+}
+
+.card-title {
+	margin-bottom: 0;
+}
+
+#countries .card {
+	font-size: 0.65em;
+	cursor: pointer;
+}
+#countries .card:hover, #countries .card:focus {
+	filter: brightness(95%);	
+}
+#countries .card:active {
+	filter: brightness(90%);
+}
+
+#countries .card.facility-1 {
+	box-shadow: 0 0 3px 2px #007bff;
+}
+#countries .card.facility-2 {
+	box-shadow: 0 0 3px 4px #007bff;
+}
+#countries .card.facility-3 {
+	box-shadow: 0 0 3px 6px #007bff;
+}
+
+#countries h6 {
+	font-size: 0.8rem;
+}
+
+#countries .card-body {
+	padding: 0.75rem;
+}
+
+#countries .card-body img {
+	max-height: 3vh;
+	box-shadow: 0 0 3px 1px rgba(0, 0, 0, 0.5);
+}
+
+#countries .list-group-item {
+	display: flex;
+	justify-content: center;
+	overflow-y: hidden;
+	white-space: nowrap;
+	padding: 0.5rem 0.75rem;
+}
+
+.modal-body p, .modal-body li {
+	font-size: 0.8rem;
+	margin-bottom: 0.4rem;
+}
+
+#dp input {
+	font-size: 0.6rem;
+	font-family: monospace !important;
+	text-align: center !important;
+	border: 0 !important;
+	border-radius: 2px;
+	border-bottom-left-radius: 0px;
+	border-bottom-right-radius: 0px;
+	border-bottom: 1px solid rgba(150, 150, 150, 0.6) !important;
+}
+
+#dp input.active, #dp input:focus {
+	background-color: rgba(0, 123, 255, 0.4);
+}
+#dp input.new {
+	border-bottom: 1px solid #2059f9 !important;
+}
+#dp input.changed {
+	border-bottom: 1px solid #e6bf00 !important;
+}
+#dp input.wrong {
+	border-bottom: 1px solid #dc3545 !important;
+}
+#dp input.right {
+	border-bottom: 1px solid #28a745 !important;
+}
