@@ -896,7 +896,7 @@ function establishFacility(country) {
 var cf = "";
 function phaseTwo(c) {
 	cf = c;
-	$("#d1 select").attr("disabled", "true");
+	$("#d1 select, #d1 button").attr("disabled", "true");
 	cleared[1] = new Date(currentDate.getTime());
 	$("#phase").html("Phase: II");
 	$("#t2").removeClass("disabled");
@@ -922,18 +922,18 @@ function resultsOne(t) {
 	$("#candidate" + trial + " select").removeAttr("disabled");
 	$("#candidate" + trial + " td:last-child").html("Effectiveness: " + toPlaces((initial + modify) * 100, 2) + "%");
 	for (var j in relations) {
-		if (relations[j] + (0.8 * ((initial + modify) - eff)) >= 8.5 && relations[j] + (0.8 * ((initial + modify) - eff)) <= 1) {
-			relations[j] += (0.8 * ((initial + modify) - eff));
-		} else if (relations[j] + (0.8 * ((initial + modify) - eff)) >= 8.5) {
+		if (relations[j] + (8 * ((initial + modify) - eff)) < 8.5 && relations[j] + (8 * ((initial + modify) - eff)) > 1) {
+			relations[j] += (8 * ((initial + modify) - eff));
+		} else if (relations[j] + (8 * ((initial + modify) - eff)) >= 8.5) {
 			relations[j] = 8.5;
-		} else if (relations[j] + (0.8 * ((initial + modify) - eff)) <= 1) {
+		} else if (relations[j] + (8 * ((initial + modify) - eff)) <= 1) {
 			relations[j] = 1;
 		}
 		$("#" + j + "_r").html("WTC " + toPlaces(relations[j], 1) + " / 10");
 	}
 	if (initial + modify > eff) {
 		$("#eff").html("Effectiveness: " + toPlaces((initial + modify) * 100, 2) + "%");
-		$("#console").append("<p><b class = 'text-success'>" + toDate(currentDate) + " " + name + " concludes phase I trials of candidate " + trial + " with " + toPlaces((initial + modify) * 100, 2) + "% effectiveness (+" + toPlaces((initial + modify - eff), 2) + "%)</b></p>");
+		$("#console").append("<p><b class = 'text-success'>" + toDate(currentDate) + " " + name + " concludes phase I trials of candidate " + trial + " with " + toPlaces((initial + modify) * 100, 2) + "% effectiveness (+" + toPlaces((initial + modify - eff) * 100, 2) + "%)</b></p>");
 		$(".leading").removeClass("leading");
 		$("#candidate" + trial).addClass("leading");
 		eff = initial + modify;
@@ -941,7 +941,7 @@ function resultsOne(t) {
 			$("#d1 p").html("<button class = 'btn btn-primary btn-sm' onclick = 'phaseTwo(\"" + trial + "\")'>Select Candidate " + trial + " for Phase 2</button>");
 		}
 	} else {
-		$("#console").append("<p><b class = 'text-danger'>" + toDate(currentDate) + " " + name + " concludes phase I trials of candidate " + trial + " with " + toPlaces((initial + modify) * 100, 2) + "% effectiveness (-" + toPlaces((-1* initial + modify - eff), 2) + "%)</b></p>");
+		$("#console").append("<p><b class = 'text-danger'>" + toDate(currentDate) + " " + name + " concludes phase I trials of candidate " + trial + " with " + toPlaces((initial + modify) * 100, 2) + "% effectiveness (-" + toPlaces((-100 * (initial + modify - eff)), 2) + "%)</b></p>");
 	}
 	$("#console").append("<p><b class = 'text-warning'>Results of Candidate " + trial + " phase I trial:" + results + "</b></p>");
 	$("#console").scrollTop($("#console").prop("scrollHeight"));
@@ -1226,8 +1226,10 @@ function runTest() {
 	for (var i in relations) {
 		if (relations[i] + (2 * (per_p - prev)) < 7.2) {
 			relations[i] += toPlaces(2 * (per_p - prev), 1);
-			$("#" + i + "_r").html("WTC " + toPlaces(relations[i], 1) + " / 10");
+		} else {
+			relations[i] = 7.2;
 		}
+		$("#" + i + "_r").html("WTC " + toPlaces(relations[i], 1) + " / 10");
 	}
 	$("#research").modal("hide");
 }
@@ -1411,7 +1413,7 @@ $("body").keydown(function(event) {
 			}
 		}
 		if ($("#research").hasClass("show")) {
-			if ($("#tp").hasClass("active") && event.keyCode == 13 && money >= 20000) {
+			if ($("#tp").hasClass("active") && event.keyCode == 13 && money >= 20000 && cleared.length == 0) {
 				runTest();
 			} else if (event.keyCode == 48) {
 				$("#tp").tab("show");
