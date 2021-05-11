@@ -782,10 +782,16 @@ const CODON = [
 		s: "*"
 	}
 ];
+var additions = [[["2-PE"], ["Thiomersal"], ["Carbolic acid"], ["Methylparaben"]], [["Sucrose"], ["Gelatin"], ["Albumin"], ["Dextrose"]], [["Polysorbate 80"], ["Triton X-100"], ["Synperonic"], ["DODAB"]], [["Sterile water"], ["0.4% NaCl"], ["0.9% NaCl"], ["PBS"]], [["Aluminum phosphate"], ["Aluminum hydroxide"], ["Interleukin-2"], ["Squalene"]]];
+var candidates = {};
+
 var seq_c = localStorage.getItem("seq_c");
 var seq_p = localStorage.getItem("seq_p");
 var per_c = 0;
 var per_p = 0;
+
+var facilities = JSON.parse(localStorage.getItem("facilities"));
+var relations = {};
 
 function updateMoney() {
 	if (money <= 0) {
@@ -817,12 +823,29 @@ function upgradeFacility(country) {
 	for (var i = 0; i < facilities.length; i++) {
 		if (facilities[i][0] == country) {
 			money -= (((data[country].cash / 5) + (2.25 ** (4 - relations[country] + facilities[i][1])) - 1) * 100000 * 2);
+			dmoney -= (((data[country].cash / 5) + (2.25 ** (4 - relations[country] + facilities[i][1])) - 1) * 100000 * 2);
 			updateMoney();
 			$("#" + country).removeClass("facility-" + facilities[i][1]);
 			facilities[i][1]++;
 			$("#" + country).addClass("facility-" + facilities[i][1]);
 			if (relations[country] + 0.4 <= 7) {
 				relations[country] += 0.4;
+			}
+			if (cleared.length == 1) {
+				var count = 0;
+				for (var j = 0; j < facilities.length; j++) {
+					count += facilities[j][1];
+				}
+				if (count <= 8) {
+					count--;
+					$("#candidates").append("<tr id = 'candidate" + alpha.charAt(count) + "'><td>Candidate " + alpha.charAt(count) + "</td><td><select class = 'custom-select custom-select-sm' id = '" + alpha.charAt(count) + "0'><option selected disabled value = 'null'>Select...</option></select></td><td><select class = 'custom-select custom-select-sm'id = '" + alpha.charAt(count) + "1'><option selected disabled value = 'null'>Select...</option></select></td><td><select class = 'custom-select custom-select-sm'id = '" + alpha.charAt(count) + "2'><option selected disabled value = 'null'>Select...</option></select></td><td><select class = 'custom-select custom-select-sm'id = '" + alpha.charAt(count) + "3'><option selected disabled value = 'null'>Select...</option></select></td><td><select class = 'custom-select custom-select-sm' id = '" + alpha.charAt(count) + "4'><option selected disabled value = 'null'>Select...</option></select></td><td>Effectiveness: ?</td>");
+					for (var k = 0; k < additions.length; k++) {
+						for (var l = 0; l < additions[k].length; l++) {
+							$("#" + alpha.charAt(count) + k).append("<option value = '" + l + "'>" + additions[k][l][0] + "</option>");
+							candidates[alpha.charAt(count)] = [-1, -1, -1, -1, -1];
+						}
+					}
+				}
 			}
 			$("#country").modal("hide");
 			$("#console").append("<p><b class = 'text-success'>" + toDate(currentDate) + " " + name + " upgrades their facility in " + (country == "usa" || country == "gbr" ? "the " : "") + data[country].country + "</b></p>");
@@ -834,6 +857,7 @@ function upgradeFacility(country) {
 function establishFacility(country) {
 	facilities[facilities.length] = [country, 1];
 	money -= ((data[country].cash / 5) + (2.25 ** (4 - relations[country])) - 1) * 100000;
+	dmoney -= ((data[country].cash / 5) + (2.25 ** (4 - relations[country])) - 1) * 100000;
 	updateMoney();
 	$("#" + country).addClass("facility-1");
 	relations[country] += toPlaces((2 / (facilities.length - 1)), 1);
@@ -848,11 +872,91 @@ function establishFacility(country) {
 			$("#" + RELATIONS[j][(1 - RELATIONS[j].indexOf(country))] + "_r").html("WTC " + toPlaces(relations[RELATIONS[j][(1 - RELATIONS[j].indexOf(country))]], 1) + " / 10");
 		}
 	}
+	if (cleared.length == 1) {
+		var count = 0;
+		for (var i = 0; i < facilities.length; i++) {
+			count += facilities[i][1];
+		}
+		if (count <= 8) {
+			count--;
+			$("#candidates").append("<tr id = 'candidate" + alpha.charAt(count) + "'><td>Candidate " + alpha.charAt(count) + "</td><td><select class = 'custom-select custom-select-sm' id = '" + alpha.charAt(count) + "0'><option selected disabled value = 'null'>Select...</option></select></td><td><select class = 'custom-select custom-select-sm'id = '" + alpha.charAt(count) + "1'><option selected disabled value = 'null'>Select...</option></select></td><td><select class = 'custom-select custom-select-sm'id = '" + alpha.charAt(count) + "2'><option selected disabled value = 'null'>Select...</option></select></td><td><select class = 'custom-select custom-select-sm'id = '" + alpha.charAt(count) + "3'><option selected disabled value = 'null'>Select...</option></select></td><td><select class = 'custom-select custom-select-sm' id = '" + alpha.charAt(count) + "4'><option selected disabled value = 'null'>Select...</option></select></td><td>Effectiveness: ?</td>");
+			for (var k = 0; k < additions.length; k++) {
+				for (var l = 0; l < additions[k].length; l++) {
+					$("#" + alpha.charAt(count) + k).append("<option value = '" + l + "'>" + additions[k][l][0] + "</option>");
+					candidates[alpha.charAt(count)] = [-1, -1, -1, -1, -1];
+				}
+			}
+		}
+	}
 	$("#country").modal("hide");
 	$("#console").append("<p><b class = 'text-success'>" + toDate(currentDate) + " " + name + " establishes a new facility in " + (country == "usa" || country == "gbr" ? "the " : "") + data[country].country + "</b></p>");
 	$("#console").scrollTop($("#console").prop("scrollHeight"));
 }
 
+var cf = "";
+function phaseTwo(c) {
+	cf = c;
+	$("#d1 select").attr("disabled", "true");
+	cleared[1] = new Date(currentDate.getTime());
+	$("#phase").html("Phase: II");
+	$("#t2").removeClass("disabled");
+	$("#t2").html("Phase II");
+	$("#console").append("<p><b class = 'text-success'>" + toDate(currentDate) + " " + name + " advances Candidate " + c + " vaccine to Phase II status</b></p>");
+	$("#console").append("<p><b class = 'text-success'>PHASE I CLEARED IN: " + (Math.round(Math.abs((cleared[0] - currentDate) / (24 * 60 * 60 * 1000)))) + " days</b></p>");
+	$("#console").scrollTop($("#console").prop("scrollHeight"));
+	$("#research").modal("hide");
+}
+
+var trials_1 = {};
+var descriptors = { "0.05": "Very effective", "0.03": "Effective", "0.01": "Marginally effective", "-0.01": "Detrimental" };
+function resultsOne(t) {
+	var trial = trials_1[t].candidate;
+	var modifier = [];
+	var modify = 0;
+	var results = "";
+	for (var i = 0; i < candidates[trial].length; i++) {
+		modifier[i] = additions[i][candidates[trial][i]][1];
+		modify += modifier[i];
+		results += ("<br>" + additions[i][candidates[trial][i]][0] + ": " + descriptors[(additions[i][candidates[trial][i]][1] + "")]);
+	}
+	$("#candidate" + trial + " select").removeAttr("disabled");
+	$("#candidate" + trial + " td:last-child").html("Effectiveness: " + toPlaces((initial + modify) * 100, 2) + "%");
+	if (initial + modify > eff) {
+		$("#eff").html("Effectiveness: " + toPlaces((initial + modify) * 100, 2) + "%");
+		$("#console").append("<p><b class = 'text-success'>" + toDate(currentDate) + " " + name + " concludes phase I trials of candidate " + trial + " with " + toPlaces((initial + modify) * 100, 2) + "% effectiveness (+" + toPlaces((initial + modify - eff), 2) + "%)</b></p>");
+		$(".leading").removeClass("leading");
+		$("#candidate" + trial).addClass("leading");
+		eff = initial + modify;
+		if (eff > 0.7) {
+			$("#d1 p").html("<button class = 'btn btn-primary btn-sm' onclick = 'phaseTwo(\"" + trial + "\")'>Select Candidate " + trial + " for Phase 2</button>");
+		}
+	} else {
+		$("#console").append("<p><b class = 'text-danger'>" + toDate(currentDate) + " " + name + " concludes phase I trials of candidate " + trial + " with " + toPlaces((initial + modify) * 100, 2) + "% effectiveness (-" + toPlaces((-1* initial + modify - eff), 2) + "%)</b></p>");
+	}
+	$("#console").append("<p><b class = 'text-warning'>Results of Candidate " + trial + " phase I trial:" + results + "</b></p>");
+	$("#console").scrollTop($("#console").prop("scrollHeight"));
+	delete trials_1[t];
+}
+function trialOne(country, lvl) {
+	var candidate = $("#candidate").val();
+	$("#candidate" + candidate + " select").attr("disabled", "true");
+	$("#candidate" + candidate + " td:last-child").html("<img src = 'flags/" + country + ".png' style = 'height: 1em; position: relative; top: -1px; border: 0.5px solid rgba(0, 0, 0, 0.3)' class = 'mr-2'> " + (7 * (5 - lvl)) + " days left");
+	trials_1[country] = { "time": 7 * (5 - lvl), "candidate": candidate }
+	money -= 500000;
+	dmoney -= 500000;
+	updateMoney();
+	$("#country").modal("hide");
+	$("#console").append("<p><b class = 'text-success'>" + toDate(currentDate) + " " + name + " begins Phase I trials of Candidate " + candidate + " at its " + data[country].demonym + " facility</b></p>");
+	$("#console").scrollTop($("#console").prop("scrollHeight"));
+}
+
+function validCandidate() {
+	if ($("#candidate").val() != "null" && money >= 500000) {
+		$("#runOne").removeAttr("disabled");
+	} else {
+		$("#runOne").attr("disabled", "true");
+	}
+}
 function countryModal(country) {
 	var cname = (country == "usa" || country == "gbr" ? "the " : "") + data[country].country;
 	$("#" + country).blur();
@@ -871,13 +975,46 @@ function countryModal(country) {
 		$("#country .modal-body").append("<p><button class = 'btn btn-primary btn-sm' " + (money < facilitycost ? "disabled" : "") + " onclick = 'establishFacility(\"" + country + "\")'>Establish Facility - $" + toShort(facilitycost, 2) + "</button></p>");
 	} else {
 		const upgradecost = ((data[country].cash / 5) + (2.25 ** (4 - relations[country] + facilities[found][1])) - 1) * 100000 * 2;
-		$("#country .modal-body").html("<h6>Facility</h6><p>" + name + " currently has a Level " + facilities[found][1] + " facility in " + cname + ".</p>");
+		$("#country .modal-body").html("<h6>Facility</h6><p>" + name + " currently has a Level " + facilities[found][1] + " facility in " + cname + "." + (found == 0 ? (" This facility is also the headquarters of " + name + ".") : "") + "</p>");
 		$("#country .modal-body").append("<p>The " + (facilities[found][1] * 10) + " researchers at this facility are each being paid $" + (per_c == 1 ? 0 : toShort(data[facilities[found][0]].cash * 10000 / 365, 2)) + " per day for a total of $" + (per_c == 1 ? 0 : toShort((facilities[found][1] * 10) * data[facilities[found][0]].cash * 10000 / 365, 2)) + ".</p>");
 		if (facilities[found][1] < 3) {
-			$("#country .modal-body").append("<p>Upgrading this facility to Level " + (facilities[found][1] + 1) + " will cost $" + toShort(upgradecost, 2) + " and will:<ul><li>Increase its research speed</li><li>Increase its manufacturing capabilities</li><li>Increase its research & operations costs</li><li>Increase this country's WTC</li></ul></p>");
+			$("#country .modal-body").append("<p>Upgrading this facility to Level " + (facilities[found][1] + 1) + " will cost $" + toShort(upgradecost, 2) + " and will:<ul><li>Increase its research speed</li><li>Increase the speed at which clinical trials take place</li><li>Increase its manufacturing capabilities</li><li>Increase its research & operations costs</li><li>Increase this country's WTC</li></ul></p>");
 			$("#country .modal-body").append("<p><button class = 'btn btn-primary btn-sm' " + (money < upgradecost ? "disabled" : "") + " onclick = 'upgradeFacility(\"" + country + "\")'>Upgrade Facility to Level " + (facilities[found][1] + 1) + " - $" + toShort(upgradecost, 2) + "</button></p>");
 		} else {
 			$("#country .modal-body").append("<p>This facility is already at Level 3, the maximum level.</p>");
+		}
+		if (cleared.length == 1) {
+			if (typeof trials_1[country] != "undefined") {
+				$("#country .modal-body").append("<hr class = 'my-3'><h6>Phase I trials</h6><p>Phase I trials of Candidate " + trials_1[country].candidate + " are ongoing at this facility and will require " + (trials_1[country].time == 1 ? "1 more day" : (trials_1[country].time + " more days")) + " to complete.</p>");
+			} else {
+				$("#country .modal-body").append("<hr class = 'my-3'><h6>Phase I trials</h6><p>Phase I trials can now be run at this facility.</p><p>These trials will be conducted on healthy adult volunteers and will be used to test the effectiveness of a selected vaccine candidate.</p><p>Your Level " + facilities[found][1] + " facility will take " + (5 - facilities[found][1]) + " weeks to run this Phase I trial.</p>");
+				$("#country .modal-body").append("<p class = 'mt-3'><select class = 'custom-select custom-select-sm mr-3' style = 'width: auto !important' id = 'candidate' onchange = 'validCandidate()' " + (money < 50000 ? "disabled" : "") + "><option value = 'null' selected disabled>Candidate...</option></select><button class = 'btn btn-primary btn-sm' disabled onclick = 'trialOne(\"" + country + "\", " + facilities[found][1] + ")' id = 'runOne'>Run Phase I Trial - $500K</button></p>");
+				var none = true;
+				for (var j in candidates) {
+					var valid = true;
+					for (var k = 0; k < additions.length; k++) {
+						if ($("#" + j + k).val() == null) {
+							valid = false;
+						} else {
+							candidates[j][k] = Number($("#" + j + k).val());
+						}
+					}
+					for (var l in trials_1) {
+						if (trials_1[l].candidate == j) {
+							valid = false;
+							none = false;
+							break;
+						}
+					}
+					if (valid) {
+						$("#candidate").append("<option value = '" + j + "'>Candidate " + j + "</option>");
+						none = false;
+					}
+				}
+				if (none) {
+					$("#country .modal-body").append("<p class = 'mt-3'>Please configure a candidate in the Research menu (Phase I tab) to run a trial.</p>");
+				}
+			}
 		}
 	}
 	$("#country").modal();
@@ -917,8 +1054,7 @@ for (var country in data) {
 		append = "<div class = 'card-deck mb-3'>";
 	}
 }
-var facilities = JSON.parse(localStorage.getItem("facilities"));
-var relations = {};
+
 for (var i = 0; i < facilities.length; i++) {
 	$("#" + facilities[i][0]).addClass("facility-" + facilities[i][1]);
 }
@@ -933,11 +1069,42 @@ relations[facilities[0][0]] = 6;
 money = data[facilities[0][0]].cash * 150000;
 $("#cash").html("$" + toShort(money, 3));
 
+var alpha = "ABCDEFGH";
 function phaseOne() {
+	for (var i = 0; i < 144; i++) {
+		$("#cc" + i).val(seq_c.charAt(3 * i) + seq_c.charAt(3 * i + 1) + seq_c.charAt(3 * i + 2));
+		$("#c" + i).html(seq_c.charAt(3 * i) + seq_c.charAt(3 * i + 1) + seq_c.charAt(3 * i + 2));
+	}
+	per_c = 1;
 	cleared[0] = new Date(currentDate.getTime());
+	$("#dp input").attr("disabled", "true");
 	$("#phase").html("Phase: I");
 	$("#t1").removeClass("disabled");
 	$("#t1").html("Phase I");
+	var count = 0;
+	for (var h = 0; h < additions.length; h++) {
+		var modifiers = [0.05, 0.03, 0.01, -0.01];
+		for (var g = 0; g < additions[h].length; g++) {
+			var modify = Math.floor(Math.random() * modifiers.length);
+			additions[h][g][1] = modifiers[modify];
+			modifiers.splice(modify, 1);
+		}
+	}
+	for (var i = 0; i < facilities.length; i++) {
+		for (var j = 0; j < facilities[i][1]; j++) {
+			$("#candidates").append("<tr id = 'candidate" + alpha.charAt(count) + "'><td>Candidate " + alpha.charAt(count) + "</td><td><select class = 'custom-select custom-select-sm' id = '" + alpha.charAt(count) + "0'><option selected disabled value = 'null'>Select...</option></select></td><td><select class = 'custom-select custom-select-sm'id = '" + alpha.charAt(count) + "1'><option selected disabled value = 'null'>Select...</option></select></td><td><select class = 'custom-select custom-select-sm'id = '" + alpha.charAt(count) + "2'><option selected disabled value = 'null'>Select...</option></select></td><td><select class = 'custom-select custom-select-sm'id = '" + alpha.charAt(count) + "3'><option selected disabled value = 'null'>Select...</option></select></td><td><select class = 'custom-select custom-select-sm' id = '" + alpha.charAt(count) + "4'><option selected disabled value = 'null'>Select...</option></select></td><td>Effectiveness: ?</td>");
+			for (var k = 0; k < additions.length; k++) {
+				for (var l = 0; l < additions[k].length; l++) {
+					$("#" + alpha.charAt(count) + k).append("<option value = '" + l + "'>" + additions[k][l][0] + "</option>");
+					candidates[alpha.charAt(count)] = [-1, -1, -1, -1, -1];
+				}
+			}
+			count++;
+			if (count == 7) {
+				break;
+			}
+		}
+	}
 }
 
 function updateSpread() {
@@ -1129,9 +1296,10 @@ function takeLoan() {
 		} else {
 			relations[i] -= 1;
 		}
-		$("#" + country + "_r").html("WTC " + toPlaces(relations[country], 1) + " / 10");
+		$("#" + i + "_r").html("WTC " + toPlaces(relations[i], 1) + " / 10");
 	}
 	$("#console").append("<p><b class = 'text-danger'>" + toDate(currentDate) + " On the verge of bankruptcy, " + name + " accepts $" + toShort((data[facilities[0][0]].cash / 2) * 100000 + 100000, 0) + " loan from " + data[facilities[0][0]].demonym + " government</b></p>");
+	$("#console").scrollTop($("#console").prop("scrollHeight"));
 	$("#loan").modal("hide");
 }
 
@@ -1143,6 +1311,16 @@ function advanceDay() {
 	if (toDate(currentDate) == "06/02/20") {
 		$("#console").append("<p><b class = 'text-success'>" + toDate(currentDate) + " " + name + " sequences first virus RNA nucleotides</b></p>");
 		$("#console").scrollTop($("#console").prop("scrollHeight"));
+	}
+	for (var i in trials_1) {
+		if (trials_1[i].time > 0) {
+			trials_1[i].time--;
+			$("#candidate" + trials_1[i].candidate + " td:last-child").html("<img src = 'flags/" + i + ".png' style = 'height: 1em; position: relative; top: -1px; border: 0.5px solid rgba(0, 0, 0, 0.3)' class = 'mr-2'> " + (trials_1[i].time > 1 ? (trials_1[i].time + " days") : (trials_1[i].time + " day")) + " left");
+			if (trials_1[i].time == 0) {
+				trials_1[i].time = -1;
+				resultsOne(i);
+			}
+		}
 	}
 	checkEvents();
 	updateSpread();
@@ -1222,8 +1400,18 @@ $("body").keydown(function(event) {
 				}
 			}
 		}
-		if ($("#research").hasClass("show") && $("#tp").hasClass("active") && event.keyCode == 13 && money >= 20000) {
-			runTest();
+		if ($("#research").hasClass("show")) {
+			if ($("#tp").hasClass("active") && event.keyCode == 13 && money >= 20000) {
+				runTest();
+			} else if (event.keyCode == 48) {
+				$("#tp").tab("show");
+			} else if (event.keyCode == 49 && cleared.length >= 1) {
+				$("#t1").tab("show");
+			} else if (event.keyCode == 50 && cleared.length >= 2) {
+				$("#t2").tab("show");
+			} else if (event.keyCode == 51 && cleared.length == 3) {
+				$("#t3").tab("show");
+			}
 		}
 	}
 });

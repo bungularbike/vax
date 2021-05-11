@@ -20,7 +20,7 @@
 }
 
 #console {
-	height: 45vh;
+	height: 40vh;
 	overflow-y: scroll;
 	font-size: 0.75em;
 }
@@ -79,6 +79,11 @@
 	padding: 0.5rem 0.75rem;
 }
 
+:not(#loan) > .modal-dialog {
+	margin-top: 5em !important;
+	margin-bottom: 5em !important;
+}
+
 .modal-body p, .modal-body li {
 	font-size: 0.8rem;
 	margin-bottom: 0.4rem;
@@ -109,4 +114,13 @@
 }
 #dp input.right {
 	border-bottom: 1px solid #28a745 !important;
+}
+
+#candidates td {
+	vertical-align: middle;
+	text-align: center;
+}
+
+.leading td:last-child {
+	font-weight: bold;
 }
