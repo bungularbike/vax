@@ -34,6 +34,7 @@ function toDate(d) {
 var name = localStorage.getItem("company");
 const initial = Number(localStorage.getItem("initial"));
 var eff = 0;
+var cleared = [];
 var events = [
 	{
 		"desc": "USA: Multiple states lift lockdown measures",
@@ -836,7 +837,7 @@ function establishFacility(country) {
 	updateMoney();
 	$("#" + country).addClass("facility-1");
 	relations[country] += toPlaces((2 / (facilities.length - 1)), 1);
-	$("#" + country + "_r").html("WTC " + toPlaces(relations[country], 1) + " / 8");
+	$("#" + country + "_r").html("WTC " + toPlaces(relations[country], 1) + " / 10");
 	for (var j = 0; j < RELATIONS.length; j++) {
 		if (RELATIONS[j].indexOf(country) != -1) {
 			var current = relations[RELATIONS[j][(1 - RELATIONS[j].indexOf(country))]];
@@ -844,7 +845,7 @@ function establishFacility(country) {
 			if (!((current + change > 7 && change > 0) || (current - change < 1 && change < 0))) {
 				relations[RELATIONS[j][(1 - RELATIONS[j].indexOf(country))]] += toPlaces(((1 / ((facilities.length - 1) + 0.5)) * (RELATIONS[j][2] - 3)), 1);
 			}
-			$("#" + RELATIONS[j][(1 - RELATIONS[j].indexOf(country))] + "_r").html("WTC " + toPlaces(relations[RELATIONS[j][(1 - RELATIONS[j].indexOf(country))]], 1) + " / 8");
+			$("#" + RELATIONS[j][(1 - RELATIONS[j].indexOf(country))] + "_r").html("WTC " + toPlaces(relations[RELATIONS[j][(1 - RELATIONS[j].indexOf(country))]], 1) + " / 10");
 		}
 	}
 	$("#country").modal("hide");
@@ -923,16 +924,17 @@ for (var i = 0; i < facilities.length; i++) {
 }
 for (var j = 0; j < RELATIONS.length; j++) {
 	if (RELATIONS[j].indexOf(facilities[0][0]) != -1) {
-		$("#" + RELATIONS[j][(1 - RELATIONS[j].indexOf(facilities[0][0]))] + "_r").html("WTC " + RELATIONS[j][2] + " / 8");
+		$("#" + RELATIONS[j][(1 - RELATIONS[j].indexOf(facilities[0][0]))] + "_r").html("WTC " + RELATIONS[j][2] + " / 10");
 		relations[RELATIONS[j][(1 - RELATIONS[j].indexOf(facilities[0][0]))]] = RELATIONS[j][2];
 	}
 }
-$("#" + facilities[0][0] + "_r").html("WTC 6 / 8");
+$("#" + facilities[0][0] + "_r").html("WTC 6 / 10");
 relations[facilities[0][0]] = 6;
 money = data[facilities[0][0]].cash * 150000;
 $("#cash").html("$" + toShort(money, 3));
 
 function phaseOne() {
+	cleared[0] = new Date(currentDate.getTime());
 	$("#phase").html("Phase: I");
 	$("#t1").removeClass("disabled");
 	$("#t1").html("Phase I");
@@ -1024,31 +1026,30 @@ function runTest() {
 	eff = per_p * initial;
 	if (per_p == 1) {
 		$("#console").append("<p><b class = 'text-success'>" + toDate(currentDate) + " At " + toPlaces(eff * 100, 2) + "% effectiveness, " + data[facilities[0][0]].demonym + (facilities.length >= 2 ? " and other governments allow" : " government allows") + " phase I clinical trials to begin</b></p>");
-		phaseOne();
 	} else if (eff > 0.4) {
 		$("#console").append("<p><b class = 'text-success'>" + toDate(currentDate) + " " + name + " vaccine tested to be 40% effective. " + data[facilities[0][0]].demonym + " government commends " + name + " and international pharmaceutical community hails new breakthrough</b></p>");	
 	} else if (eff > 0.2) {
 		$("#console").append("<p><b class = 'text-success'>" + toDate(currentDate) + " " + name + " vaccine tested to be 20% effective. " + data[facilities[0][0]].demonym + " government increases funding and other countries begin to take notice</b></p>");	
 	}
-	if (per_p - prev <= 0.05) {
-		$("#console").append("<p><b class = 'text-danger'>" + toDate(currentDate) + " You sequenced " + toPlaces(per_p * 100, 2) + "% of proteins in the virus (which is " + ((per_p > prev) ? ("+" + toPlaces((per_p - prev) * 100, 2)) : ("-" + toPlaces((prev - per_p) * 100, 2))) + "% progress).</b></p>");	
-	} else {
-		$("#console").append("<p><b class = 'text-success'>" + toDate(currentDate) + " You successfully sequenced " + toPlaces(per_p * 100, 2) + "% of proteins in the virus (which is +" + toPlaces((per_p - prev) * 100, 2) + "% progress).</b></p>");
-	}
+	$("#console").append("<p><b class = 'text-success'>" + toDate(currentDate) + " You successfully sequenced " + toPlaces(per_p * 100, 2) + "% of proteins in the virus (which is +" + toPlaces((per_p - prev) * 100, 2) + "% progress).</b></p>");
 	money -= 20000;
-	var funding = (((2.5 * data[facilities[0][0]].cash * (1 - prev)) - (2.25 * (1 - (prev ** 2)) * data[facilities[0][0]].cash * (1 - per_p))) * ((per_p ** 2) - (prev ** 2)) * (data[facilities[0][0]].cash * 75000));
+	var funding = (data[facilities[0][0]].cash * 30000) * (3 ** (1 + per_p)) * (per_p - prev) * (1 - prev) * (((3 + data[facilities[0][0]].cash) * per_p) / 2);
 	dmoney -= 20000;
 	if (funding > 0) {
 		money += funding;
 		dmoney += funding;
 	}
 	updateMoney();
-	$("#console").append("<p><b class = 'text-success'>" + toDate(currentDate) + " You were given $" + toShort(funding, 2) + " in funds for your progress.</b></p>");	
+	$("#console").append("<p><b class = 'text-success'>" + toDate(currentDate) + " You were given $" + toShort(funding, 2) + " in funds for your progress.</b></p>");
+	if (per_p == 1) {
+		$("#console").append("<p><b class = 'text-success'>PRECLINICAL CLEARED IN: " + (Math.round(Math.abs((currentDate - new Date("June 1, 2020")) / (24 * 60 * 60 * 1000)))) + " days</b></p>");
+		phaseOne();
+	}
 	$("#console").scrollTop($("#console").prop("scrollHeight"));
 	for (var i in relations) {
 		if (relations[i] + (2 * (per_p - prev)) < 7.2) {
 			relations[i] += toPlaces(2 * (per_p - prev), 1);
-			$("#" + i + "_r").html("WTC " + toPlaces(relations[i], 1) + " / 8");
+			$("#" + i + "_r").html("WTC " + toPlaces(relations[i], 1) + " / 10");
 		}
 	}
 	$("#research").modal("hide");
@@ -1074,7 +1075,8 @@ function updateResearch() {
 			$("#console").append("<p><b class = 'text-success'>" + toDate(currentDate) + " " + name + " unlocks entire virus RNA sequence</b></p>");
 			$("#console").scrollTop($("#console").prop("scrollHeight"));
 			per_c = 1;
-		} else {
+			$("#pc").html("100%");
+		} else if (per_c != 1) {
 			var h = v[Math.floor(Math.random() * v.length)];
 			var t = $("#c" + Math.floor(h / 3)).html();
 			var p = "";
@@ -1127,7 +1129,7 @@ function takeLoan() {
 		} else {
 			relations[i] -= 1;
 		}
-		$("#" + country + "_r").html("WTC " + toPlaces(relations[country], 1) + " / 8");
+		$("#" + country + "_r").html("WTC " + toPlaces(relations[country], 1) + " / 10");
 	}
 	$("#console").append("<p><b class = 'text-danger'>" + toDate(currentDate) + " On the verge of bankruptcy, " + name + " accepts $" + toShort((data[facilities[0][0]].cash / 2) * 100000 + 100000, 0) + " loan from " + data[facilities[0][0]].demonym + " government</b></p>");
 	$("#loan").modal("hide");
