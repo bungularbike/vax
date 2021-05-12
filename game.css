@@ -121,6 +121,15 @@
 	text-align: center;
 }
 
-.leading td:last-child {
+.leading td:first-child, .leading td:last-child {
 	font-weight: bold;
+}
+
+#ds, #di {
+	width: auto !important;
+	display: inline-block !important;
+	vertical-align: middle;
+}
+#ds {
+	min-width: 150px;
 }
