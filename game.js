@@ -825,6 +825,8 @@ function deselectCodon(n) {
 function changed(n) {
 	$("#cc" + n).addClass("changed");
 	$("#cp" + n).addClass("changed");
+	$("#cc" + n).removeClass("bonus");
+	$("#cp" + n).removeClass("bonus");
 }
 
 function upgradeFacility(country) {
@@ -902,13 +904,16 @@ function establishFacility(country) {
 }
 
 var cf3 = 0;
+var aer = 0;
 var initial3 = 0;
-function phaseThree(d, e) {
+function phaseThree(d, e, a, n) {
 	cf3 = d;
 	eff = e;
+	aer = a;
 	initial3 = eff;
+	$("#dosage" + n + " td:last-child button").html("Advanced");
+	$("#d2 button").attr("disabled", "true");
 	$("#eff").html("Effectiveness: " + toPlaces(eff * 100, 2) + "%");
-	$("#d2 p").remove();
 	for (var i in trials_2) {
 		$("#dosage" + trials_2[i].num + " td:first-child").html("Cancelled");
 		delete trials_2[i];
@@ -917,6 +922,7 @@ function phaseThree(d, e) {
 	$("#phase").html("Phase: III");
 	$("#t3").removeClass("disabled");
 	$("#t3").html("Phase III");
+	$("#t3").tab("show");
 	$("#console").append("<p><b class = 'text-success'>" + toDate(currentDate) + " " + name + " advances " + (toPlaces($("#ds").val() / 100, 2) + ($("#ds").val() == 100 ? ".0" : "") + "mL") + " dosage to Phase III clinical trials. \"This pandemic will soon be a thing of the past,\" says " + name + " CEO</b></p>");
 	$("#console").append("<p><b class = 'text-success'>PHASE II CLEARED IN: " + (Math.round(Math.abs((cleared[1] - currentDate) / (24 * 60 * 60 * 1000)))) + " days</b></p>");
 	$("#console").scrollTop($("#console").prop("scrollHeight"));
@@ -925,15 +931,16 @@ function phaseThree(d, e) {
 
 var cf2 = "";
 var initial2 = 0;
-var d = toPlaces(Math.random() * (100 - 25 + 1) + 25, 1);
+var d = toPlaces(Math.random() * (100 - 25 + 1) + 25, 0);
 var z = Math.random() * 10 - 5;
 var count2 = 0;
 var trials_2 = {};
 function resultsTwo(t) {
 	var trial = trials_2[t];
 	var modify = 0.008 * (15 - (0.5 * Math.abs(trial.dosage - d)));
-	var adverse = toPlaces(0.1 * (2.5 ** (0.1 * (trial.dosage - (d + z)))), 4);
-	$("#dosage" + trial.num).html("<td><img src = 'flags/" + t + ".png' style = 'height: 1em; position: relative; top: -1px; border: 0.5px solid rgba(0, 0, 0, 0.3)' class = 'mr-2'></td><td>" + trial.dd + "</td><td>" + toPlaces(adverse * 100, 2) + "%</td><td>" + toPlaces((initial2 + modify) * 100, 2) + "%</td>");
+	var adverse = toPlaces(0.01 * (2.5 ** (0.1 * (trial.dosage - (d + z)))), 4);
+	if (adverse > 1) { adverse = 1 }; 
+	$("#dosage" + trial.num).html("<td><img src = 'flags/" + t + ".png' style = 'height: 1em; position: relative; top: -1px; border: 0.5px solid rgba(0, 0, 0, 0.3)' class = 'mr-2'></td><td>" + trial.dd + "</td><td>" + toPlaces(adverse * 100, 2) + "%</td><td>" + toPlaces((initial2 + modify) * 100, 2) + "%</td><td> - </td>");
 	for (var j in relations) {
 		if (relations[j] + (5 * ((initial2 + modify) - eff)) < 9.2 && relations[j] + (5 * ((initial2 + modify) - eff)) > 1) {
 			relations[j] += (5 * ((initial2 + modify) - eff));
@@ -946,7 +953,7 @@ function resultsTwo(t) {
 	}
 	if (initial2 + modify > eff) {
 		cf3 = trial.dosage;
-		var funding = (data[t].cash * 50000000) * (2 ** (1 + modify)) * (modify - (eff - initial2)) * (1 - modify) * ((1.5 * (10 + data[t].cash) * modify) / 8);
+		var funding = (data[t].cash * 25000000) * (2 ** (1 + modify)) * (modify - (eff - initial2)) * (1 - modify) * ((1.5 * (10 + data[t].cash) * modify) / 8);
 		$("#eff").html("Effectiveness: " + toPlaces((initial2 + modify) * 100, 2) + "%");
 		$("#console").append("<p><b class = 'text-success'>" + toDate(currentDate) + " " + name + " concludes phase II trials of " + trial.dd + " dosage with " + toPlaces((initial2 + modify) * 100, 2) + "% effectiveness (+" + toPlaces((initial2 + modify - eff) * 100, 2) + "%) and receives $" + toShort(funding, 2) + " in funds</b></p>");
 		$(".leading").removeClass("leading");
@@ -956,17 +963,12 @@ function resultsTwo(t) {
 		dmoney = funding;
 		updateMoney();
 		if (eff >= 0.8) {
-			$("#d2 p").html("<button class = 'btn btn-primary btn-sm' onclick = 'phaseThree(\"" + trial.dosage + "\", " + eff + ")'>Select " + trial.dd + " dosage for Phase III</button>");
+			$("#dosage" + trial.num + " td:last-child").html("<button class = 'btn btn-primary btn-sm' onclick = 'phaseThree(\"" + trial.dosage + "\", " + eff + ", " + adverse + ", " + trial.num + ")' style = 'position: relative; top: -5px'>Advance to Phase III</button>");
 		}
 	} else {
 		$("#console").append("<p><b class = 'text-danger'>" + toDate(currentDate) + " " + name + " concludes phase II trials of " + trial.dd + " dosage with " + toPlaces((initial2 + modify) * 100, 2) + "% effectiveness (-" + toPlaces((-100 * (initial2 + modify - eff)), 2) + "%)</b></p>");
-		if (cf3 == trial.dosage) {
-			$(".leading").removeClass("leading");
-			if (initial2 + modify < 0.8) {
-				$("#d1 p button").remove();
-			} else {
-				$("#d1 p").html("<button class = 'btn btn-primary btn-sm' onclick = 'phaseThree(\"" + trial.dosage + "\", " + (initial2 + modify) + ")'>Select " + trial.dd + " dosage for Phase III</button>");
-			}
+		if (eff >= 0.8) {
+			$("#dosage" + trial.num + " td:last-child").html("<button class = 'btn btn-primary btn-sm' onclick = 'phaseThree(\"" + trial.dosage + "\", " + eff + ", " + adverse + ", " + trial.num + ")' style = 'position: relative; top: -5px'>Advance to Phase III</button>");
 		}
 	}
 	$("#console").scrollTop($("#console").prop("scrollHeight"));
@@ -975,7 +977,7 @@ function resultsTwo(t) {
 function trialTwo(country, lvl, event) {
 	var dosage = Number($("#di").val()) * 100;
 	if (typeof event == "undefined" || (typeof event != "undefined" && event.keyCode == 13 && !isNaN(dosage) && dosage >= 25 && dosage <= 100 && toPlaces(dosage, 1) == dosage && money >= 1000000)) {
-		$("#dosages").append("<tr id = 'dosage" + count2 + "'><td><img src = 'flags/" + country + ".png' style = 'height: 1em; position: relative; top: -1px; border: 0.5px solid rgba(0, 0, 0, 0.3)' class = 'mr-2'> " + (7 * (5 - lvl)) + " days left</td><td>" + toPlaces($("#ds").val() / 100, 2) + ($("#ds").val() == 100 ? ".0" : "") + "mL</td><td>?</td><td>?</td>");
+		$("#dosages").append("<tr id = 'dosage" + count2 + "'><td><img src = 'flags/" + country + ".png' style = 'height: 1em; position: relative; top: -1px; border: 0.5px solid rgba(0, 0, 0, 0.3)' class = 'mr-2'> " + (7 * (5 - lvl)) + " days left</td><td>" + toPlaces($("#ds").val() / 100, 2) + ($("#ds").val() == 100 ? ".0" : "") + "mL</td><td>?</td><td>?</td><td> - </td>");
 		trials_2[country] = { "time": 7 * (5 - lvl), "dosage": dosage, "num": count2, "dd": (toPlaces($("#ds").val() / 100, 2) + ($("#ds").val() == 100 ? ".0" : "") + "mL") }
 		money -= 1000000;
 		dmoney = -1000000;
@@ -1004,6 +1006,7 @@ function phaseTwo(c, e) {
 	$("#phase").html("Phase: II");
 	$("#t2").removeClass("disabled");
 	$("#t2").html("Phase II");
+	$("#t2").tab("show");
 	$("#console").append("<p><b class = 'text-success'>" + toDate(currentDate) + " " + name + " advances Candidate " + c + " vaccine to Phase II clinical trials. Doctors everywhere look forward to upcoming trial results</b></p>");
 	$("#console").append("<p><b class = 'text-success'>PHASE I CLEARED IN: " + (Math.round(Math.abs((cleared[0] - currentDate) / (24 * 60 * 60 * 1000)))) + " days</b></p>");
 	$("#console").scrollTop($("#console").prop("scrollHeight"));
@@ -1102,8 +1105,8 @@ function requestFunds(country) {
 }
 function dosageValid(input) {
 	if (input) {
-		var dosage = Number($("#di").val()) * 100;
-		if (!isNaN(dosage) && dosage >= 25 && dosage <= 100 && toPlaces(dosage, 1) == dosage) {
+		var dosage = toPlaces(Number($("#di").val()) * 100, 1);
+		if (!isNaN(dosage) && dosage >= 25 && dosage <= 100) {
 			$("#ds").val(dosage);
 			if (money >= 1000000) {
 				$("#runTwo").removeAttr("disabled", "true");
@@ -1259,6 +1262,7 @@ function phaseOne() {
 	$("#phase").html("Phase: I");
 	$("#t1").removeClass("disabled");
 	$("#t1").html("Phase I");
+	$("#t1").tab("show");
 	var count = 0;
 	for (var h = 0; h < additions.length; h++) {
 		var modifiers = [0.04, 0.02, 0, -0.02];
@@ -1270,6 +1274,9 @@ function phaseOne() {
 	}
 	for (var i = 0; i < facilities.length; i++) {
 		for (var j = 0; j < facilities[i][1]; j++) {
+			if (count == 8) {
+				break;
+			}
 			$("#candidates").append("<tr id = 'candidate" + alpha.charAt(count) + "'><td>Candidate " + alpha.charAt(count) + "</td><td><select class = 'custom-select custom-select-sm' id = '" + alpha.charAt(count) + "0'><option selected disabled value = 'null'>Select...</option></select></td><td><select class = 'custom-select custom-select-sm'id = '" + alpha.charAt(count) + "1'><option selected disabled value = 'null'>Select...</option></select></td><td><select class = 'custom-select custom-select-sm'id = '" + alpha.charAt(count) + "2'><option selected disabled value = 'null'>Select...</option></select></td><td><select class = 'custom-select custom-select-sm'id = '" + alpha.charAt(count) + "3'><option selected disabled value = 'null'>Select...</option></select></td><td><select class = 'custom-select custom-select-sm' id = '" + alpha.charAt(count) + "4'><option selected disabled value = 'null'>Select...</option></select></td><td>?</td>");
 			for (var k = 0; k < additions.length; k++) {
 				for (var l = 0; l < additions[k].length; l++) {
@@ -1278,9 +1285,6 @@ function phaseOne() {
 				}
 			}
 			count++;
-			if (count == 7) {
-				break;
-			}
 		}
 	}
 }
@@ -1337,6 +1341,7 @@ function checkEvents() {
 }
 
 function runTest() {
+	$(".bonus").removeClass("bonus");
 	$(".new.changed").removeClass("new");
 	$(".changed").removeClass("changed");
 	$(".right").removeClass("right");
@@ -1455,6 +1460,25 @@ function payResearchers() {
 	dmoney = -1 * deduct;
 	updateMoney();
 }
+function updateBonus() {
+	var bonus = [];
+	for (var i = 0; i < $("#code-c input.new:not(.changed)").length; i++) {
+	    bonus[bonus.length] = $("#code-c input.new:not(.changed)")[i].id.substring(2);
+	}
+	var counts = 0;
+	for (var j = 0; j < facilities.length; j++) {
+		counts += facilities[j][1];
+	}
+	for (var k = 0; k < counts; k++) {
+		if (Math.random() <= (counts * 0.01 + 0.06)) {
+			var target = bonus[Math.floor(Math.random() * bonus.length)];
+			$("#cp" + target).val(seq_p.charAt(Number(target)));
+			$("#p" + target).html("!");
+			$("#cp" + target).addClass("bonus");
+			$("#cc" + target).addClass("bonus");
+		}
+	}
+}
 
 function sequenceModal() {
 	$("#tp").tab("show");
@@ -1478,6 +1502,24 @@ function takeLoan() {
 	$("#console").append("<p><b class = 'text-danger'>" + toDate(currentDate) + " On the verge of bankruptcy, " + name + " accepts $" + toShort((data[facilities[0][0]].cash / 2) * 100000 + 100000, 0) + " loan from " + data[facilities[0][0]].demonym + " government</b></p>");
 	$("#console").scrollTop($("#console").prop("scrollHeight"));
 	$("#loan").modal("hide");
+}
+
+function researchModal() {
+	$("#research").modal("show");
+	switch (cleared.length) {
+		case 0:
+			$("#tp").tab("show");
+			break;
+		case 1:
+			$("#t1").tab("show");
+			break;
+		case 2:
+			$("#t2").tab("show");
+			break;
+		case 3:
+			$("#t3").tab("show");
+			break;
+	}
 }
 
 var paused = true;
@@ -1513,6 +1555,9 @@ function advanceDay() {
 	updateSpread();
 	if (per_c < 1) {
 		updateResearch();
+	}
+	if (per_p < 1) {
+		updateBonus();
 	}
 	if (money < 20000 || per_p == 1) {
 		$("#runTest").attr("disabled", "true");
@@ -1555,7 +1600,7 @@ $("body").keydown(function(event) {
 				$("#pause").trigger("click");
 			}
 			if (event.keyCode == 16) {
-				$("#research").modal("show");
+				researchModal();
 			}
 			if (event.keyCode == 49 && CLOCK != 2000) {
 				CLOCK = 2000;
@@ -1638,19 +1683,34 @@ function shortcut(code) {
 		for (var i = 0; i < seq_p.length; i++) {
 		    if ($("#cp" + i).hasClass("new")) { $("#cp" + i).val(seq_p.charAt(i)) }
 		}
-	} else if (code == 0) {
+	} else if (code === 0) {
 		for (var i = 0; i < seq_p.length; i++) {
 		    $("#cp" + i).val(seq_p.charAt(i))
 		}
-	} else if (code == 1) {
+	} else if (code === true) {
+		var output = "";
+		for (var i = 0; i < additions.length; i++) {
+			for (var j = 0; j < additions[i].length; j++) {
+				if (additions[i][j][1] == 0.04) {
+					output += additions[i][j][0];
+					$("#A" + i).val(j + "");
+					if (i != additions.length - 1) {
+						output += ", ";
+					}
+					break;
+				}
+			}
+		}
+		console.log(output);
+	} else if (code === 1) {
 		for (var i in trials_1) {
 		    trials_1[i].time = 1;
 		}
-	} else if (code == 2) {
+	} else if (code === 2) {
 		for (var i in trials_2) {
 		    trials_2[i].time = 1;
 		}
-	} else if (code == 3) {
+	} else if (code === 3) {
 
 	}
 }
