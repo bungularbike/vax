@@ -1447,98 +1447,102 @@ function countryModal(country) {
 			break;
 		}
 	}
-	if (cleared.length >= 3) {
-		if (!data[country].approved) {
-			$("#country .modal-body").append("<h6>Licensure</h6><p>Your vaccine has not been approved for use in " + cname + ".</p><hr class = 'my-3'>");
-		} else {
-			if (data[country].safe != false) {
-				var cn = (country == "usa" || country == "gbr" ? "The " : "") + data[country].country;
-				$("#country .modal-body").append("<div class = 'alert alert-primary text-center'>" + cn + " was declared virus-free on " + toDate(data[country].safe) + "</div><hr class = 'my-3'>");
-			} else {
-				$("#country .modal-body").append("<h6>Licensure</h6><p>Your vaccine has been approved for use in " + cname + ".</p>");
-				if (cleared.length == 4) {
-					$("#country .modal-body h6:first-child").html("Licensure & Distribution");
-					var demand = toPlaces(0.0001 * (data[country].cash ** (relations[country] - 8)) * data[country].pop, -1);
-					if (demand > (data[country].st * data[country].pop)) {
-						demand = toPlaces(data[country].st * data[country].pop, -1);
-					}
-					$("#country .modal-body").append("<p>The " + data[country].demonym + " government would currently like to order " + toShort(demand, 3) + " vaccine doses per day. As each dose costs $20 to buy, they will pay you up to $" + toShort(20 * demand, 2) + " daily for this order.</p><p>You can designate the number of doses that you would like to deliver to " + cname + " per day. If you do not have enough doses to deliver this amount on a day, then as many doses as possible will be delivered.</p><p>Enter the number of doses that you would like to be sent to " + cname + " per day (maximum " + toShort(demand, 3) + "):</p>");
-					$("#country .modal-body").append("<p class = 'mt-3'><input type = 'text' value = '" + deliveries[country] + "' class = 'form-control form-control-sm mr-2 text-center' size = '13' maxlength = '8' id = 'dosei' placeholder = 'Doses per day' oninput = 'deliveryValid(true, \"" + country + "\")' onkeydown = 'setDelivery(\"" + country + "\", event)'><input type = 'range' class = 'custom-range ml-4' min = '0' max = '" + demand + "' step = '10' id = 'doses' value = '" + deliveries[country] + "' oninput = 'deliveryValid(false, \"" + country + "\")' onkeydown = 'setDelivery(\"" + country + "\", event)'><br><button class = 'btn btn-sm btn-primary mt-3' id = 'setDelivery' disabled onclick = 'setDelivery(\"" + country + "\")'>Set Daily Delivery (+$" + toShort(20 * deliveries[country], 2) + "/day)</button></p><hr class = 'my-3'>");
-				} else {
-					$("#country .modal-body").append("<hr class = 'my-3'>");
-				}
-			}
-		}
-	}
-	if (found == -1) {
-		const facilitycost = ((data[country].cash / 5) + (2.25 ** (4 - relations[country])) - 1) * 100000;
-		$("#country .modal-body").append("<h6>Facility</h6><p>Establishing a facility in " + cname + " will cost $" + toShort(facilitycost, 2) + ".</p><p>Establishing a facility here will:</p><ul><li>Allow research to be performed here</li><li>Allow clinical trials to be run here</li><li>Allow vaccine doses to be manufactured here</li><li>Affect your WTC with other countries</li><li>Increase your research & operations costs</li></ul>");
-		$("#country .modal-body").append("<p><button class = 'btn btn-primary btn-sm' " + (money < facilitycost ? "disabled" : "") + " onclick = 'establishFacility(\"" + country + "\")'>Establish Facility - $" + toShort(facilitycost, 2) + "</button></p>");
+	if (won) {
+		$("#country .modal-body").append("<div class = 'alert alert-sucess text-center'>" + cn + " was declared virus-free on " + toDate(data[country].safe) + "</div>");
 	} else {
-		if (cleared.length == 4) {
-			var max = toPlaces(((data[country].cash * 0.6) ** facilities[found][1]) * 80000, -1);
-			$("#country .modal-body").append("<h6>Manufacturing</h6><p>Your Level " + facilities[found][1] + " facility in " + cname + " can currently manufacture " + toShort(max, 3) + " doses per day.</p>");
-			$("#country .modal-body").append("<p>Each dose costs $15 to manufacture, so manufacturing this maximum amount daily will cost $" + toShort(15 * max, 2) + ".</p><p>You can designate the number of doses that you would like to manufacture per day. If you do not have enough money to manufacture this amount on a day, then manufacturing will pause.</p><p>Enter the number of doses that you would like to manufacture at this facility per day (maximum " + toShort(max, 3) + "):</p>");
-			$("#country .modal-body").append("<p class = 'mt-3'><input type = 'text' value = '" + facilities[found][2] + "' class = 'form-control form-control-sm mr-2 text-center' size = '13' maxlength = '8' id = 'makei' placeholder = 'Doses per day' oninput = 'makeValid(true, " + found + ")' onkeydown = 'setManufacture(" + found + ", event)'><input type = 'range' class = 'custom-range ml-4' min = '0' max = '" + max + "' step = '10' id = 'makes' value = '" + facilities[found][2] + "' oninput = 'makeValid(false, " + found + ")' onkeydown = 'setManufacture(" + found + ", event)'><br><button class = 'btn btn-sm btn-primary mt-3' id = 'setMake' disabled onclick = 'setManufacture(" + found + ")'>Set Daily Manufacture - $" + toShort(15 * facilities[found][2], 2) + "/day</button></p><hr class = 'my-3'>");
-		} else if (cleared.length == 3) {
-			if (typeof trials_3[country] != "undefined") {
-				$("#country .modal-body").append("<h6>Phase III trials</h6><p>Phase III trials are ongoing at this facility and will require " + (trials_3[country].time == 1 ? "1 more day" : (trials_3[country].time + " more days")) + " to complete.</p><hr class = 'my-3'>");
+		if (cleared.length >= 3) {
+			if (!data[country].approved) {
+				$("#country .modal-body").append("<h6>Licensure</h6><p>Your vaccine has not been approved for use in " + cname + ".</p><hr class = 'my-3'>");
 			} else {
-				$("#country .modal-body").append("<h6>Phase III trials</h6><p>Phase III trials can now be run at this facility.</p><p>These large-scale trials will be used to determine your vaccine's final effectiveness and safety. Successful trial results may allow you to obtain a license from governments.</p><p>Your Level " + facilities[found][1] + " facility will take " + (5 - facilities[found][1]) + " weeks to run this Phase III trial.</p>");
-				$("#country .modal-body").append("<p class = 'mt-3'><button class = 'btn btn-sm btn-primary' id = 'runThree'" + (money < 3000000 ? " disabled" : "") + " onclick = 'trialThree(\"" + country + "\", " + facilities[found][1] + ")'>Run Phase III Trial - $3M</button></p><hr class = 'my-3'>");
-			}
-		} else if (cleared.length == 2) {
-			if (typeof trials_2[country] != "undefined") {
-				$("#country .modal-body").append("<h6>Phase II trials</h6><p>Phase II trials of " + (trials_2[country].dd) + " dosage are ongoing at this facility and will require " + (trials_2[country].time == 1 ? "1 more day" : (trials_2[country].time + " more days")) + " to complete.</p><hr class = 'my-3'>");
-			} else {
-				$("#country .modal-body").append("<h6>Phase II trials</h6><p>Phase II trials can now be run at this facility.</p><p>These trials will include people who are at risk of infection and will be used to test the effectiveness of a certain vaccine dosage.</p><p>Your Level " + facilities[found][1] + " facility will take " + (5 - facilities[found][1]) + " weeks to run this Phase II trial.</p>");
-				$("#country .modal-body").append("<p class = 'mt-3'><input type = 'text' class = 'form-control form-control-sm mr-2 text-center' size = '7' maxlength = '4' id = 'di' placeholder = '0.25-1.0' oninput = 'dosageValid(true)' onkeydown = 'trialTwo(\"" + country + "\", " + facilities[found][1] + ", event)'>mL<input type = 'range' class = 'custom-range ml-4' min = '25' max = '100' step = '0.1' id = 'ds' value = '25.0' oninput = 'dosageValid(false)' onkeydown = 'trialTwo(\"" + country + "\", " + facilities[found][1] + ", event)'><br><button class = 'btn btn-sm btn-primary mt-3' id = 'runTwo' disabled onclick = 'trialTwo(\"" + country + "\", " + facilities[found][1] + ")'>Run Phase II Trial - $1M</button></p><hr class = 'my-3'>");
-			}
-		} else if (cleared.length == 1) {
-			if (typeof trials_1[country] != "undefined") {
-				$("#country .modal-body").append("<h6>Phase I trials</h6><p>Phase I trials of Candidate " + trials_1[country].candidate + " are ongoing at this facility and will require " + (trials_1[country].time == 1 ? "1 more day" : (trials_1[country].time + " more days")) + " to complete.</p><hr class = 'my-3'>");
-			} else {
-				$("#country .modal-body").append("<h6>Phase I trials</h6><p>Phase I trials can now be run at this facility.</p><p>These trials will be conducted on healthy adult volunteers and will be used to test the effectiveness of potential vaccine excipients.</p><p>Your Level " + facilities[found][1] + " facility will take " + (5 - facilities[found][1]) + " weeks to run this Phase I trial.</p>");
-				$("#country .modal-body").append("<p class = 'mt-3'><select class = 'custom-select custom-select-sm mr-3' style = 'width: auto !important' id = 'candidate' onchange = 'validCandidate()' " + (money < 50000 ? "disabled" : "") + "><option value = 'null' selected disabled>Candidate...</option></select><button class = 'btn btn-primary btn-sm' disabled onclick = 'trialOne(\"" + country + "\", " + facilities[found][1] + ")' id = 'runOne'>Run Phase I Trial - $500K</button></p><hr class = 'my-3'>");
-				var none = true;
-				for (var j in candidates) {
-					var valid = true;
-					for (var k = 0; k < additions.length; k++) {
-						if ($("#" + j + k).val() == null) {
-							valid = false;
-						} else {
-							candidates[j][k] = Number($("#" + j + k).val());
+				if (data[country].safe != false) {
+					var cn = (country == "usa" || country == "gbr" ? "The " : "") + data[country].country;
+					$("#country .modal-body").append("<div class = 'alert alert-sucess text-center'>" + cn + " was declared virus-free on " + toDate(data[country].safe) + "</div><hr class = 'my-3'>");
+				} else {
+					$("#country .modal-body").append("<h6>Licensure</h6><p>Your vaccine has been approved for use in " + cname + ".</p>");
+					if (cleared.length == 4) {
+						$("#country .modal-body h6:first-child").html("Licensure & Distribution");
+						var demand = toPlaces(0.0001 * (data[country].cash ** (relations[country] - 8)) * data[country].pop, -1);
+						if (demand > (data[country].st * data[country].pop)) {
+							demand = toPlaces(data[country].st * data[country].pop, -1);
 						}
+						$("#country .modal-body").append("<p>The " + data[country].demonym + " government would currently like to order " + toShort(demand, 3) + " vaccine doses per day. As each dose costs $20 to buy, they will pay you up to $" + toShort(20 * demand, 2) + " daily for this order.</p><p>You can designate the number of doses that you would like to deliver to " + cname + " per day. If you do not have enough doses to deliver this amount on a day, then as many doses as possible will be delivered.</p><p>Enter the number of doses that you would like to be sent to " + cname + " per day (maximum " + toShort(demand, 3) + "):</p>");
+						$("#country .modal-body").append("<p class = 'mt-3'><input type = 'text' value = '" + deliveries[country] + "' class = 'form-control form-control-sm mr-2 text-center' size = '13' maxlength = '8' id = 'dosei' placeholder = 'Doses per day' oninput = 'deliveryValid(true, \"" + country + "\")' onkeydown = 'setDelivery(\"" + country + "\", event)'><input type = 'range' class = 'custom-range ml-4' min = '0' max = '" + demand + "' step = '10' id = 'doses' value = '" + deliveries[country] + "' oninput = 'deliveryValid(false, \"" + country + "\")' onkeydown = 'setDelivery(\"" + country + "\", event)'><br><button class = 'btn btn-sm btn-primary mt-3' id = 'setDelivery' disabled onclick = 'setDelivery(\"" + country + "\")'>Set Daily Delivery (+$" + toShort(20 * deliveries[country], 2) + "/day)</button></p><hr class = 'my-3'>");
+					} else {
+						$("#country .modal-body").append("<hr class = 'my-3'>");
 					}
-					for (var l in trials_1) {
-						if (trials_1[l].candidate == j) {
-							valid = false;
-							none = false;
-							break;
-						}
-					}
-					if (valid) {
-						$("#candidate").append("<option value = '" + j + "'>Candidate " + j + "</option>");
-						none = false;
-					}
-				}
-				if (none) {
-					$("#candidate").attr("disabled", "true");
-					$("#candidate").html("<option value = 'null' selected disabled>No valid candidates</option>")
 				}
 			}
 		}
-		const upgradecost = ((data[country].cash / 5) + (2.25 ** (4 - relations[country] + facilities[found][1])) - 1) * 100000 * 2;
-		$("#country .modal-body").append("<h6>Facility</h6><p>" + name + " currently has a Level " + facilities[found][1] + " facility in " + cname + "." + (found == 0 ? (" This facility is also the headquarters of " + name + ".") : "") + "</p>");
-		$("#country .modal-body").append("<p>The " + (facilities[found][1] * 10) + (cleared.length == 4 ? " workers" : " researchers") + " at this facility are each being paid $" + (per_c == 1 ? 0 : toShort(data[facilities[found][0]].cash * 10000 / 365, 2)) + " per day for a total of $" + (per_c == 1 ? 0 : toShort((facilities[found][1] * 10) * data[facilities[found][0]].cash * 10000 / 365, 2)) + ".</p>");
-		if (facilities[found][1] < 3) {
-			$("#country .modal-body").append("<p>Upgrading this facility to Level " + (facilities[found][1] + 1) + " will cost $" + toShort(upgradecost, 2) + " and will:<ul><li>Increase its research speed</li><li>Increase the speed at which clinical trials take place</li><li>Increase its manufacturing capabilities</li><li>Increase its research & operations costs</li><li>Increase this country's WTC</li></ul></p>");
-			$("#country .modal-body").append("<p><button class = 'btn btn-primary btn-sm' " + (money < upgradecost ? "disabled" : "") + " onclick = 'upgradeFacility(\"" + country + "\")'>Upgrade Facility to Level " + (facilities[found][1] + 1) + " - $" + toShort(upgradecost, 2) + "</button></p>");
+		if (found == -1) {
+			const facilitycost = ((data[country].cash / 5) + (2.25 ** (4 - relations[country])) - 1) * 100000;
+			$("#country .modal-body").append("<h6>Facility</h6><p>Establishing a facility in " + cname + " will cost $" + toShort(facilitycost, 2) + ".</p><p>Establishing a facility here will:</p><ul><li>Allow research to be performed here</li><li>Allow clinical trials to be run here</li><li>Allow vaccine doses to be manufactured here</li><li>Affect your WTC with other countries</li><li>Increase your research & operations costs</li></ul>");
+			$("#country .modal-body").append("<p><button class = 'btn btn-primary btn-sm' " + (money < facilitycost ? "disabled" : "") + " onclick = 'establishFacility(\"" + country + "\")'>Establish Facility - $" + toShort(facilitycost, 2) + "</button></p>");
 		} else {
-			$("#country .modal-body").append("<p>This facility is already at Level 3, the maximum level.</p>");
-		}
-		if (cleared.length > 0 && country == facilities[0][0]) {
-			$("#country .modal-body").append("<hr class = 'my-3'><h6>Research funding</h6><p>You may request $" + toShort(data[country].cash * 300000 * cleared.length, 2) + " from the " + data[country].demonym + " government at a cost of -" + ((loans + 1) * 0.2) + " WTC with all countries.</p><p class = 'mt-3 mb-2'><button class = 'btn btn-danger btn-sm' onclick = 'requestFunds(\"" + country + "\")'>Request Funds (+$" + toShort(data[country].cash * 300000 * cleared.length, 2) + ")</button></p>");
+			if (cleared.length == 4) {
+				var max = toPlaces(((data[country].cash * 0.6) ** facilities[found][1]) * 80000, -1);
+				$("#country .modal-body").append("<h6>Manufacturing</h6><p>Your Level " + facilities[found][1] + " facility in " + cname + " can currently manufacture " + toShort(max, 3) + " doses per day.</p>");
+				$("#country .modal-body").append("<p>Each dose costs $15 to manufacture, so manufacturing this maximum amount daily will cost $" + toShort(15 * max, 2) + ".</p><p>You can designate the number of doses that you would like to manufacture per day. If you do not have enough money to manufacture this amount on a day, then manufacturing will pause.</p><p>Enter the number of doses that you would like to manufacture at this facility per day (maximum " + toShort(max, 3) + "):</p>");
+				$("#country .modal-body").append("<p class = 'mt-3'><input type = 'text' value = '" + facilities[found][2] + "' class = 'form-control form-control-sm mr-2 text-center' size = '13' maxlength = '8' id = 'makei' placeholder = 'Doses per day' oninput = 'makeValid(true, " + found + ")' onkeydown = 'setManufacture(" + found + ", event)'><input type = 'range' class = 'custom-range ml-4' min = '0' max = '" + max + "' step = '10' id = 'makes' value = '" + facilities[found][2] + "' oninput = 'makeValid(false, " + found + ")' onkeydown = 'setManufacture(" + found + ", event)'><br><button class = 'btn btn-sm btn-primary mt-3' id = 'setMake' disabled onclick = 'setManufacture(" + found + ")'>Set Daily Manufacture - $" + toShort(15 * facilities[found][2], 2) + "/day</button></p><hr class = 'my-3'>");
+			} else if (cleared.length == 3) {
+				if (typeof trials_3[country] != "undefined") {
+					$("#country .modal-body").append("<h6>Phase III trials</h6><p>Phase III trials are ongoing at this facility and will require " + (trials_3[country].time == 1 ? "1 more day" : (trials_3[country].time + " more days")) + " to complete.</p><hr class = 'my-3'>");
+				} else {
+					$("#country .modal-body").append("<h6>Phase III trials</h6><p>Phase III trials can now be run at this facility.</p><p>These large-scale trials will be used to determine your vaccine's final effectiveness and safety. Successful trial results may allow you to obtain a license from governments.</p><p>Your Level " + facilities[found][1] + " facility will take " + (5 - facilities[found][1]) + " weeks to run this Phase III trial.</p>");
+					$("#country .modal-body").append("<p class = 'mt-3'><button class = 'btn btn-sm btn-primary' id = 'runThree'" + (money < 3000000 ? " disabled" : "") + " onclick = 'trialThree(\"" + country + "\", " + facilities[found][1] + ")'>Run Phase III Trial - $3M</button></p><hr class = 'my-3'>");
+				}
+			} else if (cleared.length == 2) {
+				if (typeof trials_2[country] != "undefined") {
+					$("#country .modal-body").append("<h6>Phase II trials</h6><p>Phase II trials of " + (trials_2[country].dd) + " dosage are ongoing at this facility and will require " + (trials_2[country].time == 1 ? "1 more day" : (trials_2[country].time + " more days")) + " to complete.</p><hr class = 'my-3'>");
+				} else {
+					$("#country .modal-body").append("<h6>Phase II trials</h6><p>Phase II trials can now be run at this facility.</p><p>These trials will include people who are at risk of infection and will be used to test the effectiveness of a certain vaccine dosage.</p><p>Your Level " + facilities[found][1] + " facility will take " + (5 - facilities[found][1]) + " weeks to run this Phase II trial.</p>");
+					$("#country .modal-body").append("<p class = 'mt-3'><input type = 'text' class = 'form-control form-control-sm mr-2 text-center' size = '7' maxlength = '4' id = 'di' placeholder = '0.25-1.0' oninput = 'dosageValid(true)' onkeydown = 'trialTwo(\"" + country + "\", " + facilities[found][1] + ", event)'>mL<input type = 'range' class = 'custom-range ml-4' min = '25' max = '100' step = '0.1' id = 'ds' value = '25.0' oninput = 'dosageValid(false)' onkeydown = 'trialTwo(\"" + country + "\", " + facilities[found][1] + ", event)'><br><button class = 'btn btn-sm btn-primary mt-3' id = 'runTwo' disabled onclick = 'trialTwo(\"" + country + "\", " + facilities[found][1] + ")'>Run Phase II Trial - $1M</button></p><hr class = 'my-3'>");
+				}
+			} else if (cleared.length == 1) {
+				if (typeof trials_1[country] != "undefined") {
+					$("#country .modal-body").append("<h6>Phase I trials</h6><p>Phase I trials of Candidate " + trials_1[country].candidate + " are ongoing at this facility and will require " + (trials_1[country].time == 1 ? "1 more day" : (trials_1[country].time + " more days")) + " to complete.</p><hr class = 'my-3'>");
+				} else {
+					$("#country .modal-body").append("<h6>Phase I trials</h6><p>Phase I trials can now be run at this facility.</p><p>These trials will be conducted on healthy adult volunteers and will be used to test the effectiveness of potential vaccine excipients.</p><p>Your Level " + facilities[found][1] + " facility will take " + (5 - facilities[found][1]) + " weeks to run this Phase I trial.</p>");
+					$("#country .modal-body").append("<p class = 'mt-3'><select class = 'custom-select custom-select-sm mr-3' style = 'width: auto !important' id = 'candidate' onchange = 'validCandidate()' " + (money < 50000 ? "disabled" : "") + "><option value = 'null' selected disabled>Candidate...</option></select><button class = 'btn btn-primary btn-sm' disabled onclick = 'trialOne(\"" + country + "\", " + facilities[found][1] + ")' id = 'runOne'>Run Phase I Trial - $500K</button></p><hr class = 'my-3'>");
+					var none = true;
+					for (var j in candidates) {
+						var valid = true;
+						for (var k = 0; k < additions.length; k++) {
+							if ($("#" + j + k).val() == null) {
+								valid = false;
+							} else {
+								candidates[j][k] = Number($("#" + j + k).val());
+							}
+						}
+						for (var l in trials_1) {
+							if (trials_1[l].candidate == j) {
+								valid = false;
+								none = false;
+								break;
+							}
+						}
+						if (valid) {
+							$("#candidate").append("<option value = '" + j + "'>Candidate " + j + "</option>");
+							none = false;
+						}
+					}
+					if (none) {
+						$("#candidate").attr("disabled", "true");
+						$("#candidate").html("<option value = 'null' selected disabled>No valid candidates</option>")
+					}
+				}
+			}
+			const upgradecost = ((data[country].cash / 5) + (2.25 ** (4 - relations[country] + facilities[found][1])) - 1) * 100000 * 2;
+			$("#country .modal-body").append("<h6>Facility</h6><p>" + name + " currently has a Level " + facilities[found][1] + " facility in " + cname + "." + (found == 0 ? (" This facility is also the headquarters of " + name + ".") : "") + "</p>");
+			$("#country .modal-body").append("<p>The " + (facilities[found][1] * 10) + (cleared.length == 4 ? " workers" : " researchers") + " at this facility are each being paid $" + (per_c == 1 ? 0 : toShort(data[facilities[found][0]].cash * 10000 / 365, 2)) + " per day for a total of $" + (per_c == 1 ? 0 : toShort((facilities[found][1] * 10) * data[facilities[found][0]].cash * 10000 / 365, 2)) + ".</p>");
+			if (facilities[found][1] < 3) {
+				$("#country .modal-body").append("<p>Upgrading this facility to Level " + (facilities[found][1] + 1) + " will cost $" + toShort(upgradecost, 2) + " and will:<ul><li>Increase its research speed</li><li>Increase the speed at which clinical trials take place</li><li>Increase its manufacturing capabilities</li><li>Increase its research & operations costs</li><li>Increase this country's WTC</li></ul></p>");
+				$("#country .modal-body").append("<p><button class = 'btn btn-primary btn-sm' " + (money < upgradecost ? "disabled" : "") + " onclick = 'upgradeFacility(\"" + country + "\")'>Upgrade Facility to Level " + (facilities[found][1] + 1) + " - $" + toShort(upgradecost, 2) + "</button></p>");
+			} else {
+				$("#country .modal-body").append("<p>This facility is already at Level 3, the maximum level.</p>");
+			}
+			if (cleared.length > 0 && country == facilities[0][0]) {
+				$("#country .modal-body").append("<hr class = 'my-3'><h6>Research funding</h6><p>You may request $" + toShort(data[country].cash * 300000 * cleared.length, 2) + " from the " + data[country].demonym + " government at a cost of -" + ((loans + 1) * 0.2) + " WTC with all countries.</p><p class = 'mt-3 mb-2'><button class = 'btn btn-danger btn-sm' onclick = 'requestFunds(\"" + country + "\")'>Request Funds (+$" + toShort(data[country].cash * 300000 * cleared.length, 2) + ")</button></p>");
+			}
 		}
 	}
 	$("#country").modal();
@@ -1659,7 +1663,7 @@ function updateVaccinations() {
 		if (data[country].approved && !who) {
 			approvals++;
 		}
-		if (approvals >= (countries / 2)) {
+		if (approvals >= (countries / 2) && !who) {
 			who = true;
 			$("#console").append("<p><b class = 'text-success'>" + toDate(currentDate) + " WHO director-general endorses " + name + " vaccine</b></p>");
 			for (var i in relations) {
@@ -1728,10 +1732,10 @@ function updateSpread() {
 		if (data[country].st * data[country].pop < 1) {
 			data[country].st = 0;
 		}
+		data[country].it += dit;
 		if (data[country].it * data[country].pop < data[country].b) {
 			data[country].it = 0;
 		}
-		data[country].it += dit;
 		data[country].rt += drt;
 		data[country].vt += dvt;
 		if (data[country].b + x.bt > x.k || data[country].bt > 0) {
