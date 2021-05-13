@@ -42,6 +42,7 @@ var name = localStorage.getItem("company");
 const initial = Number(localStorage.getItem("initial"));
 var eff = 0;
 var cleared = [];
+var countries = 0;
 var events = [
 	{
 		"desc": "USA: Multiple states lift lockdown measures",
@@ -372,7 +373,8 @@ var data = {
         "cash": 10,
         "demonym": "American",
         "ks": "A",
-        "kc": 65
+        "kc": 65,
+        "leader": "president"
     },
     bra: {
         "country": "Brazil",
@@ -390,7 +392,8 @@ var data = {
         "cash": 8,
         "demonym": "Brazilian",
         "ks": "B",
-        "kc": 66
+        "kc": 66,
+        "leader": "president"
     },
     rus: {
         "country": "Russia",
@@ -408,7 +411,8 @@ var data = {
         "cash": 8,
         "demonym": "Russian",
         "ks": "R",
-        "kc": 82
+        "kc": 82,
+        "leader": "president"
     },
     gbr: {
         "country": "United Kingdom",
@@ -426,7 +430,8 @@ var data = {
         "cash": 10,
         "demonym": "British",
         "ks": "K",
-        "kc": 75
+        "kc": 75,
+        "leader": "prime minster"
     },
     esp: {
         "country": "Spain",
@@ -444,7 +449,8 @@ var data = {
         "cash": 8,
         "demonym": "Spanish",
         "ks": "E",
-        "kc": 69
+        "kc": 69,
+        "leader": "president"
     },
     ita: {
         "country": "Italy",
@@ -462,7 +468,8 @@ var data = {
         "cash": 8,
         "demonym": "Italian",
         "ks": "L",
-        "kc": 76
+        "kc": 76,
+        "leader": "president"
     },
     ind: {
         "country": "India",
@@ -480,7 +487,8 @@ var data = {
         "cash": 8,
         "demonym": "Indian",
         "ks": "N",
-        "kc": 78
+        "kc": 78,
+        "leader": "prime minister"
     },
     fra: {
         "country": "France",
@@ -498,7 +506,8 @@ var data = {
         "cash": 10,
         "demonym": "French",
         "ks": "F",
-        "kc": 70
+        "kc": 70,
+        "leader": "president"
     },
     deu: {
         "country": "Germany",
@@ -516,7 +525,8 @@ var data = {
         "cash": 10,
         "demonym": "German",
         "ks": "G",
-        "kc": 71
+        "kc": 71,
+        "leader": "chancellor"
     },
     per: {
         "country": "Peru",
@@ -534,7 +544,8 @@ var data = {
         "cash": 6,
         "demonym": "Peruvian",
         "ks": "U",
-        "kc": 85
+        "kc": 85,
+        "leader": "president"
     },
     tur: {
         "country": "Turkey",
@@ -552,7 +563,8 @@ var data = {
         "cash": 6,
         "demonym": "Turkish",
         "ks": "T",
-        "kc": 84
+        "kc": 84,
+        "leader": "president"
     },
     irn: {
         "country": "Iran",
@@ -570,7 +582,8 @@ var data = {
         "cash": 6,
         "demonym": "Iranian",
         "ks": "I",
-        "kc": 73
+        "kc": 73,
+        "leader": "president"
     },
     chl: {
         "country": "Chile",
@@ -588,7 +601,8 @@ var data = {
         "cash": 6,
         "demonym": "Chilean",
         "ks": "H",
-        "kc": 72
+        "kc": 72,
+        "leader": "president"
     },
     mex: {
         "country": "Mexico",
@@ -606,7 +620,8 @@ var data = {
         "cash": 6,
         "demonym": "Mexican",
         "ks": "M",
-        "kc": 77
+        "kc": 77,
+        "leader": "president"
     },
     can: {
         "country": "Canada",
@@ -624,7 +639,8 @@ var data = {
         "cash": 8,
         "demonym": "Canadian",
         "ks": "C",
-        "kc": 67
+        "kc": 67,
+        "leader": "prime minister"
     },
     sau: {
         "country": "Saudi Arabia",
@@ -642,7 +658,8 @@ var data = {
         "cash": 6,
         "demonym": "Saudi",
         "ks": "D",
-        "kc": 68
+        "kc": 68,
+        "leader": "king"
     },
     chn: {
         "country": "China",
@@ -660,7 +677,8 @@ var data = {
         "cash": 8,
         "demonym": "Chinese",
         "ks": "Z",
-        "kc": 90
+        "kc": 90,
+        "leader": "president"
     },
     pak: {
         "country": "Pakistan",
@@ -678,7 +696,8 @@ var data = {
         "cash": 6,
         "demonym": "Pakistani",
         "ks": "P",
-        "kc": 80
+        "kc": 80,
+        "leader": "prime minister"
     }
 }
 const RELATIONS = JSON.parse("[[\"usa\",\"bra\",3.5],[\"usa\",\"rus\",1.5],[\"usa\",\"gbr\",4],[\"usa\",\"esp\",3.8],[\"usa\",\"ita\",3.8],[\"usa\",\"ind\",3.5],[\"usa\",\"fra\",4],[\"usa\",\"deu\",4],[\"usa\",\"per\",3.5],[\"usa\",\"tur\",2.3],[\"usa\",\"irn\",1],[\"usa\",\"chl\",3.5],[\"usa\",\"mex\",3.2],[\"usa\",\"can\",4],[\"usa\",\"sau\",2.9],[\"usa\",\"chn\",1.5],[\"usa\",\"pak\",2.8],[\"bra\",\"rus\",3.4],[\"bra\",\"gbr\",3.5],[\"bra\",\"esp\",3.5],[\"bra\",\"ita\",3.5],[\"bra\",\"ind\",3.8],[\"bra\",\"fra\",3.5],[\"bra\",\"deu\",3.5],[\"bra\",\"per\",3.8],[\"bra\",\"tur\",3.5],[\"bra\",\"irn\",3],[\"bra\",\"chl\",3.8],[\"bra\",\"mex\",3.8],[\"bra\",\"can\",3.5],[\"bra\",\"sau\",3.5],[\"bra\",\"chn\",3.5],[\"bra\",\"pak\",3.5],[\"rus\",\"gbr\",2.8],[\"rus\",\"esp\",3.2],[\"rus\",\"ita\",3.4],[\"rus\",\"ind\",3.8],[\"rus\",\"fra\",3.4],[\"rus\",\"deu\",2.8],[\"rus\",\"per\",3.4],[\"rus\",\"tur\",2.8],[\"rus\",\"irn\",3.8],[\"rus\",\"chl\",3.4],[\"rus\",\"mex\",3.5],[\"rus\",\"can\",3.2],[\"rus\",\"sau\",3.6],[\"rus\",\"chn\",3.7],[\"rus\",\"pak\",3.3],[\"gbr\",\"esp\",3.5],[\"gbr\",\"ita\",3.6],[\"gbr\",\"ind\",3.6],[\"gbr\",\"fra\",3.8],[\"gbr\",\"deu\",3.6],[\"gbr\",\"per\",3.5],[\"gbr\",\"tur\",3.6],[\"gbr\",\"irn\",2.8],[\"gbr\",\"chl\",3.5],[\"gbr\",\"mex\",3.5],[\"gbr\",\"can\",4],[\"gbr\",\"sau\",3.4],[\"gbr\",\"chn\",2],[\"gbr\",\"pak\",3.5],[\"esp\",\"ita\",3.8],[\"esp\",\"ind\",3.5],[\"esp\",\"fra\",3.8],[\"esp\",\"deu\",3.8],[\"esp\",\"per\",3.5],[\"esp\",\"tur\",3.6],[\"esp\",\"irn\",3],[\"esp\",\"chl\",3.5],[\"esp\",\"mex\",3.4],[\"esp\",\"can\",3.8],[\"esp\",\"sau\",3.5],[\"esp\",\"chn\",3],[\"esp\",\"pak\",3.5],[\"ita\",\"ind\",3.5],[\"ita\",\"fra\",4],[\"ita\",\"deu\",4],[\"ita\",\"per\",3.6],[\"ita\",\"tur\",3.5],[\"ita\",\"irn\",3.4],[\"ita\",\"chl\",3.5],[\"ita\",\"mex\",3.5],[\"ita\",\"can\",3.8],[\"ita\",\"sau\",3.5],[\"ita\",\"chn\",3.4],[\"ita\",\"pak\",3.5],[\"ind\",\"fra\",3.8],[\"ind\",\"deu\",3.5],[\"ind\",\"per\",3.5],[\"ind\",\"tur\",2.8],[\"ind\",\"irn\",3.3],[\"ind\",\"chl\",3.5],[\"ind\",\"mex\",3.8],[\"ind\",\"can\",3.5],[\"ind\",\"sau\",3.6],[\"ind\",\"chn\",2.5],[\"ind\",\"pak\",1],[\"fra\",\"deu\",4],[\"fra\",\"per\",3.5],[\"fra\",\"tur\",3.2],[\"fra\",\"irn\",2.8],[\"fra\",\"chl\",3.5],[\"fra\",\"mex\",3.5],[\"fra\",\"can\",4],[\"fra\",\"sau\",3.7],[\"fra\",\"chn\",3],[\"fra\",\"pak\",3.2],[\"deu\",\"per\",3.5],[\"deu\",\"tur\",3.2],[\"deu\",\"irn\",2.7],[\"deu\",\"chl\",3.5],[\"deu\",\"mex\",3.5],[\"deu\",\"can\",3.5],[\"deu\",\"sau\",3.3],[\"deu\",\"chn\",3.5],[\"deu\",\"pak\",3.4],[\"per\",\"tur\",3.5],[\"per\",\"irn\",3.3],[\"per\",\"chl\",3.4],[\"per\",\"mex\",3.8],[\"per\",\"can\",3.5],[\"per\",\"sau\",3.5],[\"per\",\"chn\",3.5],[\"per\",\"pak\",3.5],[\"tur\",\"irn\",3.3],[\"tur\",\"chl\",3.5],[\"tur\",\"mex\",3.6],[\"tur\",\"can\",3.3],[\"tur\",\"sau\",2.7],[\"tur\",\"chn\",3.5],[\"tur\",\"pak\",3.7],[\"irn\",\"chl\",3.3],[\"irn\",\"mex\",3.4],[\"irn\",\"can\",2],[\"irn\",\"sau\",1],[\"irn\",\"chn\",3.6],[\"irn\",\"pak\",3.4],[\"chl\",\"mex\",4],[\"chl\",\"can\",3.8],[\"chl\",\"sau\",3.5],[\"chl\",\"chn\",3.5],[\"chl\",\"pak\",3.3],[\"mex\",\"can\",3.5],[\"mex\",\"sau\",3.5],[\"mex\",\"chn\",3.8],[\"mex\",\"pak\",3.6],[\"can\",\"sau\",3.2],[\"can\",\"chn\",2.8],[\"can\",\"pak\",3.6],[\"sau\",\"chn\",3.8],[\"sau\",\"pak\",3.8],[\"chn\",\"pak\",3.7]]");
@@ -801,6 +820,8 @@ var facilities = JSON.parse(localStorage.getItem("facilities"));
 var relations = {};
 var loans = 0;
 
+var deliveries = {};
+
 var rc = 0;
 var rf = 0;
 function updateMoney() {
@@ -837,6 +858,67 @@ function changed(n) {
 	$("#cp" + n).addClass("changed");
 	$("#cc" + n).removeClass("bonus");
 	$("#cp" + n).removeClass("bonus");
+}
+
+var doses = 0;
+function vaccinate(c, d) {
+
+}
+function updateDoses() {
+	var deductm = 0;
+	var addm = 0;
+	for (var i = 0; i < facilities.length; i++) {
+		deductm += (data[facilities[i][0]].cash * 10000 * (10 * facilities[i][1]) / 365);
+	}
+	var deduct = 0;
+	var add = 0;
+	var total = 0;
+	var distribution = {};
+	for (var j in deliveries) {
+		total += deliveries[j];
+	}
+	for (var g in deliveries) {
+		if (data[g].st * data[g].pop < deliveries[g]) {
+			deliveries[g] = data[g].st * data[g].pop;
+		}
+		distribution[g] = deliveries[g] / total;
+	}
+	for (var k = 0; k < facilities.length; k++) {
+		add += facilities[k][2];
+		deductm += 15 * facilities[k][2];
+	}
+	if (doses + add >= total) {
+		for (var l in distribution) {
+			addm += 20 * deliveries[l];
+		}
+	} else {
+		for (var l in distribution) {
+			addm += (20 * (distribution[l] * doses));
+		}
+	}
+	if (money + addm >= deductm) {
+		doses += add;
+		money += addm;
+		money -= deductm;
+	} else {
+		add = 0;
+	}
+	if (doses >= total) {
+		for (var l in distribution) {
+			data[l].doses += deliveries[l];
+		}
+		deduct = total;
+	} else {
+		for (var l in distribution) {
+			data[l].doses += (distribution[l] * doses);
+		}
+		deduct = doses;
+	}
+	dmoney = (addm - deductm);
+	updateMoney();
+	doses -= deduct;
+	var ddose = add - deduct;
+	$("#dose").html((ddose == 0 ? "" : "(" + (ddose > 0 ? "+" + toShort(ddose, 2) : "-" + (toShort(ddose * -1, 2))) + ") ") + "" + toShort(doses, 3));
 }
 
 function upgradeFacility(country) {
@@ -879,6 +961,9 @@ function upgradeFacility(country) {
 }
 function establishFacility(country) {
 	facilities[facilities.length] = [country, 1];
+	if (cleared.length == 4) {
+		facilities[facilities.length - 1][2] = 0;
+	}
 	money -= ((data[country].cash / 5) + (2.25 ** (4 - relations[country])) - 1) * 100000;
 	dmoney = -1 * ((data[country].cash / 5) + (2.25 ** (4 - relations[country])) - 1) * 100000;
 	rc += ((data[country].cash / 5) + (2.25 ** (4 - relations[country])) - 1) * 100000;
@@ -935,10 +1020,13 @@ function completeResearch() {
 	for (var i in trials_3) {
 		delete trials_3[i];
 	}
+	for (var j = 0; j < facilities.length; j++) {
+		facilities[j][2] = 0;
+	}
 	cleared[3] = new Date(currentDate.getTime());
 	$("#phase").html("Completed");
 	$("#console").append("<p><b class = 'text-success'>" + toDate(currentDate) + " " + name + " finalizes vaccine and prepares to begin manufacturing and distribution</b></p>");
-	$("#console").append("<p><b class = 'text-success'>PHASE III CLEARED IN: " + (Math.round(Math.abs((cleared[1] - currentDate) / (24 * 60 * 60 * 1000)))) + " days</b></p>");
+	$("#console").append("<p><b class = 'text-success'>PHASE III CLEARED IN: " + (Math.round(Math.abs((cleared[2] - currentDate) / (24 * 60 * 60 * 1000)))) + " days</b></p>");
 	$("#console").scrollTop($("#console").prop("scrollHeight"));
 	$("#research").modal("hide");
 }
@@ -1025,7 +1113,7 @@ function resultsThree(t) {
 	var funding = (data[t].cash * 25000000) * (2 ** (1 + modify)) * (modify - (eff - initial3)) * (1 - modify) * ((1.5 * (10 + data[t].cash) * modify) / 8);
 	var safety = toPlaces(100 - toPlaces((aer * (0.5 ** trial.sm)) * 100, 2), 2);
 	$("#upgrades td:last-child").html("Upgrade Safety (current: " + safety + "%)");
-	$("#console").append("<p><b class = 'text-success'>" + toDate(currentDate) + " " + name + " concludes phase III trials with " + toPlaces((initial3 + modify) * 100, 2) + "% effectiveness (+" + toPlaces((initial3 + modify - eff) * 100, 2) + "%) and " + safety + "% safety (+" + toPlaces(safety - (100 - toPlaces(aer * 100, 2)), 2) + "%), and receives $" + toShort(funding, 2) + " in funds</b></p>");
+	var toAppend = "<p><b class = 'text-success'>" + toDate(currentDate) + " " + name + " concludes phase III trials with " + toPlaces((initial3 + modify) * 100, 2) + "% effectiveness (+" + toPlaces((initial3 + modify - eff) * 100, 2) + "%) and " + safety + "% safety (+" + toPlaces(safety - (100 - toPlaces(aer * 100, 2)), 2) + "%), and receives $" + toShort(funding, 2) + " in funds</b></p>";
 	eff = initial3 + modify;
 	aer *= (0.5 ** trial.sm);
 	smp = trial.sm;
@@ -1034,6 +1122,7 @@ function resultsThree(t) {
 	rf += funding;
 	updateMoney();
 	checkLicensure();
+	$("#console").append(toAppend);
 	$("#console").scrollTop($("#console").prop("scrollHeight"));
 	delete trials_3[t];
 }
@@ -1047,7 +1136,7 @@ function trialThree(country, lvl) {
 	$("#console").scrollTop($("#console").prop("scrollHeight"));
 	$("#country").modal("hide");
 }
-function phaseThree(d, e, a, n) {
+function phaseThree(d, e, a, n, dd) {
 	cf3 = d;
 	eff = e;
 	aer = a;
@@ -1073,7 +1162,7 @@ function phaseThree(d, e, a, n) {
 		$("#d3 select").append("<option value = '" + facilities[j][0] + "'>" + data[facilities[j][0]].country + " (Level " + facilities[j][1] + ")</option>");
 	}
 	$("#t3").tab("show");
-	$("#console").append("<p><b class = 'text-success'>" + toDate(currentDate) + " " + name + " advances " + d + "mL dosage to Phase III clinical trials. \"This pandemic will soon be a thing of the past,\" says " + name + " CEO</b></p>");
+	$("#console").append("<p><b class = 'text-success'>" + toDate(currentDate) + " " + name + " advances " + dd + " dosage to Phase III clinical trials. \"This pandemic will soon be a thing of the past,\" says " + name + " CEO</b></p>");
 	$("#console").append("<p><b class = 'text-success'>PHASE II CLEARED IN: " + (Math.round(Math.abs((cleared[1] - currentDate) / (24 * 60 * 60 * 1000)))) + " days</b></p>");
 	$("#console").scrollTop($("#console").prop("scrollHeight"));
 	$("#research").modal("hide");
@@ -1090,7 +1179,7 @@ function resultsTwo(t) {
 	var modify = 0.008 * (15 - (0.5 * Math.abs(trial.dosage - d)));
 	var adverse = toPlaces(0.01 * (2.5 ** (0.1 * (trial.dosage - (d + z)))), 4);
 	if (adverse > 1) { adverse = 1 }; 
-	$("#dosage" + trial.num).html("<td><img src = 'flags/" + t + ".png' style = 'height: 1em; position: relative; top: -1px; border: 0.5px solid rgba(0, 0, 0, 0.3)' class = 'mr-2'></td><td>" + trial.dd + "</td><td>" + (100 - toPlaces(adverse * 100, 2)) + "%</td><td>" + toPlaces((initial2 + modify) * 100, 2) + "%</td><td> - </td>");
+	$("#dosage" + trial.num).html("<td><img src = 'flags/" + t + ".png' style = 'height: 1em; position: relative; top: -1px; border: 0.5px solid rgba(0, 0, 0, 0.3)'></td><td>" + trial.dd + "</td><td>" + (100 - toPlaces(adverse * 100, 2)) + "%</td><td>" + toPlaces((initial2 + modify) * 100, 2) + "%</td><td> - </td>");
 	for (var j in relations) {
 		if (relations[j] + (5 * ((initial2 + modify) - eff)) < 9.2 && (initial2 + modify) - eff > 0) {
 			relations[j] += (5 * ((initial2 + modify) - eff));
@@ -1112,12 +1201,12 @@ function resultsTwo(t) {
 		rf += funding;
 		updateMoney();
 		if (eff >= 0.8) {
-			$("#dosage" + trial.num + " td:last-child").html("<button class = 'btn btn-primary btn-sm' onclick = 'phaseThree(\"" + trial.dosage + "\", " + eff + ", " + adverse + ", " + trial.num + ")' style = 'position: relative; top: -5px'>Advance to Phase III</button>");
+			$("#dosage" + trial.num + " td:last-child").html("<button class = 'btn btn-primary btn-sm' onclick = 'phaseThree(\"" + trial.dosage + "\", " + eff + ", " + adverse + ", " + trial.num + ", \"" + trial.dd + "\")' style = 'position: relative; top: -5px'>Advance to Phase III</button>");
 		}
 	} else {
 		$("#console").append("<p><b class = 'text-danger'>" + toDate(currentDate) + " " + name + " concludes phase II trials of " + trial.dd + " dosage with " + toPlaces((initial2 + modify) * 100, 2) + "% effectiveness (-" + toPlaces((-100 * (initial2 + modify - eff)), 2) + "%)</b></p>");
 		if (initial2 + modify >= 0.8) {
-			$("#dosage" + trial.num + " td:last-child").html("<button class = 'btn btn-primary btn-sm' onclick = 'phaseThree(\"" + trial.dosage + "\", " + eff + ", " + adverse + ", " + trial.num + ")' style = 'position: relative; top: -5px'>Advance to Phase III</button>");
+			$("#dosage" + trial.num + " td:last-child").html("<button class = 'btn btn-primary btn-sm' onclick = 'phaseThree(\"" + trial.dosage + "\", " + eff + ", " + adverse + ", " + trial.num + ", \"" + trial.dd + "\")' style = 'position: relative; top: -5px'>Advance to Phase III</button>");
 		}
 	}
 	$("#console").scrollTop($("#console").prop("scrollHeight"));
@@ -1254,6 +1343,76 @@ function requestFunds(country) {
 	$("#console").scrollTop($("#console").prop("scrollHeight"));
 	$("#country").modal("hide");
 }
+function setManufacture(f, event) {
+	var country = facilities[f][0];
+	var toMake = Number($("#makei").val());
+	var max = toPlaces(((data[facilities[f][0]].cash * 0.6) ** facilities[f][1]) * 80000, -1);
+	if (typeof event == "undefined" || (typeof event != "undefined" && event.keyCode == 13 && !isNaN(toMake) && toMake >= 0 && toMake <= max && toMake % 1 == 0)) {
+		facilities[f][2] = toMake;
+		$("#country").modal("hide");
+		if (facilities[f][2] == 0) {
+			$("#console").append("<p><b class = 'text-primary'>" + toDate(currentDate) + " " + name + " to cease manufacturing at its " + data[country].demonym + " facility</b></p>");
+		} else {
+			$("#console").append("<p><b class = 'text-primary'>" + toDate(currentDate) + " " + name + " to manufacture " + toShort(toMake, 2) + " doses per day at its " + data[country].demonym + " facility</b></p>");
+		}
+		$("#console").scrollTop($("#console").prop("scrollHeight"));
+	}
+}
+function makeValid(input, f) {
+	if (input) {
+		var toMake = Number($("#makei").val());
+		var max = toPlaces(((data[facilities[f][0]].cash * 0.6) ** facilities[f][1]) * 80000, -1);
+		if (!isNaN(toMake) && toMake >= 0 && toMake <= max && toMake % 1 == 0) {
+			$("#makes").val(toMake);
+			$("#setMake").removeAttr("disabled");
+			$("#setMake").html("Set Daily Manufacture - $" + toShort(15 * toMake, 2) + "/day");
+		} else {
+			$("#setMake").attr("disabled", "true");
+		}
+	} else {
+		$("#makei").val(toPlaces(Number($("#makes").val()), -1));
+		$("#setMake").removeAttr("disabled");
+		$("#setMake").html("Set Daily Manufacture - $" + toShort(15 * Number($("#makei").val()), 2) + "/day");
+	}
+}
+function setDelivery(country, event) {
+	var cname = (country == "usa" || country == "gbr" ? "the " : "") + data[country].country;
+	var toDeliver = Number($("#dosei").val());
+	var max = toPlaces(0.0001 * (data[country].cash ** (relations[country] - 8)) * data[country].pop, -1);
+	if (max > (data[country].st * data[country].pop)) {
+		max = toPlaces(data[country].st * data[country].pop, -1);
+	}
+	if (typeof event == "undefined" || (typeof event != "undefined" && event.keyCode == 13 && !isNaN(toDeliver) && toDeliver >= 0 && toDeliver <= max && toDeliver % 1 == 0)) {
+		deliveries[country] = toDeliver;
+		$("#country").modal("hide");
+		if (toDeliver != 0) {
+			$("#console").append("<p><b class = 'text-primary'>" + toDate(currentDate) + " " + name + " signs agreement with " + data[country].demonym + " government to deliver " + toShort(toDeliver, 2) + " doses per day to " + cname + "</b></p>");
+		} else {
+			$("#console").append("<p><b class = 'text-primary'>" + toDate(currentDate) + " " + name + " terminates delivery agreement with " + data[country].demonym + " government</b></p>");
+		}
+		$("#console").scrollTop($("#console").prop("scrollHeight"));
+	}
+}
+function deliveryValid(input) {
+	if (input) {
+		var toDeliver = Number($("#dosei").val());
+		var max = toPlaces(0.0001 * (data[country].cash ** (relations[country] - 8)) * data[country].pop, -1);
+		if (max > (data[country].st * data[country].pop)) {
+			max = toPlaces(data[country].st * data[country].pop, -1);
+		}
+		if (!isNaN(toDeliver) && toDeliver >= 0 && toDeliver <= max && toDeliver % 1 == 0) {
+			$("#doses").val(toDeliver);
+			$("#setDelivery").removeAttr("disabled");
+			$("#setDelivery").html("Set Daily Delivery (+$" + toShort(20 * toDeliver, 2) + "/day)");
+		} else {
+			$("#setDelivery").attr("disabled", "true");
+		}
+	} else {
+		$("#dosei").val(toPlaces(Number($("#doses").val()), -1));
+		$("#setDelivery").html("Set Daily Delivery (+$" + toShort(20 * toPlaces(Number($("#doses").val()), -1), 2) + "/day)");
+		$("#setDelivery").removeAttr("disabled");
+	}
+}
 function dosageValid(input) {
 	if (input) {
 		var dosage = toPlaces(Number($("#di").val()) * 100, 1);
@@ -1290,7 +1449,25 @@ function countryModal(country) {
 	}
 	if (cleared.length >= 3) {
 		if (!data[country].approved) {
-			$("#country .modal-body").html("<h6>Licensure</h6><p>Your vaccine has not been approved for use in " + cname + ".</p><hr class = 'my-3'>");
+			$("#country .modal-body").append("<h6>Licensure</h6><p>Your vaccine has not been approved for use in " + cname + ".</p><hr class = 'my-3'>");
+		} else {
+			if (data[country].safe != false) {
+				var cn = (country == "usa" || country == "gbr" ? "The " : "") + data[country].country;
+				$("#country .modal-body").append("<div class = 'alert alert-primary text-center'>" + cn + " was declared virus-free on " + toDate(data[country].safe) + "</div><hr class = 'my-3'>");
+			} else {
+				$("#country .modal-body").append("<h6>Licensure</h6><p>Your vaccine has been approved for use in " + cname + ".</p>");
+				if (cleared.length == 4) {
+					$("#country .modal-body h6:first-child").html("Licensure & Distribution");
+					var demand = toPlaces(0.0001 * (data[country].cash ** (relations[country] - 8)) * data[country].pop, -1);
+					if (demand > (data[country].st * data[country].pop)) {
+						demand = toPlaces(data[country].st * data[country].pop, -1);
+					}
+					$("#country .modal-body").append("<p>The " + data[country].demonym + " government would currently like to order " + toShort(demand, 3) + " vaccine doses per day. As each dose costs $20 to buy, they will pay you up to $" + toShort(20 * demand, 2) + " daily for this order.</p><p>You can designate the number of doses that you would like to deliver to " + cname + " per day. If you do not have enough doses to deliver this amount on a day, then as many doses as possible will be delivered.</p><p>Enter the number of doses that you would like to be sent to " + cname + " per day (maximum " + toShort(demand, 3) + "):</p>");
+					$("#country .modal-body").append("<p class = 'mt-3'><input type = 'text' value = '" + deliveries[country] + "' class = 'form-control form-control-sm mr-2 text-center' size = '13' maxlength = '8' id = 'dosei' placeholder = 'Doses per day' oninput = 'deliveryValid(true, \"" + country + "\")' onkeydown = 'setDelivery(\"" + country + "\", event)'><input type = 'range' class = 'custom-range ml-4' min = '0' max = '" + demand + "' step = '10' id = 'doses' value = '" + deliveries[country] + "' oninput = 'deliveryValid(false, \"" + country + "\")' onkeydown = 'setDelivery(\"" + country + "\", event)'><br><button class = 'btn btn-sm btn-primary mt-3' id = 'setDelivery' disabled onclick = 'setDelivery(\"" + country + "\")'>Set Daily Delivery (+$" + toShort(20 * deliveries[country], 2) + "/day)</button></p><hr class = 'my-3'>");
+				} else {
+					$("#country .modal-body").append("<hr class = 'my-3'>");
+				}
+			}
 		}
 	}
 	if (found == -1) {
@@ -1298,7 +1475,12 @@ function countryModal(country) {
 		$("#country .modal-body").append("<h6>Facility</h6><p>Establishing a facility in " + cname + " will cost $" + toShort(facilitycost, 2) + ".</p><p>Establishing a facility here will:</p><ul><li>Allow research to be performed here</li><li>Allow clinical trials to be run here</li><li>Allow vaccine doses to be manufactured here</li><li>Affect your WTC with other countries</li><li>Increase your research & operations costs</li></ul>");
 		$("#country .modal-body").append("<p><button class = 'btn btn-primary btn-sm' " + (money < facilitycost ? "disabled" : "") + " onclick = 'establishFacility(\"" + country + "\")'>Establish Facility - $" + toShort(facilitycost, 2) + "</button></p>");
 	} else {
-		if (cleared.length == 3) {
+		if (cleared.length == 4) {
+			var max = toPlaces(((data[country].cash * 0.6) ** facilities[found][1]) * 80000, -1);
+			$("#country .modal-body").append("<h6>Manufacturing</h6><p>Your Level " + facilities[found][1] + " facility in " + cname + " can currently manufacture " + toShort(max, 3) + " doses per day.</p>");
+			$("#country .modal-body").append("<p>Each dose costs $15 to manufacture, so manufacturing this maximum amount daily will cost $" + toShort(15 * max, 2) + ".</p><p>You can designate the number of doses that you would like to manufacture per day. If you do not have enough money to manufacture this amount on a day, then manufacturing will pause.</p><p>Enter the number of doses that you would like to manufacture at this facility per day (maximum " + toShort(max, 3) + "):</p>");
+			$("#country .modal-body").append("<p class = 'mt-3'><input type = 'text' value = '" + facilities[found][2] + "' class = 'form-control form-control-sm mr-2 text-center' size = '13' maxlength = '8' id = 'makei' placeholder = 'Doses per day' oninput = 'makeValid(true, " + found + ")' onkeydown = 'setManufacture(" + found + ", event)'><input type = 'range' class = 'custom-range ml-4' min = '0' max = '" + max + "' step = '10' id = 'makes' value = '" + facilities[found][2] + "' oninput = 'makeValid(false, " + found + ")' onkeydown = 'setManufacture(" + found + ", event)'><br><button class = 'btn btn-sm btn-primary mt-3' id = 'setMake' disabled onclick = 'setManufacture(" + found + ")'>Set Daily Manufacture - $" + toShort(15 * facilities[found][2], 2) + "/day</button></p><hr class = 'my-3'>");
+		} else if (cleared.length == 3) {
 			if (typeof trials_3[country] != "undefined") {
 				$("#country .modal-body").append("<h6>Phase III trials</h6><p>Phase III trials are ongoing at this facility and will require " + (trials_3[country].time == 1 ? "1 more day" : (trials_3[country].time + " more days")) + " to complete.</p><hr class = 'my-3'>");
 			} else {
@@ -1348,7 +1530,7 @@ function countryModal(country) {
 		}
 		const upgradecost = ((data[country].cash / 5) + (2.25 ** (4 - relations[country] + facilities[found][1])) - 1) * 100000 * 2;
 		$("#country .modal-body").append("<h6>Facility</h6><p>" + name + " currently has a Level " + facilities[found][1] + " facility in " + cname + "." + (found == 0 ? (" This facility is also the headquarters of " + name + ".") : "") + "</p>");
-		$("#country .modal-body").append("<p>The " + (facilities[found][1] * 10) + " researchers at this facility are each being paid $" + (per_c == 1 ? 0 : toShort(data[facilities[found][0]].cash * 10000 / 365, 2)) + " per day for a total of $" + (per_c == 1 ? 0 : toShort((facilities[found][1] * 10) * data[facilities[found][0]].cash * 10000 / 365, 2)) + ".</p>");
+		$("#country .modal-body").append("<p>The " + (facilities[found][1] * 10) + (cleared.length == 4 ? " workers" : " researchers") + " at this facility are each being paid $" + (per_c == 1 ? 0 : toShort(data[facilities[found][0]].cash * 10000 / 365, 2)) + " per day for a total of $" + (per_c == 1 ? 0 : toShort((facilities[found][1] * 10) * data[facilities[found][0]].cash * 10000 / 365, 2)) + ".</p>");
 		if (facilities[found][1] < 3) {
 			$("#country .modal-body").append("<p>Upgrading this facility to Level " + (facilities[found][1] + 1) + " will cost $" + toShort(upgradecost, 2) + " and will:<ul><li>Increase its research speed</li><li>Increase the speed at which clinical trials take place</li><li>Increase its manufacturing capabilities</li><li>Increase its research & operations costs</li><li>Increase this country's WTC</li></ul></p>");
 			$("#country .modal-body").append("<p><button class = 'btn btn-primary btn-sm' " + (money < upgradecost ? "disabled" : "") + " onclick = 'upgradeFacility(\"" + country + "\")'>Upgrade Facility to Level " + (facilities[found][1] + 1) + " - $" + toShort(upgradecost, 2) + "</button></p>");
@@ -1383,6 +1565,11 @@ var count = 0;
 var append = "<div class = 'card-deck mb-3'>";
 for (var country in data) {
 	data[country].approved = false;
+	data[country].doses = 0;
+	data[country].vt = 0;
+	data[country].safe = false;
+	deliveries[country] = 0;
+	countries++;
 	var x = data[country];
 	var b = x.b;
 	var k = x.k;
@@ -1452,7 +1639,75 @@ function phaseOne() {
 		}
 	}
 }
-
+var won = false;
+function victory() {
+	won = true;
+	hideWarning = false;
+	$("#pause").html("paused");
+	$("#pause").attr("disabled", "true");
+	$("#console").append("<p><b class = 'text-success'>" + toDate(currentDate) + " World declared virus-free with thanks to the " + name + " vaccine</b></p>");
+	$("#console").append("<p><b class = 'text-success'>VIRUS ELIMINATED IN: " + (Math.round(Math.abs((cleared[3] - currentDate) / (24 * 60 * 60 * 1000)))) + " days</b></p>");
+	$("#console").append("<p><b class = 'text-success'>Congratulations! You have ended the pandemic and beat VAX. Click <a href = 'end.html'>here</a> to proceed.</b></p>");
+	$("#console").scrollTop($("#console").prop("scrollHeight"));
+	$("#victory").modal("show");
+}
+var who = false;
+function updateVaccinations() {
+	var approvals = 0;
+	var free = 0;
+	for (var country in data) {
+		if (data[country].approved && !who) {
+			approvals++;
+		}
+		if (approvals >= (countries / 2)) {
+			who = true;
+			$("#console").append("<p><b class = 'text-success'>" + toDate(currentDate) + " WHO director-general endorses " + name + " vaccine</b></p>");
+			for (var i in relations) {
+				if (relations[i] + 0.3 < 10) {
+					relations[i] += 0.3;
+				} else {
+					relations[i] = 10;
+				}
+				$("#" + i + "_r").html("WTC " + toPlaces(relations[i], 1) + " / 10");
+			}
+		}
+		if (data[country].vt > 0.25 && data[country].safe == false && data[country].leader != false) {
+			$("#console").append("<p><b class = 'text-success'>" + toDate(currentDate) + " " + data[country].demonym + " " + data[country].leader + " receives vaccine</b></p>");
+			data[country].leader = false;
+			for (var i in relations) {
+				if (relations[i] + 0.1 < 10) {
+					relations[i] += 0.1;
+				} else {
+					relations[i] = 10;
+				}
+				$("#" + i + "_r").html("WTC " + toPlaces(relations[i], 1) + " / 10");
+			}
+		}
+		if (data[country].it == 0 && data[country].safe == false) {
+			data[country].st = 0;
+			data[country].safe = currentDate;
+			$("#console").append("<p><b class = 'text-success'>" + toDate(currentDate) + " " + data[country].country + " declared virus-free</b></p>");
+			for (var i in relations) {
+				if (relations[i] + 0.5 < 10) {
+					relations[i] += 0.5;
+				} else {
+					relations[i] = 10;
+				}
+				$("#" + i + "_r").html("WTC " + toPlaces(relations[i], 1) + " / 10");
+				$("#" + country + "_r").html("Virus-free");
+				$("#" + country + "_r").removeAttr("id");
+			}
+			relations[country] = 10;
+		}
+		if (data[country].safe != false ){
+			free++;
+		}
+	}
+	$("#console").scrollTop($("#console").prop("scrollHeight"));
+	if (free == countries) {
+		victory();
+	}
+}
 function updateSpread() {
 	for (var country in data) {
 		var x = data[country];
@@ -1462,16 +1717,34 @@ function updateSpread() {
 		var drt = k * x.it;
 		var dit = (b * x.st * x.it) - (k * x.it);
 		var ddt = x.d * drt;
+		var dvt = 0;
+		if (x.doses > 0) {
+			dst -= (x.doses * eff / x.pop);
+			drt += (x.doses * eff / x.pop);
+			dvt = (x.doses * eff / x.pop);
+			data[country].doses = 0;
+		}
 		data[country].st += dst;
+		if (data[country].st * data[country].pop < 1) {
+			data[country].st = 0;
+		}
+		if (data[country].it * data[country].pop < data[country].b) {
+			data[country].it = 0;
+		}
 		data[country].it += dit;
 		data[country].rt += drt;
+		data[country].vt += dvt;
 		if (data[country].b + x.bt > x.k || data[country].bt > 0) {
 			data[country].b += x.bt;
 		}
+		data[country].cc += (x.pop * (b * x.st * x.it));
 		data[country].nd = (x.pop * ddt);
 		data[country].cd += (x.pop * ddt);
-		$("#" + country + "_i").html((dst < 0 ? "(+" : "(") + toShort(-1 * x.pop * dst, 2) + ") " + toShort(x.pop - (x.pop * data[country].st), 2));
-		$("#" + country + "_d").html((ddt > 0 ? "(+" : "(") + toShort(x.nd, 2) + ") " + toShort(x.cd, 2));
+		$("#" + country + "_i").html(((b * x.st * x.it) > 0 ? "(+" : "(") + toShort(data[country].pop * (b * x.st * x.it), 2) + ") " + toShort(data[country].cc, 2));
+		$("#" + country + "_d").html((ddt > 0 ? "(+" : "(") + toShort(data[country].nd, 2) + ") " + toShort(data[country].cd, 2));
+		if (x.approved) {
+			$("#" + country + "_v").html("(+" + toShort(dvt * x.pop, 2) + ") " + toShort(x.vt * x.pop, 2));
+		}
 	}
 }
 
@@ -1610,7 +1883,7 @@ function updateResearch() {
 			$("#c" + Math.floor(h / 3)).html(p);
 			per_c = ((COUNT * 3) - v.length) / (COUNT * 3);
 			$("#pc").html(toPlaces(per_c * 100, 2) + "%");
-			if (per_c == 0.25 || per_c == 0.5 || per_c == 0.75) {
+			if (per_c == 0.5 || per_c == 0.75) {
 				$("#console").append("<p><b class = 'text-success'>" + toDate(currentDate) + " " + name + " unlocks " + toPlaces(per_c * 100,0) + "% of virus RNA sequence</b></p>");
 				$("#console").scrollTop($("#console").prop("scrollHeight"));
 			}
@@ -1637,7 +1910,7 @@ function updateBonus() {
 		counts += facilities[j][1];
 	}
 	for (var k = 0; k < counts; k++) {
-		if (Math.random() <= (counts * 0.01 + 0.06)) {
+		if (Math.random() <= (counts * 0.01 + 0.08 + (bonus.length * 0.1 / COUNT))) {
 			var target = bonus[Math.floor(Math.random() * bonus.length)];
 			$("#cp" + target).val(seq_p.charAt(Number(target)));
 			$("#p" + target).html("!");
@@ -1738,8 +2011,15 @@ function advanceDay() {
 			}
 		}
 	}
+	if (cleared.length == 4) {
+		checkLicensure();
+		updateDoses();
+	} else {
+		payResearchers();
+	}
 	checkEvents();
 	updateSpread();
+	updateVaccinations();
 	if (per_c < 1) {
 		updateResearch();
 	}
@@ -1755,17 +2035,16 @@ function advanceDay() {
 		money = 0;
 		$("#loan").modal("show");
 	}
-	payResearchers();
 }
 var dateInterval;
 var CLOCK = 1000;
 $("#pause").click(function() {
-	if (!paused) {
+	if (!paused && !won) {
 		paused = true;
 		waspaused = true;
 		clearInterval(dateInterval);
 		$("#pause").html("resume");
-	} else {
+	} else if (!won) {
 		paused = false;
 		waspaused = false;
 		dateInterval = setInterval(advanceDay, CLOCK);
@@ -1775,7 +2054,7 @@ $("#pause").click(function() {
 });
 $("body").keydown(function(event) {
 	if (document.hasFocus()) {
-		if (event.keyCode == 220) {
+		if (event.keyCode == 220 && $("input:focus").length == 0) {
 			if (!document.webkitIsFullScreen) {
 				document.documentElement.requestFullscreen();
 			} else {
@@ -1783,7 +2062,7 @@ $("body").keydown(function(event) {
 			}
 		}
 		if ($(".modal.show").length == 0) {
-			if (event.keyCode == 32) {
+			if (event.keyCode == 32 && !won) {
 				$("#pause").trigger("click");
 			}
 			if (event.keyCode == 16) {
@@ -1792,7 +2071,7 @@ $("body").keydown(function(event) {
 			if (event.keyCode == 49 && CLOCK != 2000) {
 				CLOCK = 2000;
 				clearInterval(dateInterval);
-				if (!paused) {
+				if (!paused && !won) {
 					dateInterval = setInterval(advanceDay, CLOCK);
 				}
 				$("#speed").html("(speed: x1)");
@@ -1800,7 +2079,7 @@ $("body").keydown(function(event) {
 			if (event.keyCode == 50 && CLOCK != 1000) {
 				CLOCK = 1000;
 				clearInterval(dateInterval);
-				if (!paused) {
+				if (!paused && !won) {
 					dateInterval = setInterval(advanceDay, CLOCK);
 				}
 				$("#speed").html("(speed: x2)");
@@ -1808,7 +2087,7 @@ $("body").keydown(function(event) {
 			if (event.keyCode == 51 && CLOCK != 667) {
 				CLOCK = 667;
 				clearInterval(dateInterval);
-				if (!paused) {
+				if (!paused && !won) {
 					dateInterval = setInterval(advanceDay, CLOCK);
 				}
 				$("#speed").html("(speed: x3)");
@@ -1842,14 +2121,14 @@ $(".modal").on("show.bs.modal", function() {
 	}
 });
 $(".modal").on("hide.bs.modal", function() {
-	if (!waspaused) {
+	if (!waspaused && !won) {
 		paused = false;
 		dateInterval = setInterval(advanceDay, CLOCK);
 		$("#pause").html("pause");
 	}
 });
 
-hideWarning = false;
+var hideWarning = false;
 window.addEventListener("beforeunload", (event) => {
     if (!hideWarning) {
         event.preventDefault();

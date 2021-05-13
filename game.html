@@ -24,7 +24,7 @@
 			<div class = "col">
 				<ul class = "list-group">
 					<li class = "list-group-item"><dl class = "row mb-0"><dt class = "col mb-0">Money</dt><dd class = "col text-right mb-0" id = "cash" style = "white-space: nowrap"></dd></dl></li>
-					<li class = "list-group-item"><dl class = "row mb-0"><dt class = "col mb-0">Doses</dt><dd class = "col text-right mb-0" id = "doses" style = "white-space: nowrap">0</dd></dl></li>
+					<li class = "list-group-item"><dl class = "row mb-0"><dt class = "col mb-0">Doses</dt><dd class = "col text-right mb-0" id = "dose" style = "white-space: nowrap">0</dd></dl></li>
 					<div class = "list-group-item" id = "console">
 						<p><b class = "text-info">06/01/20</b> Welcome to VAX! To get started, press SPACEBAR or click "start" in the top-right corner. Remember that you can adjust the speed of the game with keys 1-3. Good luck!</p>
 					</div>
@@ -145,6 +145,20 @@
 					<p>You've run out of money; to continue you must take a loan from the <span id = "gov"></span> government.</p>
 					<p>This will decrease all countries' WTC.</p>
 					<p class = "text-center mt-3"><button class = "btn btn-sm btn-danger" onclick = "takeLoan()">Take Loan</button></p>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class = "modal fade" id = "victory" tabindex = "-1">
+		<div class = "modal-dialog modal-dialog-centered">
+			<div class = "modal-content">
+				<div class = "modal-header">
+					<h5 class = "modal-title">Victory!</h5>
+					<button class = "close" data-dismiss = "modal">&times;</button>
+				</div>
+				<div class = "modal-body">
+					<p>Congratulations! You have ended the pandemic and beat VAX.</p>
+					<p class = "text-center mt-3"><a class = "btn btn-sm btn-success" href = "end.html">Proceed</a></p>
 				</div>
 			</div>
 		</div>

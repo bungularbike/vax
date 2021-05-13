@@ -79,7 +79,7 @@
 	padding: 0.5rem 0.75rem;
 }
 
-:not(#loan) > .modal-dialog {
+:not(#loan, #victory) > .modal-dialog {
 	margin-top: 5em !important;
 	margin-bottom: 5em !important;
 }
@@ -128,12 +128,12 @@
 	font-weight: bold;
 }
 
-#ds, #di {
+#ds, #di, #doses, #dosei, #makes, #makei {
 	width: auto !important;
 	display: inline-block !important;
 	vertical-align: middle;
 }
-#ds {
+#ds, #doses, #makes {
 	min-width: 150px;
 }
 
@@ -142,4 +142,8 @@
 }
 #d3 select {
 	width: auto !important;
+}
+
+#country .alert-success {
+	font-size: 0.9em;
 }
