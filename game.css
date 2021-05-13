@@ -136,3 +136,10 @@
 #ds {
 	min-width: 150px;
 }
+
+#upgrades tr:first-child td {
+	width: 50% !important;
+}
+#d3 select {
+	width: auto !important;
+}
