@@ -29,6 +29,12 @@
 	}
 }
 
+@media (min-width: 1200px) {
+	.modal-xl {
+		max-width: calc(100vw - 6rem) !important;
+	}
+}
+
 #pause {
 	border-color: rgba(255, 255, 255, .5);
 	color: rgba(255, 255, 255, .5);
