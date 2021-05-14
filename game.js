@@ -445,7 +445,8 @@ var events = [
 		"ct": 0,
 		"effects": [
 			{ "country": "sau", "t": "b", "v": 0.2 }
-		]
+		],
+		"e_effects": []
 	},
 	{
 		"desc": "Saudi Arabia: Hajj takes place",
@@ -454,7 +455,8 @@ var events = [
 		"ct": 0,
 		"effects": [
 			{ "country": "sau", "t": "b", "v": 0.2 }
-		]
+		],
+		"e_effects": []
 	},
 	{
 		"desc": "Mexico: Under enormous economic pressure, government signs agreement with US to reopen border",
@@ -463,7 +465,8 @@ var events = [
 		"ct": 0.002,
 		"effects": [
 			{ "country": "mex", "t": "b", "v": 0.18 },
-		]
+		],
+		"e_effects": []
 	}
 ]
 
@@ -1081,7 +1084,11 @@ function establishFacility(country) {
 	rc += ((data[country].cash / 5) + (2.25 ** (4 - relations[country])) - 1) * 100000;
 	updateMoney();
 	$("#" + country).addClass("facility-1");
-	relations[country] += toPlaces((2 / (facilities.length - 1)), 1);
+	if (relations[country] + toPlaces((2 / (facilities.length - 1)), 1) <= 10) {
+		relations[country] += toPlaces((2 / (facilities.length - 1)), 1);
+	} else {
+		relations[country] = 10;
+	}
 	$("#" + country + "_r").html("WTC " + toPlaces(relations[country], 1) + " / 10");
 	for (var j = 0; j < RELATIONS.length; j++) {
 		if (RELATIONS[j].indexOf(country) != -1) {
@@ -1228,12 +1235,12 @@ function resultsThree(t) {
 		}
 	}
 	$("#eff").html("Effectiveness: " + toPlaces((initial3 + modify) * 100, 2) + "%");
-	$("#upgrades td:first-child").html("Upgrade Effectiveness (current: " + toPlaces((initial3 + modify) * 100, 2) + "%)");
+	$("#p3 td:first-child").html("Upgrade Effectiveness (current: " + toPlaces((initial3 + modify) * 100, 2) + "%)");
 	var funding = (data[t].cash * 25000000) * (2 ** (1 + modify)) * (modify - (eff - initial3)) * (1 - modify) * ((1.5 * (10 + data[t].cash) * modify) / 8);
 	var safety = toPlaces(100 - toPlaces((aer * (0.5 ** trial.sm)) * 100, 2), 2);
-	$("#upgrades td:last-child").html("Upgrade Safety (current: " + safety + "%)");
+	$("#p3 td:last-child").html("Upgrade Safety (current: " + safety + "%)");
 	var toAppend = "";
-	if (modify > em || trial.sm > smp) {
+	if (inital3 + modify > eff || trial.sm > smp) {
 		toAppend = "<p><b class = 'text-success'>" + toDate(currentDate) + " " + name + " concludes phase III trials with " + toPlaces((initial3 + modify) * 100, 2) + "% effectiveness (+" + toPlaces((initial3 + modify - eff) * 100, 2) + "%) and " + safety + "% safety (+" + toPlaces(safety - (100 - toPlaces(aer * 100, 2)), 2) + "%), and receives $" + toShort(funding, 2) + " in funds</b></p>";
 	} else {
 		toAppend = "<p><b class = 'text-danger'>" + toDate(currentDate) + " " + name + " concludes phase III trials with " + toPlaces((initial3 + modify) * 100, 2) + "% effectiveness (" + toPlaces((initial3 + modify - eff) * 100, 2) + "%) and " + safety + "% safety (" + toPlaces(safety - (100 - toPlaces(aer * 100, 2)), 2, true) + "%)</b></p>"
@@ -1265,8 +1272,8 @@ function phaseThree(d, e, a, n, dd) {
 	eff = e;
 	aer = a;
 	initial3 = eff;
-	$("#upgrades td:first-child").html("Upgrade Effectiveness (current: " + toPlaces(eff * 100, 2) + "%)");
-	$("#upgrades td:last-child").html("Upgrade Safety (current: " + (100 - toPlaces(aer * 100, 2)) + "%)");
+	$("#p3 td:first-child").html("Upgrade Effectiveness (current: " + toPlaces(eff * 100, 2) + "%)");
+	$("#p3 td:last-child").html("Upgrade Safety (current: " + (100 - toPlaces(aer * 100, 2)) + "%)");
 	$("#dosage" + n + " td:last-child button").html("Advanced");
 	$("#d2 button").attr("disabled", "true");
 	$("#eff").html("Effectiveness: " + toPlaces(eff * 100, 2) + "%");
@@ -1279,8 +1286,8 @@ function phaseThree(d, e, a, n, dd) {
 	$("#t3").removeClass("disabled");
 	$("#t3").html("Phase III");
 	for (var i = 0; i < upgrades[0].length; i++) {
-		$("#d3").append("<tr><td><div class = 'card-deck my-2'><div class = 'card' id = 'upgrade0" + i + "'><div class = 'card-body'><h6 class = 'card-title mb-2'>" + upgrades[0][i][0] + "</h6><p class = 'card-text'>" + upgrades[0][i][1] + "</p></div><div class = 'card-footer'><p class = 'mb-0'><select class = 'custom-select custom-select-sm' onchange = 'canResearch(0, " + i + ")'><option value = 'null' selected disabled>Facility...</option></select><button disabled class = 'btn btn-primary btn-sm ml-3' onclick = 'researchUpgrade(0, " + i + ")'>Research - $1M</button></p></div></div></div></td></tr>");
-		$("#d3 tr:last-child .card-deck").append("<div class = 'card' id = 'upgrade1" + i + "'><div class = 'card-body'><h6 class = 'card-title mb-2'>" + upgrades[1][i][0] + "</h6><p class = 'card-text'>" + upgrades[1][i][1] + "</p></div><div class = 'card-footer'><p class = 'mb-0'><select class = 'custom-select custom-select-sm' onchange = 'canResearch(1, " + i + ")'><option value = 'null' selected disabled>Facility...</option></select><button disabled class = 'btn btn-primary btn-sm ml-3' onclick = 'researchUpgrade(1, " + i + ")'>Research - $1M</button></p></div></div>");
+		$("#d3 #upgrades").append("<tr><td><div class = 'card-deck my-2'><div class = 'card' id = 'upgrade0" + i + "'><div class = 'card-body'><h6 class = 'card-title mb-2'>" + upgrades[0][i][0] + "</h6><p class = 'card-text'>" + upgrades[0][i][1] + "</p></div><div class = 'card-footer'><p class = 'mb-0'><select class = 'custom-select custom-select-sm' onchange = 'canResearch(0, " + i + ")'><option value = 'null' selected disabled>Facility...</option></select><button disabled class = 'btn btn-primary btn-sm ml-3' onclick = 'researchUpgrade(0, " + i + ")'>Research - $1M</button></p></div></div></div></td></tr>");
+		$("#d3 #upgrades tr:last-child .card-deck").append("<div class = 'card' id = 'upgrade1" + i + "'><div class = 'card-body'><h6 class = 'card-title mb-2'>" + upgrades[1][i][0] + "</h6><p class = 'card-text'>" + upgrades[1][i][1] + "</p></div><div class = 'card-footer'><p class = 'mb-0'><select class = 'custom-select custom-select-sm' onchange = 'canResearch(1, " + i + ")'><option value = 'null' selected disabled>Facility...</option></select><button disabled class = 'btn btn-primary btn-sm ml-3' onclick = 'researchUpgrade(1, " + i + ")'>Research - $1M</button></p></div></div>");
 	}
 	for (var j = 0; j < facilities.length; j++) {
 		$("#d3 select").append("<option value = '" + facilities[j][0] + "'>" + data[facilities[j][0]].country + " (Level " + facilities[j][1] + ")</option>");
