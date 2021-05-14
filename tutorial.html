@@ -18,36 +18,29 @@
 			opacity: 0.15;
 			font-size: 65vh;
 		}
-		#info {
+		.info {
 			z-index: 2;
-			position: relative;
+			position: absolute;
+			left: calc(100vw + 1.5rem);
 			background-color: rgb(180, 180, 180, 0.5);
 			border: 2px solid black;
 			border-radius: 5px;
+			width: 90%;
 			height: calc(100vh - 6em);
+			transition: left 1s;
+			overflow-y: scroll;
+			padding-bottom: 0 !important;
 		}
-		select, input {
-			background-color: rgba(0, 0, 0, 0) !important;
-			border-color: black !important;
-			color: black !important;
-			border-top-left-radius: 5px;
-			border-top-right-radius: 5px;
+		.info p.text-small {
+			margin-bottom: 0;
 		}
-		input::placeholder, select {
-			color: rgba(25, 25, 25, 0.5) !important;
+		.info.out {
+			left: -100vw;
 		}
-		.black {
-			color: black !important;
+		.info.active {
+			left: 1.5rem;
 		}
-		#version {
-			position: absolute;
-			bottom: 5em;
-			width: 100vw;
-			text-align: center;
-			left: 0;
-			z-index: 5;
-		}
-		#black {
+		#black, #size {
 			background-color: black;
 			position: fixed;
 			top: 0;
@@ -56,120 +49,635 @@
 			width: 100vw;
 			z-index: 10;
 		}
+		@media (max-width: 999px) {
+			#size {
+				display: block !important;
+			}
+		}
+		a {
+			color: black;
+			text-decoration: underline;
+		}
+		li {
+			list-style-position: inside;
+		}
+		input {
+			font-size: 1.1rem;
+			font-family: monospace !important;
+			text-align: center !important;
+			border: 0 !important;
+			border-radius: 2px;
+			border-bottom-left-radius: 0px;
+			border-bottom-right-radius: 0px;
+			border-bottom: 2px solid black !important;
+			background-color: transparent;
+		}
+		h3 {
+			margin-bottom: 0;
+		}
+		#progress {
+			position: fixed;
+			bottom: 0.75rem;
+			left: 0;
+			width: 100vw;
+			text-align: center;
+		}
 	</style>
 	<meta name = "viewport" content = "width=device-width, initial-scale=1, shrink-to-fit=no">
 </head>
 <body>
 	<div id = "black"></div>
+	<div id = "size" style = "display: none"><p style = "color:white" class = "text-center w-100 mt-5 h3">Sorry! Your screen is not large enough to properly display VAX.</p></div>
 	<div id = "background">
 		<p class = "mb-0 text-center my-auto">VAX</p>
 	</div>
-	<div id = "info" class = "m-5 p-5 text-center">
+	<span id = "progress">1/16</span>
+	<div class = "info m-5 p-5 text-center active" id = "1">
 		<h3>Tutorial</h3>
 		<br>
-		<p>Welcome to VAX. If you have played before you can <a href = "#" onclick = "beginGame()" style = "color: black; text-decoration: underline">skip this tutorial.</a></p>
+		<p>Welcome to VAX. If you have played before you can <a href = "#" onclick = "beginGame()">skip this tutorial.</a></p>
 		<br>
 		<p>In VAX, your goal is to develop a vaccine and then distribute it around the world to end the pandemic.</p>
-		<p>VAX attempts to portray this in as realistic a manner as possible, dividing the game into phases that match an actual vaccine's development timeline.</p>
-		<p>You will have to conduct research and clinical trials, manufacture and deliver doses, manage your costs, and improve your relations with world governments.</p>
-		<p>This tutorial will teach you how VAX and its mechanics work.</p>
-		<p><button class = "btn btn-primary">Continue</button></p>
+		<p>VAX attempts to portray this in as realistic a manner as possible, dividing the game into phases that match actual vaccines' development timelines.</p>
+		<p>You will have to conduct research and clinical trials, manufacture and distribute doses, manage your costs, and gain licensure with world governments.</p>
+		<p>This tutorial will teach you how VAX is played and how its mechanics work.</p>
+		<p><button class = "btn btn-primary" onclick = "next(1)">Continue</button></p>
+	</div>
+	<div class = "info m-5 p-5 text-center" id = "2">
+		<h3>Dashboard: Overview</h3>
+		<br>
+		<p>Upon beginning a VAX game, you will see the dashboard. It looks like this:</p>
+		<img src = "tut/1.png" class = "mt-2 mb-3" style = "max-height: 45vh">
+		<p>Let's take a look at each part of the dashboard.</p>
+		<p><button class = "btn btn-primary" onclick = "next(2)">Continue</button></p>
+		<p><a href = "#" onclick = "prev(2)" class = "text-small">Back</a></p>
+	</div>
+	<div class = "info m-5 p-5 text-center" id = "3">
+		<h3>Dashboard: Top Bar</h3>
+		<br>
+		<p>At the top-right of the dashboard you will see this:</p>
+		<img src = "tut/2.png" class = "mt-2 mb-3" style = "max-height: 10vh">
+		<p>The <b>current date</b> is displayed on the left. VAX begins on June 1, 2020 and follows a realistic timeline.</p>
+		<p>Days will pass depending on how fast your <b>speed</b> is currently set at. To adjust the speed, you can press 1, 2, or 3 on your keyboard. The default speed (x2) causes days to pass every two seconds.</p>
+		<p>Next is the <b>play/pause</b> button. This can be used to stop the day timer. You can also use the SPACEBAR to perform this function.</p>
+		<p>Finally, there is a button to enter <b>fullscreen</b> if your screen is too small to show the entire dashboard without having to scroll. The keyboard shortcut for entering fullscreen is BACKSLASH (\).</p>
+		<p><button class = "btn btn-primary" onclick = "next(3)">Continue</button></p>
+		<p><a href = "#" onclick = "prev(3)" class = "text-small">Back</a></p>
+	</div>
+	<div class = "info m-5 p-5 text-center" id = "4">
+		<h3>Dashboard: Console</h3>
+		<br>
+		<p>On the left-hand side of the dashboard is the console:</p>
+		<div class = "d-flex">
+			<img src = "tut/3.png" class = "m-2" style = "max-width: 20vw; max-height: 60vh">
+			<div class = "flex-grow-1 p-3">
+				<p>Your <b>money</b> is displayed at the top. Once the game begins, you will also see the change in your money (either positive or negative) displayed here as well.</p>
+				<p>Underneath that is your <b>doses</b> in storage. This becomes more important later on in the game when you begin manufacturing & distribution.</p>
+				<p>The large box is the <b>event console</b> which keeps a record of all important events that happen during the course of a VAX game.</p>
+				<p>The <b>genetic code</b> is displayed underneath that. This will be explained in more detail later on.</p>
+				<p>Finally, a button to open the <b>research</b> menu is at the bottom. Research will also be described in more detail later on. The research menu can also be opened by pressing SHIFT.</p>
+				<p><button class = "btn btn-primary" onclick = "next(4)">Continue</button></p>
+				<p><a href = "#" onclick = "prev(4)" class = "text-small">Back</a></p>
+			</div>
+		</div>
+	</div>
+	<div class = "info m-5 p-5 text-center" id = "5">
+		<h3>Dashboard: Countries</h3>
+		<br>
+		<p>On the right-hand side of the dashboard are the country panels. Here is an example:</p>
+		<div class = "d-flex">
+			<img src = "tut/4.png" class = "m-2" style = "max-width: 20vw; max-height: 50vh">
+			<div class = "flex-grow-1 p-3">
+				<p>At the top is the name of the country and its flag. Right underneath that is its <b>population</b>. In VAX, it is assumed that a country's population remains constant and that births and deaths do not change it over time.</p>
+				<p>The red box shows the <b>cumulative cases</b> that a country has experienced. The daily change in infections is also shown. Note that because this is a cumulative measure, this number will never go down - but your goal is to stop it from increasing!</p>
+				<p>The black box shows the <b>cumulative deaths</b> caused by the disease. Again, the daily change is shown and because this is a cumulative measure this number will never decrease.</p>
+				<p>The green box shows the <b>vaccinated population</b>. However, it will only display this once you have gained licensure to vaccinate in the country which will occur later on in the game.</p>
+				<p>The blue box shows the country's <b>willingness to cooperate</b>. WTC will be explained more next.</p>
+				<p>There are 18 countries in VAX, selected because they had the highest number of cumulative cases as of June 1, 2020. It is your job to eliminate the virus in all of these countries by delivering effective vaccines to their citizens!</p>
+				<p><button class = "btn btn-primary" onclick = "next(5)">Continue</button></p>
+				<p><a href = "#" onclick = "prev(5)" class = "text-small">Back</a></p>
+			</div>
+		</div>
+	</div>
+	<div class = "info m-5 p-5 text-center" id = "6">
+		<h3>WTC</h3>
+		<br>
+		<p>WTC is a measure of how good your relations are with a country's government. It is a number between 1 and 10, with 10 being the best.</p>
+		<p>Your starting location influences your initial WTC with countries. The country where your headquarters are basedd will also start with a boost in WTC.</p>
+		<p>There are several actions that can influence WTC, including:</p>
+		<ul>
+			<li>Establishing/upgrading facilities</li>
+			<li>Increasing your vaccine's effectiveness and safety</li>
+			<li>Making progress in research</li>
+			<li>Running successful/unsuccessful research clinical trials</li>
+			<li>Lowering the infection rate by vaccinating countries</li>
+		</ul>
+		<p>WTC can have an impact on:</p>
+		<ul>
+			<li>How much governments charge you to establish/upgrade facilities in their country</li>
+			<li>Whether or not governments will grant you a license to vaccinate in their country</li>
+			<li>How many vaccine doses they would like to order from you per day</li>
+		</ul>
+		<p>It is important to improve your WTC with all countries. Without a high enough WTC you will not be able to vaccinate (or vaccinate at a fast rate) in countries, and you must vaccinate every country to end the pandemic and win the game!</p>
+		<p><button class = "btn btn-primary" onclick = "next(6)">Continue</button></p>
+		<p><a href = "#" onclick = "prev(6)" class = "text-small">Back</a></p>
+	</div>
+	<div class = "info m-5 p-5 text-center" id = "7">
+		<h3>Country Menu</h3>
+		<br>
+		<p>Clicking on a country panel will open its country menu. You can also hover over a country panel to view a keyboard shortuct for opening its menu.</p>
+		<p>The actions available in a country menu will depend on whether this country has a facility established in it, and what phase of the game you are in. Here is a menu of a country without a facility at the beginning of the game:</p>
+		<img src = "tut/5.png" class = "mt-2 mb-3" style = "max-height: 35vh">
+		<p>As you can see, you have the option to establish a facility in this country if one does not already exist. The cost of establishing the facility will depend on the country's WTC. Facilities will be explained in more detail next.</p>
+		<p><button class = "btn btn-primary" onclick = "next(7)">Continue</button></p>
+		<p><a href = "#" onclick = "prev(7)" class = "text-small">Back</a></p>
+	</div>
+	<div class = "info m-5 p-5 text-center" id = "8">
+		<h3>Facilities</h3>
+		<br>
+		<div class = "d-flex">
+			<img src = "tut/4.png" class = "m-2" style = "max-width: 20vw; max-height: 50vh">
+			<div class = "flex-grow-1 p-3">
+				<p>If you look closely at this country panel, you can see a blue glow around it. This means that there is a facility currently established in this country.</p>
+				<p>Facilities are instrumental to the development and manufacturing of your vaccine. Only at your facilities can:</p>
+				<ul>
+					<li>Research take place</li>
+					<li>Clinical trials be run</li>
+					<li>Vaccine doses be manufactured</li>
+				</ul>
+				<p>Facilities can be upgraded. Your headquarters begin at level 2 and newly established facilities begin at level 1. You can upgrade your facilities up to the maximum level of 3. The intensity of the blue glow around a country panel shows the level of the facility established there.</p>
+				<p>While facilities certainly come with many benefits, keep in mind that researchers/workers at facilities must be paid each day, and that the number of researchers/workers at a facility increases every time you upgrade it. So think twice before establishing level 3 facilities in every country!</p>
+				<p>Remember that facilities and all their associated functions can be managed from their country menus.</p>
+				<p><button class = "btn btn-primary" onclick = "next(8)">Continue</button></p>
+				<p><a href = "#" onclick = "prev(8)" class = "text-small">Back</a></p>
+			</div>
+		</div>
+	</div>
+	<div class = "info m-5 p-5 text-center" id = "9">
+		<h3>Research: Overview</h3>
+		<br>
+		<p>Your first goal is to develop an effective and safe vaccine. To do this you will need to conduct research and run clinical trials.</p>
+		<p>There are four research phases:</p>
+		<ul>
+			<li>Preclinical</li>
+			<li>Phase I clinical trials</li>
+			<li>Phase II clinical trials</li>
+			<li>Phase III clinical trials</li>
+		</ul>
+		<p>In each one, you will have the ability to increase your vaccine's effectiveness, which will improve your WTC with other countries and encourage them to license you. Conducting successful research will also award you with funds from your headquarter country's government.</p>
+		<p>Remember that you can quickly open the research menu by pressing SHIFT.</p>
+		<p><button class = "btn btn-primary" onclick = "next(9)">Continue</button></p>
+		<p><a href = "#" onclick = "prev(9)" class = "text-small">Back</a></p>
+	</div>
+	<div class = "info m-5 p-5 text-center" id = "10">
+		<h3>Research: Preclinical</h3>
+		<br>
+		<div class = "d-flex">
+			<div class = "flex-grow-1 p-3">
+				<p>In the preclinical phase, your goal is to research the virus's RNA sequence and translate it into a protein sequence which will be used in your vaccine.</p>
+				<p>This is what the preclinical research menu looks like:</p>
+				<img src = "tut/6.png" class = "mt-2 mb-3" style = "max-height: 40vh">
+				<p>Looks confusing? Don't worry - the next few pages will help you make sense of this screen!</p>
+				<p><button class = "btn btn-primary" onclick = "next(10)">Continue</button></p>
+				<p><a href = "#" onclick = "prev(10)" class = "text-small">Back</a></p>
+			</div>
+		</div>
+	</div>
+	<div class = "info m-5 p-5 text-center" id = "11">
+		<h3>Research: Preclinical</h3>
+		<br>
+		<p>Every living organism contains DNA, which is a molecule consisting of units called nucleotides. There are four different nucleotide bases that can be put together into a specific sequence.</p>
+		<p>DNA's cousin is RNA, which consists of four nucleotide bases as well. These bases are adenine (A), uracil (U), cysteine (C), and guanine (G).</p>
+		<p>Your body's cells produce proteins based on the nucleotide sequence in RNA molecules that are presented to it. It can do this because every protein also consists of units called amino acids, of which there are 20. Biologists have determined which nucleotides are translated into what amino acids and have created the following table to show this information:</p>
+		<img src = "table.png" class = "mt-1 mb-2" style = "max-height: 20vh; border: 2px solid black; border-radius: 5px">
+		<p>Say that you have the nucleotide sequence CUG (sequences of three nucleotides are called a codon). The codon chart tells you that if the first nucleotide in a codon is C, the second one is U, and the third one is G, the amino acid it codes for is leucine (shortened to L).</p>
+		<p>The codon chart shows that several nucleotide sequences code for the same amino acid. Therefore, you don't always have to know all three nucleotides in a codon to determine the amino acid that it codes for!</p>
+		<p><button class = "btn btn-primary" onclick = "next(11)">Continue</button></p>
+		<p><a href = "#" onclick = "prev(11)" class = "text-small">Back</a></p>
+	</div>
+	<div class = "info m-5 p-5 text-center" id = "12">
+		<h3>Research: Preclinical</h3>
+		<br>
+		<p>Try translating the following codon into an amino acid. Use the codon chart and enter the shortened letter used to represent the amino acid.</p>
+		<p><input type = "text" size = "3" value = "AAA" class = "mr-5" readonly><input type = "text" size = "2" maxlength = "1" oninput = "checkValue()" tabindex = "-1"></p>
+		<img src = "table.png" class = "mt-2 mb-3" style = "max-height: 30vh; border: 2px solid black; border-radius: 5px">
+		<p><button class = "btn btn-primary" onclick = "next(12)" disabled>Continue</button></p>
+		<p><a href = "#" onclick = "prev(12)" class = "text-small">Back</a></p>
+	</div>
+	<div class = "info m-5 p-5 text-center" id = "13">
+		<h3>Research: Preclinical</h3>
+		<br>
+		<div class = "d-flex">
+			<img src = "tut/7.png" class = "m-2" style = "max-width: 40vw; max-height: 30vh; margin-top: 12.5vh !important">
+			<div class = "flex-grow-1 p-3">
+				<p>Good job!</p>
+				<p>Your researchers at your facilities will work to unlock nucleotides in the virus RNA sequence. Establishing/upgrading facilities will help you unlock nucleotides faster. You must translate these nucleotides into amino acids and run tests to confirm that you have translated them correctly.</p>
+				<p>There are 144 codons and amino acids in the full protein sequence. To make decoding them easier, some codons with all three nucleotides unlocked will be automatically decoded into amino acids (and their entry boxes will be colored yellow). The more facilities you have (and the higher their level is), the more "bonus" amino acids you will be awarded!</p>
+				<p>Remember that your researchers must be paid every day, so you should not wait until the entire nucleotide sequence is decoded to run your first test! Every test that makes some progress in decoding the protein sequence will award you with funds from the government.</p>
+				<p><button class = "btn btn-primary" onclick = "next(13)">Continue</button></p>
+				<p><a href = "#" onclick = "prev(13)" class = "text-small">Back</a></p>
+			</div>
+		</div>
+	</div>
+	<div class = "info m-5 p-5 text-center" id = "14">
+		<h3>Research: Clinical Trials</h3>
+		<br>
+		<div class = "d-flex">
+			<div>
+				<img src = "tut/8.png" class = "m-2" style = "max-width: 40vw; max-height: 30vh">
+				<img src = "tut/9.png" class = "m-2" style = "max-width: 30vw; max-height: 25vh; margin-top: 4vh !important">
+			</div>
+			<div class = "flex-grow-1 p-3">
+				<p>After you decode the entire protein sequence and complete the preclinical phase, you will begin clinical trials. These trials will not only improve your WTC but also give you the opportunity to increase your vaccine's effectiveness and safety.</p>
+				<p>There are 3 phases of clinical trials:</p>
+				<ul>
+					<li class = "mb-2">In Phase I, you will test combinations of several additional vaccine ingredients (known as excipients) to determine which ones increase your vaccine's effectiveness by the most. You will set up these combinations (known as candidates) in the research menu.</li>
+					<li class = "mb-2">In Phase II, you will test different dosages of your vaccine to determine which ones are not only effective, but also safe enough for use. The research menu will display all your trial results to help you determine the optimal dosage.</li>
+					<li>In Phase III, you will have the opportunity to research several "upgrades" at your facilities that can further increase your vaccine's effectiveness and safety. These upgrades will be displayed in the research menu.</li>
+				</ul>
+				<p>Remember that clinical trials can only be run at your facilities (through the country menu). Upgrading your facilities will allow them to conduct trials faster.</p>
+				<p><button class = "btn btn-primary" onclick = "next(14)">Continue</button></p>
+				<p><a href = "#" onclick = "prev(14)" class = "text-small">Back</a></p>
+			</div>
+		</div>
+	</div>
+	<div class = "info m-5 p-5 text-center" id = "15">
+		<h3>Licensure, Manufacturing and Deployment</h3>
+		<br>
+		<div class = "d-flex">
+			<img src = "tut/10.png" class = "m-2" style = "max-width: 40vw; max-height: 35vh; margin-top: 10vh !important">
+			<div class = "flex-grow-1 p-5">
+				<p>Starting from Phase III, your vaccine will be eligible to earn licensure from governments if it meets their effectiveness and safety standards. A license allows you to distribute vaccine doses to a country, which will take care of administering them for you!</p>
+				<p>Once research has concluded, your facilities will be able to manufacture vaccine doses. Higher level facilities will be able to manufacture more doses per day.</p>
+				<p>Although governments will pay you to order vaccine doses, you must also spend money to manufacture them, so don't manufacture too many more doses than are currently in demand!</p>
+				<p>Vaccinating countries will help increase your WTC. This is especially important to help you gain licensure in countries that did not initially grant you a license during Phase III!</p>
+				<p><button class = "btn btn-primary" onclick = "next(15)">Continue</button></p>
+				<p><a href = "#" onclick = "prev(15)" class = "text-small">Back</a></p>
+			</div>
+		</div>
+	</div>
+	<div class = "info m-5 p-5 text-center" id = "16">
+		<h3>End</h3>
+		<br>
+		<br>
+		<p>Once a country's population has been sufficiently vaccinated to bring its infection rate down to zero, it will be declared virus-free. Eliminate the virus in every country to end the pandemic and win the game!</p>
+		<br>
+		<p>There are other mechanics in the game, such as requesting funds, which have not been mentioned in this tutorial. However, the most important ones have been covered and it is your job to explore VAX and figure out how all the other ones work!</p>
+		<p class = "font-weight-bold">Good luck and have fun!</p>
+		<br>
+		<p><button class = "btn btn-primary" onclick = "beginGame()" style = "font-size: 1.2rem">Begin</button></p>
+		<p><a href = "#" onclick = "prev(16)" class = "text-small">Back</a></p>
 	</div>
 	<script src = "jquery-3.6.0.min.js"></script>
 	<script src = "bootstrap-4.6.0-dist/js/bootstrap.bundle.min.js"></script>
 	<script>
-		var countries = [
-		    {
+		if (sessionStorage.getItem("facilities") == null) {
+			window.open("index.html", "_self");
+		}
+		var data = {
+		    usa: {
 		        "country": "United States",
 		        "id": "USA",
-		        "demonym": "American"
+		        "pop": 328239520,
+		        "cc": 1820000,
+		        "pcc": 0.0055447314814498876,
+		        "cd": 108610,
+		        "nc": 21897,
+		        "nd": 776,
+		        "b": 0.23,
+		        "k": 0.2,
+		        "bt": -0.00031667,
+		        "d": 0.0154,
+		        "cash": 10,
+		        "demonym": "American",
+		        "ks": "A",
+		        "kc": 65,
+		        "leader": "president"
 		    },
-		    {
+		    bra: {
 		        "country": "Brazil",
 		        "id": "BRA",
-		        "demonym": "Brazilian"
+		        "pop": 211049530,
+		        "cc": 526477,
+		        "pcc": 0.0024945660859799117,
+		        "cd": 29937,
+		        "nc": 11598,
+		        "nd": 623,
+		        "b": 0.174,
+		        "k": 0.1429,
+		        "bt": -0.00031667,
+		        "d": 0.034,
+		        "cash": 8,
+		        "demonym": "Brazilian",
+		        "ks": "B",
+		        "kc": 66,
+		        "leader": "president"
 		    },
-		    {
+		    rus: {
 		        "country": "Russia",
 		        "id": "RUS",
-		        "demonym": "Russian"
+		        "pop": 144406260,
+		        "cc": 414328,
+		        "pcc": 0.0028691830949710904,
+		        "cd": 4849,
+		        "nc": 8485,
+		        "nd": 156,
+		        "b": 0.16,
+		        "k": 0.1667,
+		        "bt": -0.00000667,
+		        "d": 0.0251,
+		        "cash": 8,
+		        "demonym": "Russian",
+		        "ks": "R",
+		        "kc": 82,
+		        "leader": "president"
 		    },
-		    {
+		    gbr: {
 		        "country": "United Kingdom",
 		        "id": "GBR",
-		        "demonym": "British"
+		        "pop": 66836330,
+		        "cc": 258983,
+		        "pcc": 0.003874883614944148,
+		        "cd": 37613,
+		        "nc": 1444,
+		        "nd": 86,
+		        "b": 0.18,
+		        "k": 0.2,
+		        "bt": 0,
+		        "d": 0.0153,
+		        "cash": 10,
+		        "demonym": "British",
+		        "ks": "K",
+		        "kc": 75,
+		        "leader": "prime minster"
 		    },
-		    {
+		    esp: {
 		        "country": "Spain",
 		        "id": "ESP",
-		        "demonym": "Spanish"
+		        "pop": 47133520,
+		        "cc": 239638,
+		        "pcc": 0.005084237290149346,
+		        "cd": 27127,
+		        "nc": 159,
+		        "nd": 0,
+		        "b": 0.175,
+		        "k": 0.18,
+		        "bt": 0,
+		        "d": 0.0203,
+		        "cash": 8,
+		        "demonym": "Spanish",
+		        "ks": "E",
+		        "kc": 69,
+		        "leader": "president"
 		    },
-		    {
+		    ita: {
 		        "country": "Italy",
 		        "id": "ITA",
-		        "demonym": "Italian"
+		        "pop": 60302090,
+		        "cc": 233197,
+		        "pcc": 0.0038671462299233743,
+		        "cd": 33475,
+		        "nc": 200,
+		        "nd": 60,
+		        "b": 0.18,
+		        "k": 0.18,
+		        "bt": 0,
+		        "d": 0.021,
+		        "cash": 8,
+		        "demonym": "Italian",
+		        "ks": "L",
+		        "kc": 76,
+		        "leader": "president"
 		    },
-		    {
+		    ind: {
 		        "country": "India",
 		        "id": "IND",
-		        "demonym": "Indian"
+		        "pop": 1366417750,
+		        "cc": 198370,
+		        "pcc": 0.000145175221852907,
+		        "cd": 5608,
+		        "nc": 7761,
+		        "nd": 200,
+		        "b": 0.18,
+		        "k": 0.1429,
+		        "bt": -0.000325,
+		        "d": 0.024,
+		        "cash": 8,
+		        "demonym": "Indian",
+		        "ks": "N",
+		        "kc": 78,
+		        "leader": "prime minister"
 		    },
-		    {
+		    fra: {
 		        "country": "France",
 		        "id": "FRA",
-		        "demonym": "French"
+		        "pop": 67055850,
+		        "cc": 191382,
+		        "pcc": 0.002854068660676138,
+		        "cd": 28837,
+		        "nc": 407,
+		        "nd": 32,
+		        "b": 0.179,
+		        "k": 0.18,
+		        "bt": 0,
+		        "d": 0.0202,
+		        "cash": 10,
+		        "demonym": "French",
+		        "ks": "F",
+		        "kc": 70,
+		        "leader": "president"
 		    },
-		    {
+		    deu: {
 		        "country": "Germany",
 		        "id": "DEU",
-		        "demonym": "German"
+		        "pop": 83092960,
+		        "cc": 183594,
+		        "pcc": 0.0022095012622007928,
+		        "cd": 8555,
+		        "nc": 184,
+		        "nd": 15,
+		        "b": 0.179,
+		        "k": 0.18,
+		        "bt": 0,
+		        "d": 0.0211,
+		        "cash": 10,
+		        "demonym": "German",
+		        "ks": "G",
+		        "kc": 71,
+		        "leader": "chancellor"
 		    },
-		    {
+		    per: {
 		        "country": "Peru",
 		        "id": "PER",
-		        "demonym": "Peruvian"
+		        "pop": 32510450,
+		        "cc": 170039,
+		        "pcc": 0.005230287492175593,
+		        "cd": 4634,
+		        "nc": 5563,
+		        "nd": 128,
+		        "b": 0.135,
+		        "k": 0.145,
+		        "bt": -0.00031667,
+		        "d": 0.0345,
+		        "cash": 6,
+		        "demonym": "Peruvian",
+		        "ks": "U",
+		        "kc": 85,
+		        "leader": "president"
 		    },
-		    {
+		    tur: {
 		        "country": "Turkey",
 		        "id": "TUR",
-		        "demonym": "Turkish"
+		        "pop": 83429620,
+		        "cc": 164769,
+		        "pcc": 0.0019749460683148264,
+		        "cd": 4563,
+		        "nc": 827,
+		        "nd": 23,
+		        "b": 0.167,
+		        "k": 0.167,
+		        "bt": 0.0000887,
+		        "d": 0.017,
+		        "cash": 6,
+		        "demonym": "Turkish",
+		        "ks": "T",
+		        "kc": 84,
+		        "leader": "president"
 		    },
-		    {
+		    irn: {
 		        "country": "Iran",
 		        "id": "IRN",
-		        "demonym": "Iranian"
+		        "pop": 82913910,
+		        "cc": 154445,
+		        "pcc": 0.001862715194591595,
+		        "cd": 7878,
+		        "nc": 2979,
+		        "nd": 81,
+		        "b": 0.153,
+		        "k": 0.153,
+		        "bt": 0.000013,
+		        "d": 0.0304,
+		        "cash": 6,
+		        "demonym": "Iranian",
+		        "ks": "I",
+		        "kc": 73,
+		        "leader": "president"
 		    },
-		    {
+		    chl: {
 		        "country": "Chile",
 		        "id": "CHL",
-		        "demonym": "Chilean"
+		        "pop": 18952040,
+		        "cc": 129020,
+		        "pcc": 0.006807710410066673,
+		        "cd": 1113,
+		        "nc": 5470,
+		        "nd": 59,
+		        "b": 0.157,
+		        "k": 0.1667,
+		        "bt": 0,
+		        "d": 0.025,
+		        "cash": 6,
+		        "demonym": "Chilean",
+		        "ks": "H",
+		        "kc": 72,
+		        "leader": "president"
 		    },
-		    {
+		    mex: {
 		        "country": "Mexico",
 		        "id": "MEX",
-		        "demonym": "Mexican"
+		        "pop": 127575530,
+		        "cc": 93435,
+		        "pcc": 0.0007323896675169604,
+		        "cd": 10167,
+		        "nc": 2771,
+		        "nd": 237,
+		        "b": 0.17,
+		        "k": 0.153,
+		        "bt": -0.0001667,
+		        "d": 0.055,
+		        "cash": 6,
+		        "demonym": "Mexican",
+		        "ks": "M",
+		        "kc": 77,
+		        "leader": "president"
 		    },
-		    {
+		    can: {
 		        "country": "Canada",
 		        "id": "CAN",
-		        "demonym": "Canadian"
+		        "pop": 37593380,
+		        "cc": 93288,
+		        "pcc": 0.002481500732309784,
+		        "cd": 7952,
+		        "nc": 809,
+		        "nd": 46,
+		        "b": 0.19,
+		        "k": 0.2,
+		        "bt": 0.00005,
+		        "d": 0.015,
+		        "cash": 8,
+		        "demonym": "Canadian",
+		        "ks": "C",
+		        "kc": 67,
+		        "leader": "prime minister"
 		    },
-		    {
+		    sau: {
 		        "country": "Saudi Arabia",
 		        "id": "SAU",
-		        "demonym": "Saudi"
+		        "pop": 34268530,
+		        "cc": 87142,
+		        "pcc": 0.0025429161974557996,
+		        "cd": 525,
+		        "nc": 1881,
+		        "nd": 22,
+		        "b": 0.1633,
+		        "k": 0.1667,
+		        "bt": -0.00333,
+		        "d": 0.0245,
+		        "cash": 6,
+		        "demonym": "Saudi",
+		        "ks": "D",
+		        "kc": 68,
+		        "leader": "king"
 		    },
-		    {
+		    chn: {
 		        "country": "China",
 		        "id": "CHN",
-		        "demonym": "Chinese"
+		        "pop": 1397715000,
+		        "cc": 84154,
+		        "pcc": 0.000060208268495365654,
+		        "cd": 4638,
+		        "nc": 8,
+		        "nd": 0,
+		        "b": 0.17,
+		        "k": 0.17,
+		        "bt": 0.00005,
+		        "d": 0.0238,
+		        "cash": 8,
+		        "demonym": "Chinese",
+		        "ks": "Z",
+		        "kc": 90,
+		        "leader": "president"
 		    },
-		    {
+		    pak: {
 		        "country": "Pakistan",
 		        "id": "PAK",
-		        "demonym": "Pakistani"
+		        "pop": 216565320,
+		        "cc": 76398,
+		        "pcc": 0.0003527711639148872,
+		        "cd": 1621,
+		        "nc": 3938,
+		        "nd": 78,
+		        "b": 0.1325,
+		        "k": 0.1458,
+		        "bt": -0.000067,
+		        "d": 0.0329,
+		        "cash": 6,
+		        "demonym": "Pakistani",
+		        "ks": "P",
+		        "kc": 80,
+		        "leader": "prime minister"
 		    }
-		];
+		}
 		const RELATIONS = JSON.parse("[[\"usa\",\"bra\",3.5],[\"usa\",\"rus\",1.5],[\"usa\",\"gbr\",4],[\"usa\",\"esp\",3.8],[\"usa\",\"ita\",3.8],[\"usa\",\"ind\",3.5],[\"usa\",\"fra\",4],[\"usa\",\"deu\",4],[\"usa\",\"per\",3.5],[\"usa\",\"tur\",2.3],[\"usa\",\"irn\",1],[\"usa\",\"chl\",3.5],[\"usa\",\"mex\",3.2],[\"usa\",\"can\",4],[\"usa\",\"sau\",2.9],[\"usa\",\"chn\",1.5],[\"usa\",\"pak\",2.8],[\"bra\",\"rus\",3.4],[\"bra\",\"gbr\",3.5],[\"bra\",\"esp\",3.5],[\"bra\",\"ita\",3.5],[\"bra\",\"ind\",3.8],[\"bra\",\"fra\",3.5],[\"bra\",\"deu\",3.5],[\"bra\",\"per\",3.8],[\"bra\",\"tur\",3.5],[\"bra\",\"irn\",3],[\"bra\",\"chl\",3.8],[\"bra\",\"mex\",3.8],[\"bra\",\"can\",3.5],[\"bra\",\"sau\",3.5],[\"bra\",\"chn\",3.5],[\"bra\",\"pak\",3.5],[\"rus\",\"gbr\",2.8],[\"rus\",\"esp\",3.2],[\"rus\",\"ita\",3.4],[\"rus\",\"ind\",3.8],[\"rus\",\"fra\",3.4],[\"rus\",\"deu\",2.8],[\"rus\",\"per\",3.4],[\"rus\",\"tur\",2.8],[\"rus\",\"irn\",3.8],[\"rus\",\"chl\",3.4],[\"rus\",\"mex\",3.5],[\"rus\",\"can\",3.2],[\"rus\",\"sau\",3.6],[\"rus\",\"chn\",3.7],[\"rus\",\"pak\",3.3],[\"gbr\",\"esp\",3.5],[\"gbr\",\"ita\",3.6],[\"gbr\",\"ind\",3.6],[\"gbr\",\"fra\",3.8],[\"gbr\",\"deu\",3.6],[\"gbr\",\"per\",3.5],[\"gbr\",\"tur\",3.6],[\"gbr\",\"irn\",2.8],[\"gbr\",\"chl\",3.5],[\"gbr\",\"mex\",3.5],[\"gbr\",\"can\",4],[\"gbr\",\"sau\",3.4],[\"gbr\",\"chn\",2],[\"gbr\",\"pak\",3.5],[\"esp\",\"ita\",3.8],[\"esp\",\"ind\",3.5],[\"esp\",\"fra\",3.8],[\"esp\",\"deu\",3.8],[\"esp\",\"per\",3.5],[\"esp\",\"tur\",3.6],[\"esp\",\"irn\",3],[\"esp\",\"chl\",3.5],[\"esp\",\"mex\",3.4],[\"esp\",\"can\",3.8],[\"esp\",\"sau\",3.5],[\"esp\",\"chn\",3],[\"esp\",\"pak\",3.5],[\"ita\",\"ind\",3.5],[\"ita\",\"fra\",4],[\"ita\",\"deu\",4],[\"ita\",\"per\",3.6],[\"ita\",\"tur\",3.5],[\"ita\",\"irn\",3.4],[\"ita\",\"chl\",3.5],[\"ita\",\"mex\",3.5],[\"ita\",\"can\",3.8],[\"ita\",\"sau\",3.5],[\"ita\",\"chn\",3.4],[\"ita\",\"pak\",3.5],[\"ind\",\"fra\",3.8],[\"ind\",\"deu\",3.5],[\"ind\",\"per\",3.5],[\"ind\",\"tur\",2.8],[\"ind\",\"irn\",3.3],[\"ind\",\"chl\",3.5],[\"ind\",\"mex\",3.8],[\"ind\",\"can\",3.5],[\"ind\",\"sau\",3.6],[\"ind\",\"chn\",2.5],[\"ind\",\"pak\",1],[\"fra\",\"deu\",4],[\"fra\",\"per\",3.5],[\"fra\",\"tur\",3.2],[\"fra\",\"irn\",2.8],[\"fra\",\"chl\",3.5],[\"fra\",\"mex\",3.5],[\"fra\",\"can\",4],[\"fra\",\"sau\",3.7],[\"fra\",\"chn\",3],[\"fra\",\"pak\",3.2],[\"deu\",\"per\",3.5],[\"deu\",\"tur\",3.2],[\"deu\",\"irn\",2.7],[\"deu\",\"chl\",3.5],[\"deu\",\"mex\",3.5],[\"deu\",\"can\",3.5],[\"deu\",\"sau\",3.3],[\"deu\",\"chn\",3.5],[\"deu\",\"pak\",3.4],[\"per\",\"tur\",3.5],[\"per\",\"irn\",3.3],[\"per\",\"chl\",3.4],[\"per\",\"mex\",3.8],[\"per\",\"can\",3.5],[\"per\",\"sau\",3.5],[\"per\",\"chn\",3.5],[\"per\",\"pak\",3.5],[\"tur\",\"irn\",3.3],[\"tur\",\"chl\",3.5],[\"tur\",\"mex\",3.6],[\"tur\",\"can\",3.3],[\"tur\",\"sau\",2.7],[\"tur\",\"chn\",3.5],[\"tur\",\"pak\",3.7],[\"irn\",\"chl\",3.3],[\"irn\",\"mex\",3.4],[\"irn\",\"can\",2],[\"irn\",\"sau\",1],[\"irn\",\"chn\",3.6],[\"irn\",\"pak\",3.4],[\"chl\",\"mex\",4],[\"chl\",\"can\",3.8],[\"chl\",\"sau\",3.5],[\"chl\",\"chn\",3.5],[\"chl\",\"pak\",3.3],[\"mex\",\"can\",3.5],[\"mex\",\"sau\",3.5],[\"mex\",\"chn\",3.8],[\"mex\",\"pak\",3.6],[\"can\",\"sau\",3.2],[\"can\",\"chn\",2.8],[\"can\",\"pak\",3.6],[\"sau\",\"chn\",3.8],[\"sau\",\"pak\",3.8],[\"chn\",\"pak\",3.7]]");
 		const CODON = [
 			{
@@ -278,13 +786,60 @@
 				s: "*"
 			}
 		];
-		var country = (JSON.parse(localStorage.getItem("facilities")))[0][0];
+		var country = (JSON.parse(sessionStorage.getItem("facilities")))[0][0];
+		if (data[country].cash == 6) {
+			$("#1 p:last-child").before("<p class = 'text-danger font-weight-bold'>Before you proceed: you have selected " + data[country].country + " as your headquarters location. This is a difficult country to start in and not recommended for new players! If you'd like to change your mind, you can <a href = '#' onclick = 'goBack()'>click here to go back.</a></p>");
+		}
+		function goBack() {
+			$("#black").fadeIn(1200, function() {
+				window.open("index.html", "_self");
+			});
+		}
 		function beginGame() {
 			$("#black").fadeIn(1200, function() {
 				window.open("game.html", "_self");
 			});
 		}
+		for (var i = 2; i <= 16; i++) {
+			$("#" + i + ", #" + i + " *").attr("tabindex", "-1");
+		}
+		function prev(id) {
+			$("#" + id).removeClass("active");
+			$("#" + id).attr("tabindex", "-1");
+			$("#" + (id - 1)).removeClass("out").addClass("active");
+			$("#" + (id - 1) + " *").removeAttr("tabindex", "-1");
+			if (id == 13) {
+				$("#12 input:last-of-type").focus();
+				window.scrollTo(0, 0);
+				$("#12 input:last-of-type").removeAttr("tabindex");
+			} else {
+				$("#12 input:last-of-type").attr("tabindex", "-1");
+			}
+			$("#progress").html((id - 1) + "/16");
+		}
+		function next(id) {
+			$("#" + id).removeClass("active").addClass("out");
+			$("#" + id + " *").attr("tabindex", "-1");
+			$("#" + (id + 1)).addClass("active");
+			$("#" + (id + 1) + " *").removeAttr("tabindex", "-1");
+			if (id == 11) {
+				$("#12 input:last-of-type").focus();
+				window.scrollTo(0, 0);
+				$("#12 input:last-of-type").removeAttr("tabindex");
+			} else {
+				$("#12 input:last-of-type").attr("tabindex", "-1");
+			}
+			$("#progress").html((id + 1) + "/16");
+		}
+		function checkValue() {
+			if ($("#12 input:last-of-type").val() == "K") {
+				$("#12 button").removeAttr("disabled");
+			} else {
+				$("#12 button").attr("disabled", "true");
+			}
+		}
 		$(document).ready(function() {
+			window.scrollTo(0, 0);
 			$("#black").fadeOut(1200);
 		});
 	</script>

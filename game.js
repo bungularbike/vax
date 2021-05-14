@@ -1,3 +1,10 @@
+//
+// WARNING: looking at this source code (especially before you first play through the game) may significantly hurt your experience!
+//
+
+if (sessionStorage.getItem("facilities") == null) {
+	window.open("index.html", "_self");
+}
 const COUNT = (12 ** 2);
 function toPercent(n) {
 	return parseFloat(n).toFixed(5) + "%";
@@ -38,8 +45,8 @@ function toDate(d) {
 	return ((d.getMonth() < 9 ? "0" + (d.getMonth() + 1) : (d.getMonth() + 1)) + "/" + (d.getDate() < 10 ? "0" + d.getDate() : d.getDate()) + "/" + d.getFullYear().toString().substring(2));
 }
 
-var name = localStorage.getItem("company");
-const initial = Number(localStorage.getItem("initial"));
+var name = sessionStorage.getItem("company");
+const initial = Number(sessionStorage.getItem("initial"));
 var eff = 0;
 var cleared = [];
 var countries = 0;
@@ -811,12 +818,12 @@ const CODON = [
 var additions = [[["2-PE"], ["Thiomersal"], ["Carbolic acid"], ["Methylparaben"]], [["Sucrose"], ["Gelatin"], ["Albumin"], ["Dextrose"]], [["Polysorbate 80"], ["Triton X-100"], ["Synperonic"], ["DODAB"]], [["Sterile water"], ["0.4% NaCl"], ["0.9% NaCl"], ["PBS"]], [["Aluminum phosphate"], ["Aluminum hydroxide"], ["Interleukin-2"], ["Squalene"]]];
 var candidates = {};
 
-var seq_c = localStorage.getItem("seq_c");
-var seq_p = localStorage.getItem("seq_p");
+var seq_c = sessionStorage.getItem("seq_c");
+var seq_p = sessionStorage.getItem("seq_p");
 var per_c = 0;
 var per_p = 0;
 
-var facilities = JSON.parse(localStorage.getItem("facilities"));
+var facilities = JSON.parse(sessionStorage.getItem("facilities"));
 var relations = {};
 var loans = 0;
 
@@ -861,9 +868,6 @@ function changed(n) {
 }
 
 var doses = 0;
-function vaccinate(c, d) {
-
-}
 var dp = 0;
 function updateDoses() {
 	var deductm = 0;
@@ -1665,9 +1669,9 @@ var won = false;
 function victory() {
 	won = true;
 	hideWarning = false;
-	localStorage.setItem("cleared", JSON.stringify(cleared));
-	localStorage.setItem("rc", rc);
-	localStorage.setItem("rf", rf);
+	sessionStorage.setItem("cleared", JSON.stringify(cleared));
+	sessionStorage.setItem("rc", rc);
+	sessionStorage.setItem("rf", rf);
 	$("#pause").html("paused");
 	$("#pause").attr("disabled", "true");
 	$("#cash").html("$" + toShort(money, 3));
@@ -2080,7 +2084,7 @@ $("#pause").click(function() {
 	$("#pause").blur();
 });
 $("body").keydown(function(event) {
-	if (document.hasFocus()) {
+	if (document.hasFocus() && window.innerWidth >= 1000) {
 		if (event.keyCode == 220 && $("input:focus").length == 0) {
 			if (!document.webkitIsFullScreen) {
 				document.documentElement.requestFullscreen();
@@ -2093,6 +2097,7 @@ $("body").keydown(function(event) {
 		}
 		if ($(".modal.show").length == 0) {
 			if (event.keyCode == 32 && !won) {
+				event.preventDefault();
 				$("#pause").trigger("click");
 			}
 			if (event.keyCode == 16) {
