@@ -903,7 +903,7 @@ function updateDoses() {
 	} else {
 		add = 0;
 	}
-	if (doses >= total) {
+	if (doses + add >= total) {
 		for (var l in distribution) {
 			data[l].doses += deliveries[l];
 		}
@@ -1095,25 +1095,37 @@ function resultsThree(t) {
 	var trial = trials_3[t];
 	var modify = trial.em;
 	if (initial3 + modify > 1) { modify = 1 - initial3; }
-	for (var j in relations) {
-		if (relations[j] + (12 * ((initial3 + modify) - eff)) < 10) {
-			relations[j] += (12 * ((initial3 + modify) - eff));
-		} else {
-			relations[j] = 10;
+	if (initial3 + modify > eff) {
+		for (var j in relations) {
+			if (relations[j] + (12 * ((initial3 + modify) - eff)) < 10) {
+				relations[j] += (12 * ((initial3 + modify) - eff));
+			} else {
+				relations[j] = 10;
+			}
+			$("#" + j + "_r").html("WTC " + toPlaces(relations[j], 1) + " / 10");
 		}
-		if (relations[j] + (0.3 * (trial.sm - smp)) < 10) {
-			relations[j] += (0.3 * (trial.sm - smp));
-		} else {
-			relations[j] = 10;
+	}
+	if (trial.sm > smp) {
+		for (var j in relations) {
+			if (relations[j] + (0.3 * (trial.sm - smp)) < 10) {
+				relations[j] += (0.3 * (trial.sm - smp));
+			} else {
+				relations[j] = 10;
+			}
+			$("#" + j + "_r").html("WTC " + toPlaces(relations[j], 1) + " / 10");
 		}
-		$("#" + j + "_r").html("WTC " + toPlaces(relations[j], 1) + " / 10");
 	}
 	$("#eff").html("Effectiveness: " + toPlaces((initial3 + modify) * 100, 2) + "%");
 	$("#upgrades td:first-child").html("Upgrade Efficiency (current: " + toPlaces((initial3 + modify) * 100, 2) + "%)");
 	var funding = (data[t].cash * 25000000) * (2 ** (1 + modify)) * (modify - (eff - initial3)) * (1 - modify) * ((1.5 * (10 + data[t].cash) * modify) / 8);
 	var safety = toPlaces(100 - toPlaces((aer * (0.5 ** trial.sm)) * 100, 2), 2);
 	$("#upgrades td:last-child").html("Upgrade Safety (current: " + safety + "%)");
-	var toAppend = "<p><b class = 'text-success'>" + toDate(currentDate) + " " + name + " concludes phase III trials with " + toPlaces((initial3 + modify) * 100, 2) + "% effectiveness (+" + toPlaces((initial3 + modify - eff) * 100, 2) + "%) and " + safety + "% safety (+" + toPlaces(safety - (100 - toPlaces(aer * 100, 2)), 2) + "%), and receives $" + toShort(funding, 2) + " in funds</b></p>";
+	var toAppend = "";
+	if (modify > em || trial.sm > smp) {
+		toAppend = "<p><b class = 'text-success'>" + toDate(currentDate) + " " + name + " concludes phase III trials with " + toPlaces((initial3 + modify) * 100, 2) + "% effectiveness (+" + toPlaces((initial3 + modify - eff) * 100, 2) + "%) and " + safety + "% safety (+" + toPlaces(safety - (100 - toPlaces(aer * 100, 2)), 2) + "%), and receives $" + toShort(funding, 2) + " in funds</b></p>";
+	} else {
+		toAppend = "<p><b class = 'text-danger'>" + toDate(currentDate) + " " + name + " concludes phase III trials with " + toPlaces((initial3 + modify) * 100, 2) + "% effectiveness (" + toPlaces((initial3 + modify - eff) * 100, 2) + "%) and " + safety + "% safety (" + toPlaces(safety - (100 - toPlaces(aer * 100, 2)), 2, true) + "%)</b></p>"
+	}
 	eff = initial3 + modify;
 	aer *= (0.5 ** trial.sm);
 	smp = trial.sm;
@@ -1364,6 +1376,7 @@ function makeValid(input, f) {
 		var max = toPlaces(((data[facilities[f][0]].cash * 0.6) ** facilities[f][1]) * 80000, -1);
 		if (!isNaN(toMake) && toMake >= 0 && toMake <= max && toMake % 1 == 0) {
 			$("#makes").val(toMake);
+			$("#makel").html(toShort(toMake, 3));
 			$("#setMake").removeAttr("disabled");
 			$("#setMake").html("Set Daily Manufacture - $" + toShort(15 * toMake, 2) + "/day");
 		} else {
@@ -1371,6 +1384,7 @@ function makeValid(input, f) {
 		}
 	} else {
 		$("#makei").val(toPlaces(Number($("#makes").val()), -1));
+		$("#makel").html(toShort(Number($("#makes").val()), 3));
 		$("#setMake").removeAttr("disabled");
 		$("#setMake").html("Set Daily Manufacture - $" + toShort(15 * Number($("#makei").val()), 2) + "/day");
 	}
@@ -1402,6 +1416,7 @@ function deliveryValid(input) {
 		}
 		if (!isNaN(toDeliver) && toDeliver >= 0 && toDeliver <= max && toDeliver % 1 == 0) {
 			$("#doses").val(toDeliver);
+			$("#dosel").html(toShort(toDeliver, 3));
 			$("#setDelivery").removeAttr("disabled");
 			$("#setDelivery").html("Set Daily Delivery (+$" + toShort(20 * toDeliver, 2) + "/day)");
 		} else {
@@ -1409,6 +1424,7 @@ function deliveryValid(input) {
 		}
 	} else {
 		$("#dosei").val(toPlaces(Number($("#doses").val()), -1));
+		$("#dosel").html(toShort(Number($("#doses").val()), 3));
 		$("#setDelivery").html("Set Daily Delivery (+$" + toShort(20 * toPlaces(Number($("#doses").val()), -1), 2) + "/day)");
 		$("#setDelivery").removeAttr("disabled");
 	}
@@ -1437,6 +1453,7 @@ function dosageValid(input) {
 }
 function countryModal(country) {
 	var cname = (country == "usa" || country == "gbr" ? "the " : "") + data[country].country;
+	var cn = (country == "usa" || country == "gbr" ? "The " : "") + data[country].country;
 	$("#" + country).blur();
 	$("#country h5").html(data[country].country + " <img src = 'flags/" + country + ".png' style = 'height: 1.1em; position: relative; top: -1px; border: 0.5px solid rgba(0, 0, 0, 0.3)' class = 'ml-2'>");
 	$("#country .modal-body").empty();
@@ -1448,15 +1465,14 @@ function countryModal(country) {
 		}
 	}
 	if (won) {
-		$("#country .modal-body").append("<div class = 'alert alert-sucess text-center'>" + cn + " was declared virus-free on " + toDate(data[country].safe) + "</div>");
+		$("#country .modal-body").append("<div class = 'alert alert-success text-center'>" + cn + " was declared virus-free on " + toDate(data[country].safe) + "</div>");
 	} else {
 		if (cleared.length >= 3) {
 			if (!data[country].approved) {
 				$("#country .modal-body").append("<h6>Licensure</h6><p>Your vaccine has not been approved for use in " + cname + ".</p><hr class = 'my-3'>");
 			} else {
 				if (data[country].safe != false) {
-					var cn = (country == "usa" || country == "gbr" ? "The " : "") + data[country].country;
-					$("#country .modal-body").append("<div class = 'alert alert-sucess text-center'>" + cn + " was declared virus-free on " + toDate(data[country].safe) + "</div><hr class = 'my-3'>");
+					$("#country .modal-body").append("<div class = 'alert alert-success text-center'>" + cn + " was declared virus-free on " + toDate(data[country].safe) + "</div><hr class = 'my-3'>");
 				} else {
 					$("#country .modal-body").append("<h6>Licensure</h6><p>Your vaccine has been approved for use in " + cname + ".</p>");
 					if (cleared.length == 4) {
@@ -1466,7 +1482,7 @@ function countryModal(country) {
 							demand = toPlaces(data[country].st * data[country].pop, -1);
 						}
 						$("#country .modal-body").append("<p>The " + data[country].demonym + " government would currently like to order " + toShort(demand, 3) + " vaccine doses per day. As each dose costs $20 to buy, they will pay you up to $" + toShort(20 * demand, 2) + " daily for this order.</p><p>You can designate the number of doses that you would like to deliver to " + cname + " per day. If you do not have enough doses to deliver this amount on a day, then as many doses as possible will be delivered.</p><p>Enter the number of doses that you would like to be sent to " + cname + " per day (maximum " + toShort(demand, 3) + "):</p>");
-						$("#country .modal-body").append("<p class = 'mt-3'><input type = 'text' value = '" + deliveries[country] + "' class = 'form-control form-control-sm mr-2 text-center' size = '13' maxlength = '8' id = 'dosei' placeholder = 'Doses per day' oninput = 'deliveryValid(true, \"" + country + "\")' onkeydown = 'setDelivery(\"" + country + "\", event)'><input type = 'range' class = 'custom-range ml-4' min = '0' max = '" + demand + "' step = '10' id = 'doses' value = '" + deliveries[country] + "' oninput = 'deliveryValid(false, \"" + country + "\")' onkeydown = 'setDelivery(\"" + country + "\", event)'><br><button class = 'btn btn-sm btn-primary mt-3' id = 'setDelivery' disabled onclick = 'setDelivery(\"" + country + "\")'>Set Daily Delivery (+$" + toShort(20 * deliveries[country], 2) + "/day)</button></p><hr class = 'my-3'>");
+						$("#country .modal-body").append("<p class = 'mt-3'><input type = 'text' value = '" + deliveries[country] + "' class = 'form-control form-control-sm mr-2 text-center' size = '13' maxlength = '8' id = 'dosei' placeholder = 'Doses per day' oninput = 'deliveryValid(true, \"" + country + "\")' onkeydown = 'setDelivery(\"" + country + "\", event)'><input type = 'range' class = 'custom-range ml-4' min = '0' max = '" + demand + "' step = '10' id = 'doses' value = '" + deliveries[country] + "' oninput = 'deliveryValid(false, \"" + country + "\")' onkeydown = 'setDelivery(\"" + country + "\", event)'><span class = 'ml-3' id = 'dosel'>" + toShort(deliveries[country], 3) + "</span><br><button class = 'btn btn-sm btn-primary mt-3' id = 'setDelivery' disabled onclick = 'setDelivery(\"" + country + "\")'>Set Daily Delivery (+$" + toShort(20 * deliveries[country], 2) + "/day)</button></p><hr class = 'my-3'>");
 					} else {
 						$("#country .modal-body").append("<hr class = 'my-3'>");
 					}
@@ -1482,7 +1498,7 @@ function countryModal(country) {
 				var max = toPlaces(((data[country].cash * 0.6) ** facilities[found][1]) * 80000, -1);
 				$("#country .modal-body").append("<h6>Manufacturing</h6><p>Your Level " + facilities[found][1] + " facility in " + cname + " can currently manufacture " + toShort(max, 3) + " doses per day.</p>");
 				$("#country .modal-body").append("<p>Each dose costs $15 to manufacture, so manufacturing this maximum amount daily will cost $" + toShort(15 * max, 2) + ".</p><p>You can designate the number of doses that you would like to manufacture per day. If you do not have enough money to manufacture this amount on a day, then manufacturing will pause.</p><p>Enter the number of doses that you would like to manufacture at this facility per day (maximum " + toShort(max, 3) + "):</p>");
-				$("#country .modal-body").append("<p class = 'mt-3'><input type = 'text' value = '" + facilities[found][2] + "' class = 'form-control form-control-sm mr-2 text-center' size = '13' maxlength = '8' id = 'makei' placeholder = 'Doses per day' oninput = 'makeValid(true, " + found + ")' onkeydown = 'setManufacture(" + found + ", event)'><input type = 'range' class = 'custom-range ml-4' min = '0' max = '" + max + "' step = '10' id = 'makes' value = '" + facilities[found][2] + "' oninput = 'makeValid(false, " + found + ")' onkeydown = 'setManufacture(" + found + ", event)'><br><button class = 'btn btn-sm btn-primary mt-3' id = 'setMake' disabled onclick = 'setManufacture(" + found + ")'>Set Daily Manufacture - $" + toShort(15 * facilities[found][2], 2) + "/day</button></p><hr class = 'my-3'>");
+				$("#country .modal-body").append("<p class = 'mt-3'><input type = 'text' value = '" + facilities[found][2] + "' class = 'form-control form-control-sm mr-2 text-center' size = '13' maxlength = '8' id = 'makei' placeholder = 'Doses per day' oninput = 'makeValid(true, " + found + ")' onkeydown = 'setManufacture(" + found + ", event)'><input type = 'range' class = 'custom-range ml-4' min = '0' max = '" + max + "' step = '10' id = 'makes' value = '" + facilities[found][2] + "' oninput = 'makeValid(false, " + found + ")' onkeydown = 'setManufacture(" + found + ", event)'><span class = 'ml-3' id = 'makel'>" + toShort(facilities[found][2], 3) + "</span><br><button class = 'btn btn-sm btn-primary mt-3' id = 'setMake' disabled onclick = 'setManufacture(" + found + ")'>Set Daily Manufacture - $" + toShort(15 * facilities[found][2], 2) + "/day</button></p><hr class = 'my-3'>");
 			} else if (cleared.length == 3) {
 				if (typeof trials_3[country] != "undefined") {
 					$("#country .modal-body").append("<h6>Phase III trials</h6><p>Phase III trials are ongoing at this facility and will require " + (trials_3[country].time == 1 ? "1 more day" : (trials_3[country].time + " more days")) + " to complete.</p><hr class = 'my-3'>");
@@ -1649,8 +1665,10 @@ function victory() {
 	hideWarning = false;
 	$("#pause").html("paused");
 	$("#pause").attr("disabled", "true");
+	$("#cash").html("$" + toShort(money, 3));
+	$("#dose").html(toShort(doses, 3));
 	$("#console").append("<p><b class = 'text-success'>" + toDate(currentDate) + " World declared virus-free with thanks to the " + name + " vaccine</b></p>");
-	$("#console").append("<p><b class = 'text-success'>VIRUS ELIMINATED IN: " + (Math.round(Math.abs((cleared[3] - currentDate) / (24 * 60 * 60 * 1000)))) + " days</b></p>");
+	$("#console").append("<p><b class = 'text-success'>VACCINATION CAMPAIGN TOOK: " + (Math.round(Math.abs((cleared[3] - currentDate) / (24 * 60 * 60 * 1000)))) + " days</b></p>");
 	$("#console").append("<p><b class = 'text-success'>Congratulations! You have ended the pandemic and beat VAX. Click <a href = 'end.html'>here</a> to proceed.</b></p>");
 	$("#console").scrollTop($("#console").prop("scrollHeight"));
 	$("#victory").modal("show");
@@ -1914,7 +1932,7 @@ function updateBonus() {
 		counts += facilities[j][1];
 	}
 	for (var k = 0; k < counts; k++) {
-		if (Math.random() <= (counts * 0.01 + 0.08 + (bonus.length * 0.1 / COUNT))) {
+		if (Math.random() <= (counts * 0.02 + 0.08 + (bonus.length * 0.1 / COUNT))) {
 			var target = bonus[Math.floor(Math.random() * bonus.length)];
 			$("#cp" + target).val(seq_p.charAt(Number(target)));
 			$("#p" + target).html("!");
@@ -2064,6 +2082,9 @@ $("body").keydown(function(event) {
 			} else {
 				document.exitFullscreen();
 			}
+		}
+		if (event.keyCode == 27) {
+			$(".close").trigger("click");
 		}
 		if ($(".modal.show").length == 0) {
 			if (event.keyCode == 32 && !won) {
