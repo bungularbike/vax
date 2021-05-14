@@ -65,20 +65,19 @@
 		<p class = "mb-0 text-center my-auto">VAX</p>
 	</div>
 	<div id = "info" class = "m-5 p-5 text-center">
-		<h3>Welcome to VAX</h3>
+		<h3>Tutorial</h3>
 		<br>
-		<p>It is June 1, 2020. The pandemic has been spreading for 6 months now with no end in sight.</p>
-		<p>Major pharmaceutical companies all over the world have failed to develop an effective vaccine against the virus.</p>
-		<p>In response, <select class = "custom-select custom-select-sm mx-2" style = "width: auto !important"><option selected value = "null" disabled>Country...</option></select> has pooled its resources together into one final effort: <input type = "text" class = "form-control form-control-sm d-inline-block mx-2" placeholder = "Company name..." style = "width: auto !important" autocomplete = "off">.</p>
-		<p>Composed of the nothing but the best and brightest <span id = "demonym"></span> minds, <span id = "company">they are</span> the world's last hope.</p>
-		<p>Do you have what it takes to develop a vaccine and save the world?</p>
-		<p class = "mb-5"><button class = "btn btn-primary" disabled>Yes- let's get started!</button></p>
+		<p>Welcome to VAX. If you have played before you can <a href = "#" onclick = "beginGame()" style = "color: black; text-decoration: underline">skip this tutorial.</a></p>
+		<br>
+		<p>In VAX, your goal is to develop a vaccine and then distribute it around the world to end the pandemic.</p>
+		<p>VAX attempts to portray this in as realistic a manner as possible, dividing the game into phases that match an actual vaccine's development timeline.</p>
+		<p>You will have to conduct research and clinical trials, manufacture and deliver doses, manage your costs, and improve your relations with world governments.</p>
+		<p>This tutorial will teach you how VAX and its mechanics work.</p>
+		<p><button class = "btn btn-primary">Continue</button></p>
 	</div>
-	<p class = "mt-5 small" id = "version">v0.9. Created by Jack Rong and Joseph Belman.</p>
 	<script src = "jquery-3.6.0.min.js"></script>
 	<script src = "bootstrap-4.6.0-dist/js/bootstrap.bundle.min.js"></script>
 	<script>
-		setTimeout(function() { $("select").val("null") }, 10);
 		var countries = [
 		    {
 		        "country": "United States",
@@ -279,51 +278,12 @@
 				s: "*"
 			}
 		];
-		for (var i = 0; i < countries.length; i++) {
-			$("select").append("<option value = '" + i + "'>" + ((countries[i].id == "USA" || countries[i].id == "GBR") ? "the " + countries[i].country : countries[i].country) + "</option>");
-		};
-		function canStart() {
-			if ($("select").val() != "null" && $("input").val().length != "") {
-				$("button").removeAttr("disabled");
-			} else {
-				$("button").attr("disabled", "true");
-			}
-		}
-		$("select").change(function() {
-			$("#demonym").html(countries[$("select").val()].demonym);
-			canStart();
-		});
-		$("input").on("input", function() {
-			$("#company").html($("input").val() == "" ? "they are" : $("input").val() + " is");
-			canStart();
-		});
-		$("button").click(function() {
-			var d = ["A", "C", "U", "G"];
-			var seq_c = "AUG";
-			var seq_p = "M";
-			for (var i = 0; i < (144 - 2); i++) {
-				var o = CODON[Math.floor(Math.random() * 20)];
-				var a = o.n[Math.floor(Math.random() * o.n.length)];
-				if (a.charAt(2) == "*") {
-					a = a.substring(0, 2) + d[Math.floor(Math.random() * 4)];
-				}
-				seq_c += (a);
-				seq_p += (o.s);
-			}
-			seq_c += (CODON[20].n)[Math.floor(Math.random() * 3)];
-			seq_p += "*";
-			localStorage.setItem("seq_c", seq_c);
-			localStorage.setItem("seq_p", seq_p);
-			localStorage.setItem("company", $("input").val());
-			localStorage.setItem("facilities", JSON.stringify([[countries[$("select").val()].id.toLowerCase(), 2]]));
-			localStorage.setItem("initial", Math.random() * (0.55 - 0.5) + 0.5);
+		var country = (JSON.parse(localStorage.getItem("facilities")))[0][0];
+		function beginGame() {
 			$("#black").fadeIn(1200, function() {
-				window.open("tutorial.html", "_self");
+				window.open("game.html", "_self");
 			});
-		});
-		$("select").change(function() {
-			$("select").addClass("black");
-		});
+		}
 		$(document).ready(function() {
 			$("#black").fadeOut(1200);
 		});

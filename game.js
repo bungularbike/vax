@@ -864,6 +864,7 @@ var doses = 0;
 function vaccinate(c, d) {
 
 }
+var dp = 0;
 function updateDoses() {
 	var deductm = 0;
 	var addm = 0;
@@ -898,6 +899,7 @@ function updateDoses() {
 	}
 	if (money + addm >= deductm) {
 		doses += add;
+		dp += add;
 		money += addm;
 		money -= deductm;
 	} else {
@@ -1663,6 +1665,9 @@ var won = false;
 function victory() {
 	won = true;
 	hideWarning = false;
+	localStorage.setItem("cleared", JSON.stringify(cleared));
+	localStorage.setItem("rc", rc);
+	localStorage.setItem("rf", rf);
 	$("#pause").html("paused");
 	$("#pause").attr("disabled", "true");
 	$("#cash").html("$" + toShort(money, 3));
@@ -2212,3 +2217,7 @@ function shortcut(code) {
 		}
 	}
 }
+
+$(document).ready(function() {
+	$("#black").fadeOut(1200);
+});
