@@ -21,11 +21,11 @@
 		.info {
 			z-index: 2;
 			position: absolute;
-			left: calc(100vw + 1.5rem);
+			left: calc(100vw);
 			background-color: rgb(180, 180, 180, 0.5);
 			border: 2px solid black;
 			border-radius: 5px;
-			width: calc(100vw - 6rem)%;
+			width: calc(100vw - 6rem);
 			height: calc(100vh - 6em);
 			transition: left 1s;
 			overflow-y: scroll;
@@ -38,7 +38,7 @@
 			left: -100vw;
 		}
 		.info.active {
-			left: 1.5rem;
+			left: 0;
 		}
 		#black, #size {
 			background-color: black;
@@ -134,7 +134,7 @@
 				<p>Your <b>money</b> is displayed at the top. Once the game begins, you will also see the change in your money (either positive or negative) displayed here as well.</p>
 				<p>Underneath that is your <b>doses</b> in storage. This becomes more important later on in the game when you begin manufacturing & distribution.</p>
 				<p>The large box is the <b>event console</b> which keeps a record of all important events that happen during the course of a VAX game.</p>
-				<p>The <b>genetic code</b> is displayed underneath that. This will be explained in more detail later on.</p>
+				<p>The <b>genetic code</b> is displayed underneath that (if your screen is large enough). This will be explained in more detail later on.</p>
 				<p>Finally, a button to open the <b>research</b> menu is at the bottom. Research will also be described in more detail later on. The research menu can also be opened by pressing SHIFT.</p>
 				<p><button class = "btn btn-primary" onclick = "next(4)">Continue</button></p>
 				<p><a href = "#" onclick = "prev(4)" class = "text-small">Back</a></p>
@@ -325,7 +325,7 @@
 		<p>There are other mechanics in the game, such as requesting funds, which have not been mentioned in this tutorial. However, the most important ones have been covered and it is your job to explore VAX and figure out how all the other ones work!</p>
 		<p class = "font-weight-bold">Good luck and have fun!</p>
 		<br>
-		<p><button class = "btn btn-primary" onclick = "beginGame()" style = "font-size: 1.2rem">Begin</button></p>
+		<p><button class = "btn btn-primary" onclick = "beginGame()" style = "font-size: 1.2rem">Begin Game</button></p>
 		<p><a href = "#" onclick = "prev(16)" class = "text-small">Back</a></p>
 	</div>
 	<script src = "jquery-3.6.0.min.js"></script>

@@ -61,6 +61,11 @@
 				display: block !important;
 			}
 		}
+		a {
+			font-weight: normal !important;
+			color: black;
+			text-decoration: underline;
+		}
 	</style>
 	<meta name = "viewport" content = "width=device-width, initial-scale=1, shrink-to-fit=no">
 </head>
@@ -297,6 +302,19 @@
 				s: "*"
 			}
 		];
+		if (localStorage.getItem("score") != null && !isNaN(Number(localStorage.getItem("score")))) {
+			$("#info p:first-of-type").before("<p class = 'text-danger font-weight-bold'>Your high score: " + Number(localStorage.getItem("score")) + " <a href = '#' onclick = 'clearScore()' id = 'clearscore' class = 'ml-1'>clear</a>");
+		}
+		function clearScore(confirm) {
+			if (typeof confirm == "undefined") {
+				$("p.text-danger").html("Clear high score? <a href = '#' onclick = 'clearScore(true)' class = 'mx-1'>yes</a> <a href = '#' onclick = 'clearScore(false)'>no</a>");
+			} else if (confirm) {
+				localStorage.removeItem("score");
+				$("p.text-danger").remove();
+			} else {
+				$("p.text-danger").html("<p class = 'text-danger font-weight-bold'>Your high score: " + Number(localStorage.getItem("score")) + " <a href = '#' onclick = 'clearScore()' id = 'clearscore' class = 'ml-1'>clear</a>");
+			}
+		}
 		for (var i = 0; i < countries.length; i++) {
 			$("select").append("<option value = '" + i + "'>" + ((countries[i].id == "USA" || countries[i].id == "GBR") ? "the " + countries[i].country : countries[i].country) + "</option>");
 		};
@@ -349,6 +367,7 @@
 		});
 		$(document).ready(function() {
 			if (mobileAndTabletCheck()) {
+				$("#size").empty();
 				$("#mobile").modal("show");
 			} else {
 				$("#black").fadeOut(1200);

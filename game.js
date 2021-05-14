@@ -212,6 +212,17 @@ var events = [
 		"e_effects": []
 	},
 	{
+		"desc": "India: Major religious festivals take place",
+		"d0": (new Date("March 30, 2022")),
+		"c0": 1,
+		"ct": 0,
+		"effects": [
+			{ "country": "ind", "t": "b", "v": 0.19 },
+			{ "country": "ind", "t": "bt", "v": -0.000533 }
+		],
+		"e_effects": []
+	},
+	{
 		"desc": "Peru: Government announces reopening of businesses in key industries",
 		"d0": (new Date("July 12, 2020")),
 		"c0": 0.03,
@@ -357,6 +368,101 @@ var events = [
 					}
 				]
 			}
+		]
+	},
+	{
+		"desc": "Christmas season sees huge increase in air travel",
+		"d0": (new Date("December 15, 2021")),
+		"c0": 1,
+		"ct": 0,
+		"effects": [
+			{ "country": "usa", "t": "b", "v": 0.235 },
+			{ "country": "bra", "t": "b", "v": 0.155 },
+			{ "country": "rus", "t": "b", "v": 0.18 },
+			{ "country": "gbr", "t": "b", "v": 0.27 },
+			{ "country": "gbr", "t": "bt", "v": -0.0053667 },
+			{ "country": "esp", "t": "b", "v": 0.21 },
+			{ "country": "ita", "t": "b", "v": 0.2 },
+			{ "country": "fra", "t": "b", "v": 0.2065 },
+			{ "country": "deu", "t": "b", "v": 0.2063 },
+			{ "country": "per", "t": "b", "v": 0.1671 },
+			{ "country": "chl", "t": "b", "v": 0.23 },
+			{ "country": "chl", "t": "bt", "v": -0.0004667 },
+			{ "country": "mex", "t": "b", "v": 0.17 },
+			{ "country": "can", "t": "b", "v": 0.24 },
+			{ "country": "can", "t": "bt", "v": -0.001667 }
+		],
+		"e_effects": []
+	},
+	{
+		"desc": "Christmas season sees huge increase in air travel",
+		"d0": (new Date("December 15, 2022")),
+		"c0": 1,
+		"ct": 0,
+		"effects": [
+			{ "country": "usa", "t": "b", "v": 0.235 },
+			{ "country": "bra", "t": "b", "v": 0.155 },
+			{ "country": "rus", "t": "b", "v": 0.18 },
+			{ "country": "gbr", "t": "b", "v": 0.27 },
+			{ "country": "gbr", "t": "bt", "v": -0.0053667 },
+			{ "country": "esp", "t": "b", "v": 0.21 },
+			{ "country": "ita", "t": "b", "v": 0.2 },
+			{ "country": "fra", "t": "b", "v": 0.2065 },
+			{ "country": "deu", "t": "b", "v": 0.2063 },
+			{ "country": "per", "t": "b", "v": 0.1671 },
+			{ "country": "chl", "t": "b", "v": 0.23 },
+			{ "country": "chl", "t": "bt", "v": -0.0004667 },
+			{ "country": "mex", "t": "b", "v": 0.17 },
+			{ "country": "can", "t": "b", "v": 0.24 },
+			{ "country": "can", "t": "bt", "v": -0.001667 }
+		],
+		"e_effects": []
+	},
+	{
+		"desc": "USA: Large-scale 4th of July celebrations take place with minimal social distancing",
+		"d0": (new Date("July 4, 2021")),
+		"c0": 1,
+		"ct": 0,
+		"effects": [
+			{ "country": "usa", "t": "b", "v": 0.225 }
+		],
+		"e_effects": []
+	},
+	{
+		"desc": "China: Train stations packed with Chinese New Year travelers",
+		"d0": (new Date("January 31, 2022")),
+		"c0": 1,
+		"ct": 0,
+		"effects": [
+			{ "country": "chn", "t": "b", "v": 0.225 },
+			{ "country": "chn", "t": "bt", "v": -0.0005 }
+		]
+	},
+	{
+		"desc": "Saudi Arabia: Government lifts restrictions on Hajj travels",
+		"d0": (new Date("July 12, 2021")),
+		"c0": 1,
+		"ct": 0,
+		"effects": [
+			{ "country": "sau", "t": "b", "v": 0.2 }
+		]
+	},
+	{
+		"desc": "Saudi Arabia: Hajj takes place",
+		"d0": (new Date("July 12, 2022")),
+		"c0": 1,
+		"ct": 0,
+		"effects": [
+			{ "country": "sau", "t": "b", "v": 0.2 }
+		]
+	},
+	{
+		"desc": "Mexico: Under enormous economic pressure, government signs agreement with US to reopen border",
+		"d0": (new Date("September 13, 2021")),
+		"c0": 0.04,
+		"ct": 0.002,
+		"effects": [
+			{ "country": "mex", "t": "b", "v": 0.18 },
 		]
 	}
 ]
@@ -1122,7 +1228,7 @@ function resultsThree(t) {
 		}
 	}
 	$("#eff").html("Effectiveness: " + toPlaces((initial3 + modify) * 100, 2) + "%");
-	$("#upgrades td:first-child").html("Upgrade Efficiency (current: " + toPlaces((initial3 + modify) * 100, 2) + "%)");
+	$("#upgrades td:first-child").html("Upgrade Effectiveness (current: " + toPlaces((initial3 + modify) * 100, 2) + "%)");
 	var funding = (data[t].cash * 25000000) * (2 ** (1 + modify)) * (modify - (eff - initial3)) * (1 - modify) * ((1.5 * (10 + data[t].cash) * modify) / 8);
 	var safety = toPlaces(100 - toPlaces((aer * (0.5 ** trial.sm)) * 100, 2), 2);
 	$("#upgrades td:last-child").html("Upgrade Safety (current: " + safety + "%)");
@@ -1159,7 +1265,7 @@ function phaseThree(d, e, a, n, dd) {
 	eff = e;
 	aer = a;
 	initial3 = eff;
-	$("#upgrades td:first-child").html("Upgrade Efficiency (current: " + toPlaces(eff * 100, 2) + "%)");
+	$("#upgrades td:first-child").html("Upgrade Effectiveness (current: " + toPlaces(eff * 100, 2) + "%)");
 	$("#upgrades td:last-child").html("Upgrade Safety (current: " + (100 - toPlaces(aer * 100, 2)) + "%)");
 	$("#dosage" + n + " td:last-child button").html("Advanced");
 	$("#d2 button").attr("disabled", "true");
@@ -1672,15 +1778,21 @@ function victory() {
 	sessionStorage.setItem("cleared", JSON.stringify(cleared));
 	sessionStorage.setItem("rc", rc);
 	sessionStorage.setItem("rf", rf);
+	sessionStorage.setItem("dp", dp);
 	$("#pause").html("paused");
 	$("#pause").attr("disabled", "true");
 	$("#cash").html("$" + toShort(money, 3));
 	$("#dose").html(toShort(doses, 3));
 	$("#console").append("<p><b class = 'text-success'>" + toDate(currentDate) + " World declared virus-free with thanks to the " + name + " vaccine</b></p>");
 	$("#console").append("<p><b class = 'text-success'>VACCINATION CAMPAIGN TOOK: " + (Math.round(Math.abs((cleared[3] - currentDate) / (24 * 60 * 60 * 1000)))) + " days</b></p>");
-	$("#console").append("<p><b class = 'text-success'>Congratulations! You have ended the pandemic and beat VAX. Click <a href = 'end.html'>here</a> to proceed.</b></p>");
+	$("#console").append("<p><b class = 'text-success'>Congratulations! You have ended the pandemic and beat VAX. Click <a href = '#' onclick = 'endScreen()'>here</a> to proceed.</b></p>");
 	$("#console").scrollTop($("#console").prop("scrollHeight"));
 	$("#victory").modal("show");
+}
+function endScreen() {
+	$("#black").fadeIn(1200, function() {
+		window.open("end.html", "_self");
+	});
 }
 var who = false;
 function updateVaccinations() {

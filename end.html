@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>VAX</title>
+	<link rel = "stylesheet" href = "bootstrap-4.6.0-dist/css/bootstrap.min.css" type = "text/css" />
+	<style>
+		body {
+			background-color: rgba(0, 123, 255, 0.8);
+			overflow-x: hidden;
+		}
+		#background {
+			z-index: 1;
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100vw;
+			height: 100vh;
+			opacity: 0.15;
+			font-size: 65vh;
+		}
+		.info {
+			z-index: 2;
+			position: absolute;
+			left: calc(100vw);
+			background-color: rgb(180, 180, 180, 0.5);
+			border: 2px solid black;
+			border-radius: 5px;
+			width: calc(100vw - 6rem);
+			height: calc(100vh - 6em);
+			transition: left 1s;
+			overflow-y: scroll;
+			padding-bottom: 0 !important;
+		}
+		.info p.text-small {
+			margin-bottom: 0;
+		}
+		.info.out {
+			left: -100vw;
+		}
+		.info.active {
+			left: 0;
+		}
+		#black, #size {
+			background-color: black;
+			position: fixed;
+			top: 0;
+			left: 0;
+			height: 100vh;
+			width: 100vw;
+			z-index: 10;
+		}
+		@media (max-width: 999px) {
+			#size {
+				display: block !important;
+			}
+		}
+		a {
+			color: black;
+			text-decoration: underline;
+		}
+		li {
+			list-style-position: inside;
+		}
+		input {
+			font-size: 1.1rem;
+			font-family: monospace !important;
+			text-align: center !important;
+			border: 0 !important;
+			border-radius: 2px;
+			border-bottom-left-radius: 0px;
+			border-bottom-right-radius: 0px;
+			border-bottom: 2px solid black !important;
+			background-color: transparent;
+		}
+		h3 {
+			margin-bottom: 0;
+		}
+		#progress {
+			position: fixed;
+			bottom: 0.75rem;
+			left: 0;
+			width: 100vw;
+			text-align: center;
+		}
+	</style>
+	<meta name = "viewport" content = "width=device-width, initial-scale=1, shrink-to-fit=no">
+</head>
+<body>
+	<div id = "black"></div>
+	<div id = "size" style = "display: none"><p style = "color: white" class = "text-center w-100 mt-5 h3">Sorry! Your screen is not large enough to properly display VAX.</p></div>
+	<div id = "background">
+		<p class = "mb-0 text-center my-auto">VAX</p>
+	</div>
+	<div class = "info m-5 p-5 text-center active" id = "1">
+		<h3>Game Summary</h3>
+		<br>
+		<h6>Headquarters location: <span id = "hq"></span></h6>
+		<br>
+		<h6>Preclinical: <span id = "t0"></span></h6>
+		<h6>Phase I: <span id = "t1"></span></h6>
+		<h6>Phase II: <span id = "t2"></span></h6>
+		<h6>Phase III: <span id = "t3"></span></h6>
+		<h6>Vaccination Campaign: <span id = "t4"></span></h6>
+		<h6>Pandemic Ended In: <span id = "total"></span></h6>
+		<br>
+		<h6>Total research costs: $<span id = "rc"></span></h6>
+		<h6>Total research funded: $<span id = "rf"></span></h6>
+		<br>
+		<h6>Total doses produced: <span id = "dp"></span></h6>
+		<br>
+		<h4>Score: <span id = "score"></span></h4>
+		<br>
+		<p><button class = "btn btn-primary" onclick = "next(1)">Continue</button></p>
+	</div>
+	<div class = "info m-5 p-5 text-center" id = "2">
+		<h3>How realistic was this?</h3>
+		<br>
+		<p>While every attempt was made to portray VAX in as realistic a light as possible, there are still some significant differences between VAX and how a real vaccine would be developed. Here are a few of them:</p>
+		<ul>
+			<li class = "mb-3">In VAX, the preclinical phase revolved around translating an RNA nucleotide sequence into a protein sequence consisting of amino acids. Of course, computers can do this for real biologists - but the hard part isn't translating the sequence.</li>
+			<li class = "mb-3">The upgrades presented in Phase III of VAX are actually more likely to be studied by real scientists in the preclinical phase. This is because hardly any vaccine's active ingredient is simply a near-identical copy of virus RNA/DNA and protein. Most require several modifications before they can even be 50% effective.</li>
+			<li class = "mb-3">In VAX, clinical trials could start at the click of a button - but in reality, they would require a lot of work to gather volunteers, set protocols, gain licensure, etc.</li>
+			<li class = "mb-3">Speaking of licensure, in VAX you could gain licensure in countries just by reaching a certain effectiveness/safety/WTC. However, even obtaining emergency licensure in the real world would require a lengthy application process with any government.</li>
+			<li class = "mb-3">There were five different types of excipients presented in Phase I, along with four different options for each. Not only are there a lot more than five excipients in most real vaccines, but there are not four "preset" options either!</li>
+			<li>The cost of conducting research was severely underestimated in VAX (real vaccines could cost over $1 billion to develop), but so was the amount of research funds given to you by governments!</li>
+		</ul>
+		<p>If you are interested in learning more about actual vaccines and their development, <a href = "http://historyofvaccines.org" target = "_blank">historyofvaccines.org</a> by The College of Physicians in Philadelphia is a great place to start!</p>
+		<p><button class = "btn btn-primary" onclick = "next(2)">Continue</button></p>
+		<p><a href = "#" onclick = "prev(2)" class = "text-small">Back</a></p>
+	</div>
+	<div class = "info m-5 p-5 text-center" id = "3">
+		<h3>End</h3>
+		<br>
+		<p>Thank you for playing VAX. We hope that you enjoyed it!</p>
+		<p>Have fun, stay safe, and most importantly - <b>get vaccinated!</b></p>
+		<br>
+		<p><button class = "btn btn-primary" onclick = "endGame()" style = "font-size: 1.2rem">End Game</button></p>
+		<br>
+		<p><a href = "#" onclick = "prev(3)" class = "text-small">Back</a></p>
+		<br>
+		<p class = "small">Sources consulted in the development of VAX:</p>
+		<ul class = "small list-unstyled">
+			<li>Moderna</li>
+			<li>CDC</li>
+			<li>National Institutes of Health</li>
+			<li>WHO</li>
+			<li>Mathematical Association of America</li>
+			<li>Stanford University</li>
+			<li>historyofvaccines.org</li>
+			<li>Berthub.eu</li>
+			<li>Hackensack Meridian Health</li>
+		</ul>
+		<p class = "small mt-4">v0.9. Created by Jack Rong and Joseph Belman.</p>
+	</div>
+	<script src = "jquery-3.6.0.min.js"></script>
+	<script src = "bootstrap-4.6.0-dist/js/bootstrap.bundle.min.js"></script>
+	<script>
+		if (sessionStorage.getItem("cleared") == null) {
+			window.open("index.html", "_self");
+		}
+		var data = {
+		    usa: {
+		        "country": "United States",
+		        "id": "USA",
+		        "pop": 328239520,
+		        "cc": 1820000,
+		        "pcc": 0.0055447314814498876,
+		        "cd": 108610,
+		        "nc": 21897,
+		        "nd": 776,
+		        "b": 0.23,
+		        "k": 0.2,
+		        "bt": -0.00031667,
+		        "d": 0.0154,
+		        "cash": 10,
+		        "demonym": "American",
+		        "ks": "A",
+		        "kc": 65,
+		        "leader": "president"
+		    },
+		    bra: {
+		        "country": "Brazil",
+		        "id": "BRA",
+		        "pop": 211049530,
+		        "cc": 526477,
+		        "pcc": 0.0024945660859799117,
+		        "cd": 29937,
+		        "nc": 11598,
+		        "nd": 623,
+		        "b": 0.174,
+		        "k": 0.1429,
+		        "bt": -0.00031667,
+		        "d": 0.034,
+		        "cash": 8,
+		        "demonym": "Brazilian",
+		        "ks": "B",
+		        "kc": 66,
+		        "leader": "president"
+		    },
+		    rus: {
+		        "country": "Russia",
+		        "id": "RUS",
+		        "pop": 144406260,
+		        "cc": 414328,
+		        "pcc": 0.0028691830949710904,
+		        "cd": 4849,
+		        "nc": 8485,
+		        "nd": 156,
+		        "b": 0.16,
+		        "k": 0.1667,
+		        "bt": -0.00000667,
+		        "d": 0.0251,
+		        "cash": 8,
+		        "demonym": "Russian",
+		        "ks": "R",
+		        "kc": 82,
+		        "leader": "president"
+		    },
+		    gbr: {
+		        "country": "United Kingdom",
+		        "id": "GBR",
+		        "pop": 66836330,
+		        "cc": 258983,
+		        "pcc": 0.003874883614944148,
+		        "cd": 37613,
+		        "nc": 1444,
+		        "nd": 86,
+		        "b": 0.18,
+		        "k": 0.2,
+		        "bt": 0,
+		        "d": 0.0153,
+		        "cash": 10,
+		        "demonym": "British",
+		        "ks": "K",
+		        "kc": 75,
+		        "leader": "prime minster"
+		    },
+		    esp: {
+		        "country": "Spain",
+		        "id": "ESP",
+		        "pop": 47133520,
+		        "cc": 239638,
+		        "pcc": 0.005084237290149346,
+		        "cd": 27127,
+		        "nc": 159,
+		        "nd": 0,
+		        "b": 0.175,
+		        "k": 0.18,
+		        "bt": 0,
+		        "d": 0.0203,
+		        "cash": 8,
+		        "demonym": "Spanish",
+		        "ks": "E",
+		        "kc": 69,
+		        "leader": "president"
+		    },
+		    ita: {
+		        "country": "Italy",
+		        "id": "ITA",
+		        "pop": 60302090,
+		        "cc": 233197,
+		        "pcc": 0.0038671462299233743,
+		        "cd": 33475,
+		        "nc": 200,
+		        "nd": 60,
+		        "b": 0.18,
+		        "k": 0.18,
+		        "bt": 0,
+		        "d": 0.021,
+		        "cash": 8,
+		        "demonym": "Italian",
+		        "ks": "L",
+		        "kc": 76,
+		        "leader": "president"
+		    },
+		    ind: {
+		        "country": "India",
+		        "id": "IND",
+		        "pop": 1366417750,
+		        "cc": 198370,
+		        "pcc": 0.000145175221852907,
+		        "cd": 5608,
+		        "nc": 7761,
+		        "nd": 200,
+		        "b": 0.18,
+		        "k": 0.1429,
+		        "bt": -0.000325,
+		        "d": 0.024,
+		        "cash": 8,
+		        "demonym": "Indian",
+		        "ks": "N",
+		        "kc": 78,
+		        "leader": "prime minister"
+		    },
+		    fra: {
+		        "country": "France",
+		        "id": "FRA",
+		        "pop": 67055850,
+		        "cc": 191382,
+		        "pcc": 0.002854068660676138,
+		        "cd": 28837,
+		        "nc": 407,
+		        "nd": 32,
+		        "b": 0.179,
+		        "k": 0.18,
+		        "bt": 0,
+		        "d": 0.0202,
+		        "cash": 10,
+		        "demonym": "French",
+		        "ks": "F",
+		        "kc": 70,
+		        "leader": "president"
+		    },
+		    deu: {
+		        "country": "Germany",
+		        "id": "DEU",
+		        "pop": 83092960,
+		        "cc": 183594,
+		        "pcc": 0.0022095012622007928,
+		        "cd": 8555,
+		        "nc": 184,
+		        "nd": 15,
+		        "b": 0.179,
+		        "k": 0.18,
+		        "bt": 0,
+		        "d": 0.0211,
+		        "cash": 10,
+		        "demonym": "German",
+		        "ks": "G",
+		        "kc": 71,
+		        "leader": "chancellor"
+		    },
+		    per: {
+		        "country": "Peru",
+		        "id": "PER",
+		        "pop": 32510450,
+		        "cc": 170039,
+		        "pcc": 0.005230287492175593,
+		        "cd": 4634,
+		        "nc": 5563,
+		        "nd": 128,
+		        "b": 0.135,
+		        "k": 0.145,
+		        "bt": -0.00031667,
+		        "d": 0.0345,
+		        "cash": 6,
+		        "demonym": "Peruvian",
+		        "ks": "U",
+		        "kc": 85,
+		        "leader": "president"
+		    },
+		    tur: {
+		        "country": "Turkey",
+		        "id": "TUR",
+		        "pop": 83429620,
+		        "cc": 164769,
+		        "pcc": 0.0019749460683148264,
+		        "cd": 4563,
+		        "nc": 827,
+		        "nd": 23,
+		        "b": 0.167,
+		        "k": 0.167,
+		        "bt": 0.0000887,
+		        "d": 0.017,
+		        "cash": 6,
+		        "demonym": "Turkish",
+		        "ks": "T",
+		        "kc": 84,
+		        "leader": "president"
+		    },
+		    irn: {
+		        "country": "Iran",
+		        "id": "IRN",
+		        "pop": 82913910,
+		        "cc": 154445,
+		        "pcc": 0.001862715194591595,
+		        "cd": 7878,
+		        "nc": 2979,
+		        "nd": 81,
+		        "b": 0.153,
+		        "k": 0.153,
+		        "bt": 0.000013,
+		        "d": 0.0304,
+		        "cash": 6,
+		        "demonym": "Iranian",
+		        "ks": "I",
+		        "kc": 73,
+		        "leader": "president"
+		    },
+		    chl: {
+		        "country": "Chile",
+		        "id": "CHL",
+		        "pop": 18952040,
+		        "cc": 129020,
+		        "pcc": 0.006807710410066673,
+		        "cd": 1113,
+		        "nc": 5470,
+		        "nd": 59,
+		        "b": 0.157,
+		        "k": 0.1667,
+		        "bt": 0,
+		        "d": 0.025,
+		        "cash": 6,
+		        "demonym": "Chilean",
+		        "ks": "H",
+		        "kc": 72,
+		        "leader": "president"
+		    },
+		    mex: {
+		        "country": "Mexico",
+		        "id": "MEX",
+		        "pop": 127575530,
+		        "cc": 93435,
+		        "pcc": 0.0007323896675169604,
+		        "cd": 10167,
+		        "nc": 2771,
+		        "nd": 237,
+		        "b": 0.17,
+		        "k": 0.153,
+		        "bt": -0.0001667,
+		        "d": 0.055,
+		        "cash": 6,
+		        "demonym": "Mexican",
+		        "ks": "M",
+		        "kc": 77,
+		        "leader": "president"
+		    },
+		    can: {
+		        "country": "Canada",
+		        "id": "CAN",
+		        "pop": 37593380,
+		        "cc": 93288,
+		        "pcc": 0.002481500732309784,
+		        "cd": 7952,
+		        "nc": 809,
+		        "nd": 46,
+		        "b": 0.19,
+		        "k": 0.2,
+		        "bt": 0.00005,
+		        "d": 0.015,
+		        "cash": 8,
+		        "demonym": "Canadian",
+		        "ks": "C",
+		        "kc": 67,
+		        "leader": "prime minister"
+		    },
+		    sau: {
+		        "country": "Saudi Arabia",
+		        "id": "SAU",
+		        "pop": 34268530,
+		        "cc": 87142,
+		        "pcc": 0.0025429161974557996,
+		        "cd": 525,
+		        "nc": 1881,
+		        "nd": 22,
+		        "b": 0.1633,
+		        "k": 0.1667,
+		        "bt": -0.00333,
+		        "d": 0.0245,
+		        "cash": 6,
+		        "demonym": "Saudi",
+		        "ks": "D",
+		        "kc": 68,
+		        "leader": "king"
+		    },
+		    chn: {
+		        "country": "China",
+		        "id": "CHN",
+		        "pop": 1397715000,
+		        "cc": 84154,
+		        "pcc": 0.000060208268495365654,
+		        "cd": 4638,
+		        "nc": 8,
+		        "nd": 0,
+		        "b": 0.17,
+		        "k": 0.17,
+		        "bt": 0.00005,
+		        "d": 0.0238,
+		        "cash": 8,
+		        "demonym": "Chinese",
+		        "ks": "Z",
+		        "kc": 90,
+		        "leader": "president"
+		    },
+		    pak: {
+		        "country": "Pakistan",
+		        "id": "PAK",
+		        "pop": 216565320,
+		        "cc": 76398,
+		        "pcc": 0.0003527711639148872,
+		        "cd": 1621,
+		        "nc": 3938,
+		        "nd": 78,
+		        "b": 0.1325,
+		        "k": 0.1458,
+		        "bt": -0.000067,
+		        "d": 0.0329,
+		        "cash": 6,
+		        "demonym": "Pakistani",
+		        "ks": "P",
+		        "kc": 80,
+		        "leader": "prime minister"
+		    }
+		}
+		const RELATIONS = JSON.parse("[[\"usa\",\"bra\",3.5],[\"usa\",\"rus\",1.5],[\"usa\",\"gbr\",4],[\"usa\",\"esp\",3.8],[\"usa\",\"ita\",3.8],[\"usa\",\"ind\",3.5],[\"usa\",\"fra\",4],[\"usa\",\"deu\",4],[\"usa\",\"per\",3.5],[\"usa\",\"tur\",2.3],[\"usa\",\"irn\",1],[\"usa\",\"chl\",3.5],[\"usa\",\"mex\",3.2],[\"usa\",\"can\",4],[\"usa\",\"sau\",2.9],[\"usa\",\"chn\",1.5],[\"usa\",\"pak\",2.8],[\"bra\",\"rus\",3.4],[\"bra\",\"gbr\",3.5],[\"bra\",\"esp\",3.5],[\"bra\",\"ita\",3.5],[\"bra\",\"ind\",3.8],[\"bra\",\"fra\",3.5],[\"bra\",\"deu\",3.5],[\"bra\",\"per\",3.8],[\"bra\",\"tur\",3.5],[\"bra\",\"irn\",3],[\"bra\",\"chl\",3.8],[\"bra\",\"mex\",3.8],[\"bra\",\"can\",3.5],[\"bra\",\"sau\",3.5],[\"bra\",\"chn\",3.5],[\"bra\",\"pak\",3.5],[\"rus\",\"gbr\",2.8],[\"rus\",\"esp\",3.2],[\"rus\",\"ita\",3.4],[\"rus\",\"ind\",3.8],[\"rus\",\"fra\",3.4],[\"rus\",\"deu\",2.8],[\"rus\",\"per\",3.4],[\"rus\",\"tur\",2.8],[\"rus\",\"irn\",3.8],[\"rus\",\"chl\",3.4],[\"rus\",\"mex\",3.5],[\"rus\",\"can\",3.2],[\"rus\",\"sau\",3.6],[\"rus\",\"chn\",3.7],[\"rus\",\"pak\",3.3],[\"gbr\",\"esp\",3.5],[\"gbr\",\"ita\",3.6],[\"gbr\",\"ind\",3.6],[\"gbr\",\"fra\",3.8],[\"gbr\",\"deu\",3.6],[\"gbr\",\"per\",3.5],[\"gbr\",\"tur\",3.6],[\"gbr\",\"irn\",2.8],[\"gbr\",\"chl\",3.5],[\"gbr\",\"mex\",3.5],[\"gbr\",\"can\",4],[\"gbr\",\"sau\",3.4],[\"gbr\",\"chn\",2],[\"gbr\",\"pak\",3.5],[\"esp\",\"ita\",3.8],[\"esp\",\"ind\",3.5],[\"esp\",\"fra\",3.8],[\"esp\",\"deu\",3.8],[\"esp\",\"per\",3.5],[\"esp\",\"tur\",3.6],[\"esp\",\"irn\",3],[\"esp\",\"chl\",3.5],[\"esp\",\"mex\",3.4],[\"esp\",\"can\",3.8],[\"esp\",\"sau\",3.5],[\"esp\",\"chn\",3],[\"esp\",\"pak\",3.5],[\"ita\",\"ind\",3.5],[\"ita\",\"fra\",4],[\"ita\",\"deu\",4],[\"ita\",\"per\",3.6],[\"ita\",\"tur\",3.5],[\"ita\",\"irn\",3.4],[\"ita\",\"chl\",3.5],[\"ita\",\"mex\",3.5],[\"ita\",\"can\",3.8],[\"ita\",\"sau\",3.5],[\"ita\",\"chn\",3.4],[\"ita\",\"pak\",3.5],[\"ind\",\"fra\",3.8],[\"ind\",\"deu\",3.5],[\"ind\",\"per\",3.5],[\"ind\",\"tur\",2.8],[\"ind\",\"irn\",3.3],[\"ind\",\"chl\",3.5],[\"ind\",\"mex\",3.8],[\"ind\",\"can\",3.5],[\"ind\",\"sau\",3.6],[\"ind\",\"chn\",2.5],[\"ind\",\"pak\",1],[\"fra\",\"deu\",4],[\"fra\",\"per\",3.5],[\"fra\",\"tur\",3.2],[\"fra\",\"irn\",2.8],[\"fra\",\"chl\",3.5],[\"fra\",\"mex\",3.5],[\"fra\",\"can\",4],[\"fra\",\"sau\",3.7],[\"fra\",\"chn\",3],[\"fra\",\"pak\",3.2],[\"deu\",\"per\",3.5],[\"deu\",\"tur\",3.2],[\"deu\",\"irn\",2.7],[\"deu\",\"chl\",3.5],[\"deu\",\"mex\",3.5],[\"deu\",\"can\",3.5],[\"deu\",\"sau\",3.3],[\"deu\",\"chn\",3.5],[\"deu\",\"pak\",3.4],[\"per\",\"tur\",3.5],[\"per\",\"irn\",3.3],[\"per\",\"chl\",3.4],[\"per\",\"mex\",3.8],[\"per\",\"can\",3.5],[\"per\",\"sau\",3.5],[\"per\",\"chn\",3.5],[\"per\",\"pak\",3.5],[\"tur\",\"irn\",3.3],[\"tur\",\"chl\",3.5],[\"tur\",\"mex\",3.6],[\"tur\",\"can\",3.3],[\"tur\",\"sau\",2.7],[\"tur\",\"chn\",3.5],[\"tur\",\"pak\",3.7],[\"irn\",\"chl\",3.3],[\"irn\",\"mex\",3.4],[\"irn\",\"can\",2],[\"irn\",\"sau\",1],[\"irn\",\"chn\",3.6],[\"irn\",\"pak\",3.4],[\"chl\",\"mex\",4],[\"chl\",\"can\",3.8],[\"chl\",\"sau\",3.5],[\"chl\",\"chn\",3.5],[\"chl\",\"pak\",3.3],[\"mex\",\"can\",3.5],[\"mex\",\"sau\",3.5],[\"mex\",\"chn\",3.8],[\"mex\",\"pak\",3.6],[\"can\",\"sau\",3.2],[\"can\",\"chn\",2.8],[\"can\",\"pak\",3.6],[\"sau\",\"chn\",3.8],[\"sau\",\"pak\",3.8],[\"chn\",\"pak\",3.7]]");
+		const CODON = [
+			{
+				l: "Phe",
+				n: ["UUU", "UUC"],
+				s: "F"
+			},
+			{
+				l: "Leu",
+				n: ["UUA", "UUG", "CU*"],
+				s: "L"
+			},
+			{
+				l: "Ser",
+				n: ["UC*", "AGU", "AGC"],
+				s: "S"
+			},
+			{
+				l: "Tyr",
+				n: ["UAU", "UAC"],
+				s: "Y"
+			},
+			{
+				l: "Cys",
+				n: ["UGU", "UGC"],
+				s: "C"
+			},
+			{
+				l: "Trp",
+				n: ["UGG"],
+				s: "W"
+			},
+			{
+				l: "Pro",
+				n: ["CC*"],
+				s: "P"
+			},
+			{
+				l: "His",
+				n: ["CAU", "CAC"],
+				s: "H"
+			},
+			{
+				l: "Gln",
+				n: ["CAA", "CAG"],
+				s: "Q"
+			},
+			{
+				l: "Arg",
+				n: ["CG*", "AGA", "AGG"],
+				s: "R"
+			},
+			{
+				l: "Ile",
+				n: ["AUU", "AUC", "AUA"],
+				s: "I"
+			},
+			{
+				l: "Met",
+				n: ["AUG"],
+				s: "M"
+			},
+			{
+				l: "Thr",
+				n: ["AC*"],
+				s: "T"
+			},
+			{
+				l: "Asn",
+				n: ["AAU", "AAC"],
+				s: "N"
+			},
+			{
+				l: "Lys",
+				n: ["AAA", "AAG"],
+				s: "K"
+			},
+			{
+				l: "Val",
+				n: ["GU*"],
+				s: "V"
+			},
+			{
+				l: "Ala",
+				n: ["GC*"],
+				s: "A"
+			},
+			{
+				l: "Asp",
+				n: ["GAU", "GAC"],
+				s: "D"
+			},
+			{
+				l: "Glu",
+				n: ["GAA", "GAG"],
+				s: "E"
+			},
+			{
+				l: "Gly",
+				n: ["GG*"],
+				s: "G"
+			},
+			{
+				l: "TER",
+				n: ["UAA", "UAG", "UGA"],
+				s: "*"
+			}
+		];
+		function toPlaces(n, x, q = false) {
+			return (((q && n > 0) ? "+" : 0) + Math.round((n + Number.EPSILON) * (10 ** x)) / (10 ** x));
+		}
+		function toShort(z, x, q = false) {
+			if (Math.abs(z) < 1000) {
+				return toPlaces(z, 0);
+			} else {
+				var n = toPlaces(z, x);
+				if (z < 0) { n = -1 * z }
+				x = Math.pow(10, x);
+			    var a = ["K", "M", "B", "T"];
+			    for (var i = a.length - 1; i >= 0; i--) {
+			        var s = Math.pow(10, (i + 1) * 3);
+			        if (s <= n) {
+			             n = Math.round(n * x / s) / x;
+			             if ((n == 1000) && (i < a.length - 1)) {
+			                 n = 1;
+			                 i++;
+			             }
+			             n += a[i];
+			             break;
+			        }
+			    }
+			    if (z < 0) {
+			    	return ("-" + n);
+			    } else if (q) {
+			    	return ("+" + n);
+			    } else {
+			    	return n;
+			    }
+			}
+		}
+		function toDate(d) {
+			return ((d.getMonth() < 9 ? "0" + (d.getMonth() + 1) : (d.getMonth() + 1)) + "/" + (d.getDate() < 10 ? "0" + d.getDate() : d.getDate()) + "/" + d.getFullYear().toString().substring(2));
+		}
+		var facilities = JSON.parse(sessionStorage.getItem("facilities"));
+		$("#hq").html(data[facilities[0][0]].country + "<img src = 'flags/" + facilities[0][0] + ".png' style = 'height: 1.1em; position: relative; top: -2px; border: 0.5px solid rgba(0, 0, 0, 0.3)' class = 'ml-2'>");
+		var cleared = JSON.parse(sessionStorage.getItem("cleared"));
+		cleared.splice(0, 0, new Date("June 1, 2020"));
+		console.log(cleared);
+		for (var i = 0; i < (cleared.length - 1); i++) {
+			$("#t" + i).html((Math.round(Math.abs((new Date(cleared[i + 1]) - new Date(cleared[i])) / (24 * 60 * 60 * 1000)))) + " days (" + toDate(new Date(cleared[i + 1])) + ")");
+		}
+		$("#total").html((Math.round(Math.abs((new Date(cleared[cleared.length - 1]) - new Date(cleared[0])) / (24 * 60 * 60 * 1000)))) + " days");
+		$("#rc").html(toShort(Number(sessionStorage.getItem("rc")), 3));
+		$("#rf").html(toShort(Number(sessionStorage.getItem("rf")), 3));
+		$("#dp").html(toShort(Number(sessionStorage.getItem("dp")), 3));
+		var days = (Math.round(Math.abs((new Date(cleared[cleared.length - 1]) - new Date(cleared[0])) / (24 * 60 * 60 * 1000))));
+		var rc = Number(sessionStorage.getItem("rc"));
+		var rf = Number(sessionStorage.getItem("rf"));
+		var dp = Number(sessionStorage.getItem("dp"));
+		var score = toPlaces(500 * ((12 - data[facilities[0][0]].cash) / 2) * (365 * 3 / days) * (rf / rc) * (dp / 2000000000), 0);
+		$("#score").html(score);
+		if (localStorage.getItem("score") != null && Number(localStorage.getItem("score")) < score) {
+			$("h4").after("<h6 class = 'text-danger'>New high score (+" + (score - Number(localStorage.getItem("score"))) + ")!");
+			localStorage.setItem("score", score);
+		}
+		if (localStorage.getItem("score") == null) {
+			$("h4").after("<h6 class = 'text-danger'>New high score!");
+			localStorage.setItem("score", score);
+		}
+		for (var i = 2; i <= 16; i++) {
+			$("#" + i + ", #" + i + " *").attr("tabindex", "-1");
+		}
+		function prev(id) {
+			$("#" + id).removeClass("active");
+			$("#" + id).attr("tabindex", "-1");
+			$("#" + (id - 1)).removeClass("out").addClass("active");
+			$("#" + (id - 1) + " *").removeAttr("tabindex", "-1");
+		}
+		function next(id) {
+			$("#" + id).removeClass("active").addClass("out");
+			$("#" + id + " *").attr("tabindex", "-1");
+			$("#" + (id + 1)).addClass("active");
+			$("#" + (id + 1) + " *").removeAttr("tabindex", "-1");
+		}
+		function endGame() {
+			sessionStorage.clear();
+			$("#black").fadeIn(1200, function() {
+				window.open("index.html", "_self");
+			});
+		}
+		$(document).ready(function() {
+			window.scrollTo(0, 0);
+			$("#black").fadeOut(1200);
+		});
+	</script>
+</body>
+</html>
