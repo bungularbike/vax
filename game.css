@@ -2,6 +2,11 @@
 	font-family: Ubuntu;
 	src: url("Ubuntu/Ubuntu-Regular.ttf");
 }
+@font-face {
+	font-family: Ubuntu;
+	src: url("Ubuntu/Ubuntu-Bold.ttf");
+	font-weight: bold;
+}
 
 * {
 	font-family: Ubuntu;
