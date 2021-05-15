@@ -1175,7 +1175,7 @@ function checkLicensure() {
 			$("#console").append("<p><b class = 'text-success'>" + toDate(currentDate) + " " + name + " obtains license to vaccinate in " + cname + "</b></p>");
 			$("#" + i + "_v").html("(+0) 0");
 			if (cleared.length == 3) {
-				$("#d3 > p").html("<button class = 'btn btn-primary btn-sm' onclick = 'completeResearch()'>Finalize Vaccine and Begin Manufacturing & Distribution</button>");
+				$("#d3 > p").html("<button class = 'btn btn-primary btn-sm' onclick = 'javascript:completeResearch()'>Finalize Vaccine and Begin Manufacturing & Distribution</button>");
 			}
 		}
 	}
@@ -1304,8 +1304,8 @@ function phaseThree(d, e, a, n, dd) {
 	$("#t3").removeClass("disabled");
 	$("#t3").html("Phase III");
 	for (var i = 0; i < upgrades[0].length; i++) {
-		$("#d3 #upgrades").append("<tr><td><div class = 'card-deck my-2'><div class = 'card' id = 'upgrade0" + i + "'><div class = 'card-body'><h6 class = 'card-title mb-2'>" + upgrades[0][i][0] + "</h6><p class = 'card-text'>" + upgrades[0][i][1] + "</p></div><div class = 'card-footer'><p class = 'mb-0'><select class = 'custom-select custom-select-sm' onchange = 'canResearch(0, " + i + ")'><option value = 'null' selected disabled>Facility...</option></select><button disabled class = 'btn btn-primary btn-sm ml-3' onclick = 'researchUpgrade(0, " + i + ")'>Research - $1M</button></p></div></div></div></td></tr>");
-		$("#d3 #upgrades tr:last-child .card-deck").append("<div class = 'card' id = 'upgrade1" + i + "'><div class = 'card-body'><h6 class = 'card-title mb-2'>" + upgrades[1][i][0] + "</h6><p class = 'card-text'>" + upgrades[1][i][1] + "</p></div><div class = 'card-footer'><p class = 'mb-0'><select class = 'custom-select custom-select-sm' onchange = 'canResearch(1, " + i + ")'><option value = 'null' selected disabled>Facility...</option></select><button disabled class = 'btn btn-primary btn-sm ml-3' onclick = 'researchUpgrade(1, " + i + ")'>Research - $1M</button></p></div></div>");
+		$("#d3 #upgrades").append("<tr><td><div class = 'card-deck my-2'><div class = 'card' id = 'upgrade0" + i + "'><div class = 'card-body'><h6 class = 'card-title mb-2'>" + upgrades[0][i][0] + "</h6><p class = 'card-text'>" + upgrades[0][i][1] + "</p></div><div class = 'card-footer'><p class = 'mb-0'><select class = 'custom-select custom-select-sm' onchange = 'canResearch(0, " + i + ")'><option value = 'null' selected disabled>Facility...</option></select><button disabled class = 'btn btn-primary btn-sm ml-3' onclick = 'javascript:researchUpgrade(0, " + i + ")'>Research - $1M</button></p></div></div></div></td></tr>");
+		$("#d3 #upgrades tr:last-child .card-deck").append("<div class = 'card' id = 'upgrade1" + i + "'><div class = 'card-body'><h6 class = 'card-title mb-2'>" + upgrades[1][i][0] + "</h6><p class = 'card-text'>" + upgrades[1][i][1] + "</p></div><div class = 'card-footer'><p class = 'mb-0'><select class = 'custom-select custom-select-sm' onchange = 'canResearch(1, " + i + ")'><option value = 'null' selected disabled>Facility...</option></select><button disabled class = 'btn btn-primary btn-sm ml-3' onclick = 'javascript:researchUpgrade(1, " + i + ")'>Research - $1M</button></p></div></div>");
 	}
 	for (var j = 0; j < facilities.length; j++) {
 		$("#d3 select").append("<option value = '" + facilities[j][0] + "'>" + data[facilities[j][0]].country + " (Level " + facilities[j][1] + ")</option>");
@@ -1350,12 +1350,12 @@ function resultsTwo(t) {
 		rf += funding;
 		updateMoney();
 		if (eff >= 0.8) {
-			$("#dosage" + trial.num + " td:last-child").html("<button class = 'btn btn-primary btn-sm' onclick = 'phaseThree(\"" + trial.dosage + "\", " + eff + ", " + adverse + ", " + trial.num + ", \"" + trial.dd + "\")' style = 'position: relative; top: -5px'>Advance to Phase III</button>");
+			$("#dosage" + trial.num + " td:last-child").html("<button class = 'btn btn-primary btn-sm' onclick = 'javascript:phaseThree(\"" + trial.dosage + "\", " + eff + ", " + adverse + ", " + trial.num + ", \"" + trial.dd + "\")' style = 'position: relative; top: -5px'>Advance to Phase III</button>");
 		}
 	} else {
 		$("#console").append("<p><b class = 'text-danger'>" + toDate(currentDate) + " " + name + " concludes phase II trials of " + trial.dd + " dosage with " + toPlaces((initial2 + modify) * 100, 2) + "% effectiveness (-" + toPlaces((-100 * (initial2 + modify - eff)), 2) + "%)</b></p>");
 		if (initial2 + modify >= 0.8) {
-			$("#dosage" + trial.num + " td:last-child").html("<button class = 'btn btn-primary btn-sm' onclick = 'phaseThree(\"" + trial.dosage + "\", " + eff + ", " + adverse + ", " + trial.num + ", \"" + trial.dd + "\")' style = 'position: relative; top: -5px'>Advance to Phase III</button>");
+			$("#dosage" + trial.num + " td:last-child").html("<button class = 'btn btn-primary btn-sm' onclick = 'javascript:phaseThree(\"" + trial.dosage + "\", " + eff + ", " + adverse + ", " + trial.num + ", \"" + trial.dd + "\")' style = 'position: relative; top: -5px'>Advance to Phase III</button>");
 		}
 	}
 	$("#console").scrollTop($("#console").prop("scrollHeight"));
@@ -1436,7 +1436,7 @@ function resultsOne(t) {
 		rf += funding;
 		updateMoney();
 		if (eff >= 0.7) {
-			$("#d1 p").html("<button class = 'btn btn-primary btn-sm' onclick = 'phaseTwo(\"" + trial + "\", " + eff + ")'>Select Candidate " + trial + " for Phase II</button>");
+			$("#d1 p").html("<button class = 'btn btn-primary btn-sm' onclick = 'javascript:phaseTwo(\"" + trial + "\", " + eff + ")'>Select Candidate " + trial + " for Phase II</button>");
 		}
 	} else {
 		$("#console").append("<p><b class = 'text-danger'>" + toDate(currentDate) + " " + name + " concludes phase I trials of candidate " + trial + " with " + toPlaces((initial + modify) * 100, 2) + "% effectiveness (-" + toPlaces((-100 * (initial + modify - eff)), 2) + "%)</b></p>");
@@ -1445,7 +1445,7 @@ function resultsOne(t) {
 			if (initial + modify < 0.7) {
 				$("#d1 p button").remove();
 			} else {
-				$("#d1 p").html("<button class = 'btn btn-primary btn-sm' onclick = 'phaseTwo(\"" + trial + "\", " + (initial + modify) + ")'>Select Candidate " + trial + " for Phase II</button>");
+				$("#d1 p").html("<button class = 'btn btn-primary btn-sm' onclick = 'javascript:phaseTwo(\"" + trial + "\", " + (initial + modify) + ")'>Select Candidate " + trial + " for Phase II</button>");
 			}
 		}
 	}
@@ -1619,7 +1619,7 @@ function countryModal(country) {
 							demand = toPlaces(data[country].st * data[country].pop, -1);
 						}
 						$("#country .modal-body").append("<p>The " + data[country].demonym + " government would currently like to order " + toShort(demand, 3) + " vaccine doses per day. As each dose costs $20 to buy, they will pay you up to $" + toShort(20 * demand, 2) + " daily for this order.</p><p>You can designate the number of doses that you would like to deliver to " + cname + " per day. If you do not have enough doses to deliver this amount on a day, then as many doses as possible will be delivered.</p><p>Enter the number of doses that you would like to be sent to " + cname + " per day (maximum " + toShort(demand, 3) + "):</p>");
-						$("#country .modal-body").append("<p class = 'mt-3'><input type = 'text' value = '" + deliveries[country] + "' class = 'form-control form-control-sm mr-2 text-center' size = '13' maxlength = '8' id = 'dosei' placeholder = 'Doses per day' oninput = 'deliveryValid(true, \"" + country + "\")' onkeydown = 'setDelivery(\"" + country + "\", event)'><input type = 'range' class = 'custom-range ml-4' min = '0' max = '" + demand + "' step = '10' id = 'doses' value = '" + deliveries[country] + "' oninput = 'deliveryValid(false, \"" + country + "\")' onkeydown = 'setDelivery(\"" + country + "\", event)'><span class = 'ml-3' id = 'dosel'>" + toShort(deliveries[country], 3) + "</span><br><button class = 'btn btn-sm btn-primary mt-3' id = 'setDelivery' disabled onclick = 'setDelivery(\"" + country + "\")'>Set Daily Delivery (+$" + toShort(20 * deliveries[country], 2) + "/day)</button></p><hr class = 'my-3'>");
+						$("#country .modal-body").append("<p class = 'mt-3'><input type = 'text' value = '" + deliveries[country] + "' class = 'form-control form-control-sm mr-2 text-center' size = '13' maxlength = '8' id = 'dosei' placeholder = 'Doses per day' oninput = 'deliveryValid(true, \"" + country + "\")' onkeydown = 'setDelivery(\"" + country + "\", event)'><input type = 'range' class = 'custom-range ml-4' min = '0' max = '" + demand + "' step = '10' id = 'doses' value = '" + deliveries[country] + "' oninput = 'deliveryValid(false, \"" + country + "\")' onkeydown = 'setDelivery(\"" + country + "\", event)'><span class = 'ml-3' id = 'dosel'>" + toShort(deliveries[country], 3) + "</span><br><button class = 'btn btn-sm btn-primary mt-3' id = 'setDelivery' disabled onclick = 'javascript:setDelivery(\"" + country + "\")'>Set Daily Delivery (+$" + toShort(20 * deliveries[country], 2) + "/day)</button></p><hr class = 'my-3'>");
 					} else {
 						$("#country .modal-body").append("<hr class = 'my-3'>");
 					}
@@ -1629,33 +1629,33 @@ function countryModal(country) {
 		if (found == -1) {
 			const facilitycost = ((data[country].cash / 5) + (2.25 ** (4 - relations[country])) - 1) * 100000;
 			$("#country .modal-body").append("<h6>Facility</h6><p>Establishing a facility in " + cname + " will cost $" + toShort(facilitycost, 2) + ".</p><p>Establishing a facility here will:</p><ul><li>Allow research to be performed here</li><li>Allow clinical trials to be run here</li><li>Allow vaccine doses to be manufactured here</li><li>Affect your WTC with other countries</li><li>Increase your research & operations costs</li></ul>");
-			$("#country .modal-body").append("<p><button class = 'btn btn-primary btn-sm' " + (money < facilitycost ? "disabled" : "") + " onclick = 'establishFacility(\"" + country + "\")'>Establish Facility - $" + toShort(facilitycost, 2) + "</button></p>");
+			$("#country .modal-body").append("<p><button class = 'btn btn-primary btn-sm' " + (money < facilitycost ? "disabled" : "") + " onclick = 'javascript:establishFacility(\"" + country + "\")'>Establish Facility - $" + toShort(facilitycost, 2) + "</button></p>");
 		} else {
 			if (cleared.length == 4) {
 				var max = toPlaces(((data[country].cash * 0.6) ** facilities[found][1]) * 80000, -1);
 				$("#country .modal-body").append("<h6>Manufacturing</h6><p>Your Level " + facilities[found][1] + " facility in " + cname + " can currently manufacture " + toShort(max, 3) + " doses per day.</p>");
 				$("#country .modal-body").append("<p>Each dose costs $15 to manufacture, so manufacturing this maximum amount daily will cost $" + toShort(15 * max, 2) + ".</p><p>You can designate the number of doses that you would like to manufacture per day. If you do not have enough money to manufacture this amount on a day, then manufacturing will pause.</p><p>Enter the number of doses that you would like to manufacture at this facility per day (maximum " + toShort(max, 3) + "):</p>");
-				$("#country .modal-body").append("<p class = 'mt-3'><input type = 'text' value = '" + facilities[found][2] + "' class = 'form-control form-control-sm mr-2 text-center' size = '13' maxlength = '8' id = 'makei' placeholder = 'Doses per day' oninput = 'makeValid(true, " + found + ")' onkeydown = 'setManufacture(" + found + ", event)'><input type = 'range' class = 'custom-range ml-4' min = '0' max = '" + max + "' step = '10' id = 'makes' value = '" + facilities[found][2] + "' oninput = 'makeValid(false, " + found + ")' onkeydown = 'setManufacture(" + found + ", event)'><span class = 'ml-3' id = 'makel'>" + toShort(facilities[found][2], 3) + "</span><br><button class = 'btn btn-sm btn-primary mt-3' id = 'setMake' disabled onclick = 'setManufacture(" + found + ")'>Set Daily Manufacture - $" + toShort(15 * facilities[found][2], 2) + "/day</button></p><hr class = 'my-3'>");
+				$("#country .modal-body").append("<p class = 'mt-3'><input type = 'text' value = '" + facilities[found][2] + "' class = 'form-control form-control-sm mr-2 text-center' size = '13' maxlength = '8' id = 'makei' placeholder = 'Doses per day' oninput = 'makeValid(true, " + found + ")' onkeydown = 'setManufacture(" + found + ", event)'><input type = 'range' class = 'custom-range ml-4' min = '0' max = '" + max + "' step = '10' id = 'makes' value = '" + facilities[found][2] + "' oninput = 'makeValid(false, " + found + ")' onkeydown = 'setManufacture(" + found + ", event)'><span class = 'ml-3' id = 'makel'>" + toShort(facilities[found][2], 3) + "</span><br><button class = 'btn btn-sm btn-primary mt-3' id = 'setMake' disabled onclick = 'javascript:setManufacture(" + found + ")'>Set Daily Manufacture - $" + toShort(15 * facilities[found][2], 2) + "/day</button></p><hr class = 'my-3'>");
 			} else if (cleared.length == 3) {
 				if (typeof trials_3[country] != "undefined") {
 					$("#country .modal-body").append("<h6>Phase III trials</h6><p>Phase III trials are ongoing at this facility and will require " + (trials_3[country].time == 1 ? "1 more day" : (trials_3[country].time + " more days")) + " to complete.</p><hr class = 'my-3'>");
 				} else {
 					$("#country .modal-body").append("<h6>Phase III trials</h6><p>Phase III trials can now be run at this facility.</p><p>These large-scale trials will be used to determine your vaccine's final effectiveness and safety. Successful trial results may allow you to obtain a license from governments.</p><p>Your Level " + facilities[found][1] + " facility will take " + (5 - facilities[found][1]) + " weeks to run this Phase III trial.</p>");
-					$("#country .modal-body").append("<p class = 'mt-3'><button class = 'btn btn-sm btn-primary' id = 'runThree'" + (money < 3000000 ? " disabled" : "") + " onclick = 'trialThree(\"" + country + "\", " + facilities[found][1] + ")'>Run Phase III Trial - $3M</button></p><hr class = 'my-3'>");
+					$("#country .modal-body").append("<p class = 'mt-3'><button class = 'btn btn-sm btn-primary' id = 'runThree'" + (money < 3000000 ? " disabled" : "") + " onclick = 'javascript:trialThree(\"" + country + "\", " + facilities[found][1] + ")'>Run Phase III Trial - $3M</button></p><hr class = 'my-3'>");
 				}
 			} else if (cleared.length == 2) {
 				if (typeof trials_2[country] != "undefined") {
 					$("#country .modal-body").append("<h6>Phase II trials</h6><p>Phase II trials of " + (trials_2[country].dd) + " dosage are ongoing at this facility and will require " + (trials_2[country].time == 1 ? "1 more day" : (trials_2[country].time + " more days")) + " to complete.</p><hr class = 'my-3'>");
 				} else {
 					$("#country .modal-body").append("<h6>Phase II trials</h6><p>Phase II trials can now be run at this facility.</p><p>These trials will include people who are at risk of infection and will be used to test the effectiveness of a certain vaccine dosage.</p><p>Your Level " + facilities[found][1] + " facility will take " + (5 - facilities[found][1]) + " weeks to run this Phase II trial.</p>");
-					$("#country .modal-body").append("<p class = 'mt-3'><input type = 'text' class = 'form-control form-control-sm mr-2 text-center' size = '7' maxlength = '4' id = 'di' placeholder = '0.25-1.0' oninput = 'dosageValid(true)' onkeydown = 'trialTwo(\"" + country + "\", " + facilities[found][1] + ", event)'>mL<input type = 'range' class = 'custom-range ml-4' min = '25' max = '100' step = '0.1' id = 'ds' value = '25.0' oninput = 'dosageValid(false)' onkeydown = 'trialTwo(\"" + country + "\", " + facilities[found][1] + ", event)'><br><button class = 'btn btn-sm btn-primary mt-3' id = 'runTwo' disabled onclick = 'trialTwo(\"" + country + "\", " + facilities[found][1] + ")'>Run Phase II Trial - $1M</button></p><hr class = 'my-3'>");
+					$("#country .modal-body").append("<p class = 'mt-3'><input type = 'text' class = 'form-control form-control-sm mr-2 text-center' size = '7' maxlength = '4' id = 'di' placeholder = '0.25-1.0' oninput = 'dosageValid(true)' onkeydown = 'trialTwo(\"" + country + "\", " + facilities[found][1] + ", event)'>mL<input type = 'range' class = 'custom-range ml-4' min = '25' max = '100' step = '0.1' id = 'ds' value = '25.0' oninput = 'dosageValid(false)' onkeydown = 'trialTwo(\"" + country + "\", " + facilities[found][1] + ", event)'><br><button class = 'btn btn-sm btn-primary mt-3' id = 'runTwo' disabled onclick = 'javascript:trialTwo(\"" + country + "\", " + facilities[found][1] + ")'>Run Phase II Trial - $1M</button></p><hr class = 'my-3'>");
 				}
 			} else if (cleared.length == 1) {
 				if (typeof trials_1[country] != "undefined") {
 					$("#country .modal-body").append("<h6>Phase I trials</h6><p>Phase I trials of Candidate " + trials_1[country].candidate + " are ongoing at this facility and will require " + (trials_1[country].time == 1 ? "1 more day" : (trials_1[country].time + " more days")) + " to complete.</p><hr class = 'my-3'>");
 				} else {
 					$("#country .modal-body").append("<h6>Phase I trials</h6><p>Phase I trials can now be run at this facility.</p><p>These trials will be conducted on healthy adult volunteers and will be used to test the effectiveness of potential vaccine excipients.</p><p>Your Level " + facilities[found][1] + " facility will take " + (5 - facilities[found][1]) + " weeks to run this Phase I trial.</p>");
-					$("#country .modal-body").append("<p class = 'mt-3'><select class = 'custom-select custom-select-sm mr-3' style = 'width: auto !important' id = 'candidate' onchange = 'validCandidate()' " + (money < 50000 ? "disabled" : "") + "><option value = 'null' selected disabled>Candidate...</option></select><button class = 'btn btn-primary btn-sm' disabled onclick = 'trialOne(\"" + country + "\", " + facilities[found][1] + ")' id = 'runOne'>Run Phase I Trial - $500K</button></p><hr class = 'my-3'>");
+					$("#country .modal-body").append("<p class = 'mt-3'><select class = 'custom-select custom-select-sm mr-3' style = 'width: auto !important' id = 'candidate' onchange = 'validCandidate()' " + (money < 50000 ? "disabled" : "") + "><option value = 'null' selected disabled>Candidate...</option></select><button class = 'btn btn-primary btn-sm' disabled onclick = 'javascript:trialOne(\"" + country + "\", " + facilities[found][1] + ")' id = 'runOne'>Run Phase I Trial - $500K</button></p><hr class = 'my-3'>");
 					var none = true;
 					for (var j in candidates) {
 						var valid = true;
@@ -1689,12 +1689,12 @@ function countryModal(country) {
 			$("#country .modal-body").append("<p>The " + (facilities[found][1] * 10) + (cleared.length == 4 ? " workers" : " researchers") + " at this facility are each being paid $" + (per_c == 1 ? 0 : toShort(data[facilities[found][0]].cash * 10000 / 365, 2)) + " per day for a total of $" + (per_c == 1 ? 0 : toShort((facilities[found][1] * 10) * data[facilities[found][0]].cash * 10000 / 365, 2)) + ".</p>");
 			if (facilities[found][1] < 3) {
 				$("#country .modal-body").append("<p>Upgrading this facility to Level " + (facilities[found][1] + 1) + " will cost $" + toShort(upgradecost, 2) + " and will:</p><ul class = 'mb-0'><li>Increase its research speed</li><li>Increase the speed at which clinical trials take place</li><li>Increase its manufacturing capabilities</li><li>Increase its research & operations costs</li><li>Increase this country's WTC</li></ul><p class = 'mb-3'>Upgrading a facility will not shorten the duration of any currently ongoing clinical trials.</p>");
-				$("#country .modal-body").append("<p><button class = 'btn btn-primary btn-sm' " + (money < upgradecost ? "disabled" : "") + " onclick = 'upgradeFacility(\"" + country + "\")'>Upgrade Facility to Level " + (facilities[found][1] + 1) + " - $" + toShort(upgradecost, 2) + "</button></p>");
+				$("#country .modal-body").append("<p><button class = 'btn btn-primary btn-sm' " + (money < upgradecost ? "disabled" : "") + " onclick = 'javascript:upgradeFacility(\"" + country + "\")'>Upgrade Facility to Level " + (facilities[found][1] + 1) + " - $" + toShort(upgradecost, 2) + "</button></p>");
 			} else {
 				$("#country .modal-body").append("<p>This facility is already at Level 3, the maximum level.</p>");
 			}
 			if (cleared.length > 0 && country == facilities[0][0]) {
-				$("#country .modal-body").append("<hr class = 'my-3'><h6>Research funding</h6><p>You may request $" + toShort(data[country].cash * 300000 * cleared.length, 2) + " from the " + data[country].demonym + " government at a cost of -" + ((loans + 1) * 0.2) + " WTC with all countries.</p><p class = 'mt-3 mb-2'><button class = 'btn btn-danger btn-sm' onclick = 'requestFunds(\"" + country + "\")'>Request Funds (+$" + toShort(data[country].cash * 300000 * cleared.length, 2) + ")</button></p>");
+				$("#country .modal-body").append("<hr class = 'my-3'><h6>Research funding</h6><p>You may request $" + toShort(data[country].cash * 300000 * cleared.length, 2) + " from the " + data[country].demonym + " government at a cost of -" + ((loans + 1) * 0.2) + " WTC with all countries.</p><p class = 'mt-3 mb-2'><button class = 'btn btn-danger btn-sm' onclick = 'javascript:requestFunds(\"" + country + "\")'>Request Funds (+$" + toShort(data[country].cash * 300000 * cleared.length, 2) + ")</button></p>");
 			}
 		}
 	}
@@ -1708,7 +1708,7 @@ for (var i = 0; i < (COUNT ** 0.5); i++) {
 	var code_p = "";
 	for (var j = 0; j < (COUNT ** 0.5); j++) {
 		append_c += "<td id = 'c" + ((i * (COUNT ** 0.5)) + j) + "'>&bull;&bull;&bull;</td>";
-		code_c += "<td onclick = 'selectProtein(\"" + ((i * (COUNT ** 0.5)) + j) + "\")'><input style = 'margin-right: 4px' type = 'text' size = '3' id = 'cc" + ((i * (COUNT ** 0.5)) + j) + "' value = '&bull;&bull;&bull;' readonly></td>";
+		code_c += "<td onclick = 'javascript:selectProtein(\"" + ((i * (COUNT ** 0.5)) + j) + "\")'><input style = 'margin-right: 4px' type = 'text' size = '3' id = 'cc" + ((i * (COUNT ** 0.5)) + j) + "' value = '&bull;&bull;&bull;' readonly></td>";
 		append_p += "<td style = 'padding: 1px 2px' id = 'p" + ((i * (COUNT ** 0.5)) + j) + "'>&bull;</td>";
 		code_p += "<td><input style = 'margin-left: 4px; padding: 1px 5px' type = 'text' size = '1' maxlength = '1' id = 'cp" + ((i * (COUNT ** 0.5)) + j) + "' value = '' onfocus = 'selectCodon(\"" + ((i * (COUNT ** 0.5)) + j) + "\")' onblur = 'deselectCodon(\"" + ((i * (COUNT ** 0.5)) + j) + "\")' onchange = 'changed(\"" + ((i * (COUNT ** 0.5)) + j) + "\")'></td>";
 	}
@@ -1733,7 +1733,7 @@ for (var country in data) {
 	data[country].st = (x.pop - x.cc) / x.pop;
 	data[country].it = x.nc / (x.pop * b * data[country].st);
 	data[country].rt = 1 - data[country].st - data[country].it;
-	append += "<div class = 'card text-center' id = '" + country + "' tabindex = '1' title = 'Keyboard Shortcut: " + data[country].ks + "' onclick = 'countryModal(\"" + country + "\")'><div class = 'card-body p-2 text-center'><h6 class = 'card-title'>" + x.country + "</h6><p class = 'mt-2 mb-2'><img src = 'flags/" + country + ".png'></p><p class = 'mb-0'>" + ((country == "chn" || country == "ind") ? toShort(x.pop, 2) : toShort(x.pop, 1)) + "</p></div><ul class = 'list-group list-group-flush'><li class = 'list-group-item list-group-item-danger' id = '" + country + "_i'>(+" + toShort(x.nc, 2) + ") " + toShort(x.cc, 2) + "</li><li class = 'list-group-item list-group-item-dark' id = '" + country + "_d'>" + toShort(x.cd, 2) + "</li><li class = 'list-group-item list-group-item-success' id = '" + country + "_v'>-</li><li class = 'list-group-item list-group-item-primary' id = '" + country + "_r'>-</li></ul></div>";
+	append += "<div class = 'card text-center' id = '" + country + "' tabindex = '1' title = 'Keyboard Shortcut: " + data[country].ks + "' onclick = 'javascript:countryModal(\"" + country + "\")'><div class = 'card-body p-2 text-center'><h6 class = 'card-title'>" + x.country + "</h6><p class = 'mt-2 mb-2'><img src = 'flags/" + country + ".png'></p><p class = 'mb-0'>" + ((country == "chn" || country == "ind") ? toShort(x.pop, 2) : toShort(x.pop, 1)) + "</p></div><ul class = 'list-group list-group-flush'><li class = 'list-group-item list-group-item-danger' id = '" + country + "_i'>(+" + toShort(x.nc, 2) + ") " + toShort(x.cc, 2) + "</li><li class = 'list-group-item list-group-item-dark' id = '" + country + "_d'>" + toShort(x.cd, 2) + "</li><li class = 'list-group-item list-group-item-success' id = '" + country + "_v'>-</li><li class = 'list-group-item list-group-item-primary' id = '" + country + "_r'>-</li></ul></div>";
 	count++;
 	if (count == 6) {
 		count = 0;
@@ -1808,7 +1808,7 @@ function victory() {
 	$("#dose").html(toShort(doses, 3));
 	$("#console").append("<p><b class = 'text-success'>" + toDate(currentDate) + " World declared virus-free with thanks to the " + name + " vaccine</b></p>");
 	$("#console").append("<p><b class = 'text-success'>VACCINATION CAMPAIGN TOOK: " + (Math.round(Math.abs((cleared[3] - currentDate) / (24 * 60 * 60 * 1000)))) + " days</b></p>");
-	$("#console").append("<p><b class = 'text-success'>Congratulations! You have ended the pandemic and beat VAX. Click <a href = '#' onclick = 'endScreen()'>here</a> to proceed.</b></p>");
+	$("#console").append("<p><b class = 'text-success'>Congratulations! You have ended the pandemic and beat VAX. Click <a href = '#' onclick = 'javascript:endScreen()'>here</a> to proceed.</b></p>");
 	cleared[cleared.length] = new Date(currentDate.getTime());
 	sessionStorage.setItem("cleared", JSON.stringify(cleared));
 	$("#console").scrollTop($("#console").prop("scrollHeight"));
