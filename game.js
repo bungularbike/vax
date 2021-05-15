@@ -1,6 +1,23 @@
-//
-// WARNING: looking at this source code (especially before you first play through the game) may significantly hurt your experience!
-//
+/*
+
+
+
+
+
+
+
+
+WARNING: looking at this source code (especially before you first play through the game) may significantly hurt your experience!
+
+
+
+
+
+
+
+
+
+*/
 
 if (sessionStorage.getItem("facilities") == null) {
 	window.open("index.html", "_self");
@@ -436,7 +453,8 @@ var events = [
 		"effects": [
 			{ "country": "chn", "t": "b", "v": 0.225 },
 			{ "country": "chn", "t": "bt", "v": -0.0005 }
-		]
+		],
+		"e_effects": []
 	},
 	{
 		"desc": "Saudi Arabia: Government lifts restrictions on Hajj travels",
@@ -1094,7 +1112,7 @@ function establishFacility(country) {
 		if (RELATIONS[j].indexOf(country) != -1) {
 			var current = relations[RELATIONS[j][(1 - RELATIONS[j].indexOf(country))]];
 			var change = toPlaces(((1 / ((facilities.length - 1) + 0.5)) * (RELATIONS[j][2] - 3)), 1);
-			if (!((current + change > 7 && change > 0) || (current - change < 1 && change < 0))) {
+			if (!((current + change > 7 && change > 0) || (current + change < 1 && change < 0))) {
 				relations[RELATIONS[j][(1 - RELATIONS[j].indexOf(country))]] += toPlaces(((1 / ((facilities.length - 1) + 0.5)) * (RELATIONS[j][2] - 3)), 1);
 			}
 			$("#" + RELATIONS[j][(1 - RELATIONS[j].indexOf(country))] + "_r").html("WTC " + toPlaces(relations[RELATIONS[j][(1 - RELATIONS[j].indexOf(country))]], 1) + " / 10");
@@ -1240,7 +1258,7 @@ function resultsThree(t) {
 	var safety = toPlaces(100 - toPlaces((aer * (0.5 ** trial.sm)) * 100, 2), 2);
 	$("#p3 td:last-child").html("Upgrade Safety (current: " + safety + "%)");
 	var toAppend = "";
-	if (inital3 + modify > eff || trial.sm > smp) {
+	if (initial3 + modify > eff || trial.sm > smp) {
 		toAppend = "<p><b class = 'text-success'>" + toDate(currentDate) + " " + name + " concludes phase III trials with " + toPlaces((initial3 + modify) * 100, 2) + "% effectiveness (+" + toPlaces((initial3 + modify - eff) * 100, 2) + "%) and " + safety + "% safety (+" + toPlaces(safety - (100 - toPlaces(aer * 100, 2)), 2) + "%), and receives $" + toShort(funding, 2) + " in funds</b></p>";
 	} else {
 		toAppend = "<p><b class = 'text-danger'>" + toDate(currentDate) + " " + name + " concludes phase III trials with " + toPlaces((initial3 + modify) * 100, 2) + "% effectiveness (" + toPlaces((initial3 + modify - eff) * 100, 2) + "%) and " + safety + "% safety (" + toPlaces(safety - (100 - toPlaces(aer * 100, 2)), 2, true) + "%)</b></p>"
@@ -1462,8 +1480,8 @@ function requestFunds(country) {
 	rc += data[country].cash * 300000 * cleared.length;
 	updateMoney();
 	for (var j in relations) {
-		if (relations[j] - (0.2 * loans) > 1) {
-			relations[j] -= (0.2 * loans);
+		if (relations[j] - (0.2 * (loans + 1)) > 1) {
+			relations[j] -= (0.2 * (loans + 1));
 		} else {
 			relations[j] = 1;
 		}
@@ -1584,7 +1602,7 @@ function countryModal(country) {
 		}
 	}
 	if (won) {
-		$("#country .modal-body").append("<div class = 'alert alert-success text-center'>" + cn + " was declared virus-free on " + toDate(data[country].safe) + "</div>");
+		$("#country .modal-body").append("<div class = 'alert alert-success text-center mb-0'>" + cn + " was declared virus-free on " + toDate(data[country].safe) + "</div>");
 	} else {
 		if (cleared.length >= 3) {
 			if (!data[country].approved) {
@@ -1670,7 +1688,7 @@ function countryModal(country) {
 			$("#country .modal-body").append("<h6>Facility</h6><p>" + name + " currently has a Level " + facilities[found][1] + " facility in " + cname + "." + (found == 0 ? (" This facility is also the headquarters of " + name + ".") : "") + "</p>");
 			$("#country .modal-body").append("<p>The " + (facilities[found][1] * 10) + (cleared.length == 4 ? " workers" : " researchers") + " at this facility are each being paid $" + (per_c == 1 ? 0 : toShort(data[facilities[found][0]].cash * 10000 / 365, 2)) + " per day for a total of $" + (per_c == 1 ? 0 : toShort((facilities[found][1] * 10) * data[facilities[found][0]].cash * 10000 / 365, 2)) + ".</p>");
 			if (facilities[found][1] < 3) {
-				$("#country .modal-body").append("<p>Upgrading this facility to Level " + (facilities[found][1] + 1) + " will cost $" + toShort(upgradecost, 2) + " and will:<ul><li>Increase its research speed</li><li>Increase the speed at which clinical trials take place</li><li>Increase its manufacturing capabilities</li><li>Increase its research & operations costs</li><li>Increase this country's WTC</li></ul></p>");
+				$("#country .modal-body").append("<p>Upgrading this facility to Level " + (facilities[found][1] + 1) + " will cost $" + toShort(upgradecost, 2) + " and will:</p><ul class = 'mb-0'><li>Increase its research speed</li><li>Increase the speed at which clinical trials take place</li><li>Increase its manufacturing capabilities</li><li>Increase its research & operations costs</li><li>Increase this country's WTC</li></ul><p class = 'mb-3'>Upgrading a facility will not shorten the duration of any currently ongoing clinical trials.</p>");
 				$("#country .modal-body").append("<p><button class = 'btn btn-primary btn-sm' " + (money < upgradecost ? "disabled" : "") + " onclick = 'upgradeFacility(\"" + country + "\")'>Upgrade Facility to Level " + (facilities[found][1] + 1) + " - $" + toShort(upgradecost, 2) + "</button></p>");
 			} else {
 				$("#country .modal-body").append("<p>This facility is already at Level 3, the maximum level.</p>");
@@ -1781,8 +1799,6 @@ function phaseOne() {
 var won = false;
 function victory() {
 	won = true;
-	hideWarning = false;
-	sessionStorage.setItem("cleared", JSON.stringify(cleared));
 	sessionStorage.setItem("rc", rc);
 	sessionStorage.setItem("rf", rf);
 	sessionStorage.setItem("dp", dp);
@@ -1793,10 +1809,13 @@ function victory() {
 	$("#console").append("<p><b class = 'text-success'>" + toDate(currentDate) + " World declared virus-free with thanks to the " + name + " vaccine</b></p>");
 	$("#console").append("<p><b class = 'text-success'>VACCINATION CAMPAIGN TOOK: " + (Math.round(Math.abs((cleared[3] - currentDate) / (24 * 60 * 60 * 1000)))) + " days</b></p>");
 	$("#console").append("<p><b class = 'text-success'>Congratulations! You have ended the pandemic and beat VAX. Click <a href = '#' onclick = 'endScreen()'>here</a> to proceed.</b></p>");
+	cleared[cleared.length] = new Date(currentDate.getTime());
+	sessionStorage.setItem("cleared", JSON.stringify(cleared));
 	$("#console").scrollTop($("#console").prop("scrollHeight"));
 	$("#victory").modal("show");
 }
 function endScreen() {
+	hideWarning = true;
 	$("#black").fadeIn(1200, function() {
 		window.open("end.html", "_self");
 	});
@@ -1935,6 +1954,9 @@ function runTest() {
 	$(".wrong").removeClass("wrong");
 	var c = "";
 	for (var l = 0; l < COUNT; l++) {
+		if ($("#cp" + l).val().toUpperCase != $("#cp" + l).val()) {
+			$("#cp" + l).val($("#cp" + l).val().toUpperCase());
+		}
 		c += ($("#cp" + l).val() == "" ? " " : $("#cp" + l).val());
 		$("#p" + l).html($("#cp" + l).val() == "" ? "&bull;" : $("#cp" + l).val());
 	}
@@ -1944,6 +1966,8 @@ function runTest() {
 			v++;
 			$("#cc" + m).addClass("right");
 			$("#cp" + m).addClass("right");
+			$("#cc" + m).attr("disabled", "true");
+			$("#cp" + m).attr("disabled", "true");
 		} else if (c.charAt(m) != " ") {
 			$("#cc" + m).addClass("wrong");
 			$("#cp" + m).addClass("wrong");
@@ -2060,7 +2084,7 @@ function updateBonus() {
 		counts += facilities[j][1];
 	}
 	for (var k = 0; k < counts; k++) {
-		if (Math.random() <= (counts * 0.02 + 0.08 + (bonus.length * 0.1 / COUNT))) {
+		if (Math.random() <= (counts * 0.03 + 0.1 + (bonus.length * 0.1 / COUNT))) {
 			var target = bonus[Math.floor(Math.random() * bonus.length)];
 			$("#cp" + target).val(seq_p.charAt(Number(target)));
 			$("#p" + target).html("!");
@@ -2203,14 +2227,7 @@ $("#pause").click(function() {
 	$("#pause").blur();
 });
 $("body").keydown(function(event) {
-	if (document.hasFocus() && window.innerWidth >= 1000) {
-		if (event.keyCode == 220 && $("input:focus").length == 0) {
-			if (!document.webkitIsFullScreen) {
-				document.documentElement.requestFullscreen();
-			} else {
-				document.exitFullscreen();
-			}
-		}
+	if (document.hasFocus() && window.innerWidth >= 1000 && !event.metaKey && !event.ctrlKey) {
 		if (event.keyCode == 27) {
 			$(".close").trigger("click");
 		}
@@ -2290,13 +2307,12 @@ window.addEventListener("beforeunload", (event) => {
     }
 });
 
-$("#fullscreen").click(function() {
-	if (!document.webkitIsFullScreen) {
-		document.documentElement.requestFullscreen();
-	} else {
-		document.exitFullscreen();
-	}
-});
+function restartGame(page) {
+	hideWarning = true;
+	$("#black").fadeIn(1200, function() {
+		window.open(page + ".html", "_self");
+	});
+}
 
 function shortcut(code) {
 	if (typeof code == "undefined") {

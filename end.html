@@ -28,7 +28,7 @@
 			width: calc(100vw - 6rem);
 			height: calc(100vh - 6em);
 			transition: left 1s;
-			overflow-y: scroll;
+			overflow-y: auto;
 			padding-bottom: 0 !important;
 		}
 		.info p.text-small {
@@ -49,7 +49,7 @@
 			width: 100vw;
 			z-index: 10;
 		}
-		@media (max-width: 999px) {
+		@media (max-width: 1050px) {
 			#size {
 				display: block !important;
 			}
@@ -150,7 +150,7 @@
 			<li>Berthub.eu</li>
 			<li>Hackensack Meridian Health</li>
 		</ul>
-		<p class = "small mt-4">v0.9. Created by Jack Rong and Joseph Belman.</p>
+		<p class = "small mt-4">v1.0. Created by Jack Rong and Joseph Belman.</p>
 	</div>
 	<script src = "jquery-3.6.0.min.js"></script>
 	<script src = "bootstrap-4.6.0-dist/js/bootstrap.bundle.min.js"></script>
@@ -662,6 +662,7 @@
 		var rf = Number(sessionStorage.getItem("rf"));
 		var dp = Number(sessionStorage.getItem("dp"));
 		var score = toPlaces(500 * ((12 - data[facilities[0][0]].cash) / 2) * (365 * 3 / days) * (rf / rc) * (dp / 2000000000), 0);
+		score += (1000 * (10 - data[facilities[0][0]].cash) * (12 - data[facilities[0][0]].cash) / 4);
 		$("#score").html(score);
 		if (localStorage.getItem("score") != null && Number(localStorage.getItem("score")) < score) {
 			$("h4").after("<h6 class = 'text-danger'>New high score (+" + (score - Number(localStorage.getItem("score"))) + ")!");

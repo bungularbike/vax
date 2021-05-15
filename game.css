@@ -23,7 +23,7 @@
 	}
 }
 
-@media (max-width: 999px) {
+@media (max-width: 1050px) {
 	#size {
 		display: block !important;
 	}
@@ -39,11 +39,11 @@
 	border-color: rgba(255, 255, 255, .5);
 	color: rgba(255, 255, 255, .5);
 }
-#fullscreen {
+#resetb {
 	border-color: rgba(255, 255, 255, 0);
 	color: rgba(255, 255, 255, .5);
 }
-#pause:hover, #fullscreen:hover {
+#pause:hover, #resetb:hover {
 	background-color: rgba(255, 255, 255, .5);
 }
 
@@ -107,7 +107,7 @@
 	padding: 0.5rem 0.75rem;
 }
 
-:not(#loan, #victory) > .modal-dialog {
+:not(#loan, #victory, #reset) > .modal-dialog {
 	margin-top: 5em !important;
 	margin-bottom: 5em !important;
 }
@@ -150,6 +150,13 @@
 #candidates td {
 	vertical-align: middle;
 	text-align: center;
+}
+
+#table {
+	transition: transform 0.5s;
+}
+#table:hover {
+	transform: scale(1.1);
 }
 
 #d1 .leading td:first-child, #d1 .leading td:last-child, #d2 .leading td {

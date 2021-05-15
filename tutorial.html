@@ -28,7 +28,7 @@
 			width: calc(100vw - 6rem);
 			height: calc(100vh - 6em);
 			transition: left 1s;
-			overflow-y: scroll;
+			overflow-y: auto;
 			padding-bottom: 0 !important;
 		}
 		.info p.text-small {
@@ -49,7 +49,7 @@
 			width: 100vw;
 			z-index: 10;
 		}
-		@media (max-width: 999px) {
+		@media (max-width: 1050px) {
 			#size {
 				display: block !important;
 			}
@@ -120,7 +120,7 @@
 		<p>The <b>current date</b> is displayed on the left. VAX begins on June 1, 2020 and follows a realistic timeline.</p>
 		<p>Days will pass depending on how fast your <b>speed</b> is currently set at. To adjust the speed, you can press 1, 2, or 3 on your keyboard. The default speed (x2) causes days to pass every two seconds.</p>
 		<p>Next is the <b>play/pause</b> button. This can be used to stop the day timer. You can also use the SPACEBAR to perform this function.</p>
-		<p>Finally, there is a button to enter <b>fullscreen</b> if your screen is too small to show the entire dashboard without having to scroll. The keyboard shortcut for entering fullscreen is BACKSLASH (\).</p>
+		<p>Finally, there is a button to <b>restart</b> your game if things aren't going so well.</p>
 		<p><button class = "btn btn-primary" onclick = "next(3)">Continue</button></p>
 		<p><a href = "#" onclick = "prev(3)" class = "text-small">Back</a></p>
 	</div>
@@ -787,7 +787,7 @@
 			}
 		];
 		var country = (JSON.parse(sessionStorage.getItem("facilities")))[0][0];
-		if (data[country].cash == 6) {
+		if (data[country].cash == 6 && localStorage.getItem("score") == null) {
 			$("#1 p:last-child").before("<p class = 'text-danger font-weight-bold'>Before you proceed: you have selected " + data[country].country + " as your headquarters location. This is a difficult country to start in and not recommended for new players! If you'd like to change your mind, you can <a href = '#' onclick = 'goBack()'>click here to go back.</a></p>");
 		}
 		function goBack() {

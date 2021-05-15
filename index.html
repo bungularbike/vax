@@ -56,7 +56,7 @@
 			width: 100vw;
 			z-index: 10;
 		}
-		@media (max-width: 999px) {
+		@media (max-width: 1050px) {
 			#size {
 				display: block !important;
 			}
@@ -80,12 +80,12 @@
 		<br>
 		<p>It is June 1, 2020. The pandemic has been spreading for 6 months now with no end in sight.</p>
 		<p>Major pharmaceutical companies all over the world have failed to develop an effective vaccine against the virus.</p>
-		<p>In response, <select class = "custom-select custom-select-sm mx-2" style = "width: auto !important"><option selected value = "null" disabled>Country...</option></select> has pooled its resources together into one final effort: <input type = "text" class = "form-control form-control-sm d-inline-block mx-2" placeholder = "Company name..." style = "width: auto !important" autocomplete = "off">.</p>
+		<p>In response, <select class = "custom-select custom-select-sm mx-2" style = "width: auto !important"><option selected value = "null" disabled>Country...</option><optgroup label = "Easy"></optgroup><optgroup label = "Medium"></optgroup><optgroup label = "Hard"></optgroup></select> has pooled its resources together into one final effort: <input type = "text" class = "form-control form-control-sm d-inline-block mx-2" placeholder = "Company name..." style = "width: auto !important" autocomplete = "off">.</p>
 		<p>Composed of the nothing but the best and brightest <span id = "demonym"></span> minds, <span id = "company">they are</span> the world's last hope.</p>
 		<p>Do you have what it takes to develop a vaccine and save the world?</p>
 		<p class = "mb-5"><button class = "btn btn-primary" disabled>Yes- let's get started!</button></p>
 	</div>
-	<p class = "mt-5 small" id = "version">v0.9. Created by Jack Rong and Joseph Belman.</p>
+	<p class = "mt-5 small" id = "version">v1.0. Created by Jack Rong and Joseph Belman.</p>
 	<div class = "modal fade" id = "mobile" data-backdrop = "static" data-keyboard = "false" tabindex = "-1">
 		<div class = "modal-dialog modal-dialog-centered">
 			<div class = "modal-content">
@@ -102,98 +102,350 @@
 	<script src = "bootstrap-4.6.0-dist/js/bootstrap.bundle.min.js"></script>
 	<script>
 		setTimeout(function() { $("select").val("null") }, 10);
-		var countries = [
-		    {
+		var data = {
+		    usa: {
 		        "country": "United States",
 		        "id": "USA",
-		        "demonym": "American"
+		        "pop": 328239520,
+		        "cc": 1820000,
+		        "pcc": 0.0055447314814498876,
+		        "cd": 108610,
+		        "nc": 21897,
+		        "nd": 776,
+		        "b": 0.23,
+		        "k": 0.2,
+		        "bt": -0.00031667,
+		        "d": 0.0154,
+		        "cash": 10,
+		        "demonym": "American",
+		        "ks": "A",
+		        "kc": 65,
+		        "leader": "president"
 		    },
-		    {
+		    bra: {
 		        "country": "Brazil",
 		        "id": "BRA",
-		        "demonym": "Brazilian"
+		        "pop": 211049530,
+		        "cc": 526477,
+		        "pcc": 0.0024945660859799117,
+		        "cd": 29937,
+		        "nc": 11598,
+		        "nd": 623,
+		        "b": 0.174,
+		        "k": 0.1429,
+		        "bt": -0.00031667,
+		        "d": 0.034,
+		        "cash": 8,
+		        "demonym": "Brazilian",
+		        "ks": "B",
+		        "kc": 66,
+		        "leader": "president"
 		    },
-		    {
+		    rus: {
 		        "country": "Russia",
 		        "id": "RUS",
-		        "demonym": "Russian"
+		        "pop": 144406260,
+		        "cc": 414328,
+		        "pcc": 0.0028691830949710904,
+		        "cd": 4849,
+		        "nc": 8485,
+		        "nd": 156,
+		        "b": 0.16,
+		        "k": 0.1667,
+		        "bt": -0.00000667,
+		        "d": 0.0251,
+		        "cash": 8,
+		        "demonym": "Russian",
+		        "ks": "R",
+		        "kc": 82,
+		        "leader": "president"
 		    },
-		    {
+		    gbr: {
 		        "country": "United Kingdom",
 		        "id": "GBR",
-		        "demonym": "British"
+		        "pop": 66836330,
+		        "cc": 258983,
+		        "pcc": 0.003874883614944148,
+		        "cd": 37613,
+		        "nc": 1444,
+		        "nd": 86,
+		        "b": 0.18,
+		        "k": 0.2,
+		        "bt": 0,
+		        "d": 0.0153,
+		        "cash": 10,
+		        "demonym": "British",
+		        "ks": "K",
+		        "kc": 75,
+		        "leader": "prime minster"
 		    },
-		    {
+		    esp: {
 		        "country": "Spain",
 		        "id": "ESP",
-		        "demonym": "Spanish"
+		        "pop": 47133520,
+		        "cc": 239638,
+		        "pcc": 0.005084237290149346,
+		        "cd": 27127,
+		        "nc": 159,
+		        "nd": 0,
+		        "b": 0.175,
+		        "k": 0.18,
+		        "bt": 0,
+		        "d": 0.0203,
+		        "cash": 8,
+		        "demonym": "Spanish",
+		        "ks": "E",
+		        "kc": 69,
+		        "leader": "president"
 		    },
-		    {
+		    ita: {
 		        "country": "Italy",
 		        "id": "ITA",
-		        "demonym": "Italian"
+		        "pop": 60302090,
+		        "cc": 233197,
+		        "pcc": 0.0038671462299233743,
+		        "cd": 33475,
+		        "nc": 200,
+		        "nd": 60,
+		        "b": 0.18,
+		        "k": 0.18,
+		        "bt": 0,
+		        "d": 0.021,
+		        "cash": 8,
+		        "demonym": "Italian",
+		        "ks": "L",
+		        "kc": 76,
+		        "leader": "president"
 		    },
-		    {
+		    ind: {
 		        "country": "India",
 		        "id": "IND",
-		        "demonym": "Indian"
+		        "pop": 1366417750,
+		        "cc": 198370,
+		        "pcc": 0.000145175221852907,
+		        "cd": 5608,
+		        "nc": 7761,
+		        "nd": 200,
+		        "b": 0.18,
+		        "k": 0.1429,
+		        "bt": -0.000325,
+		        "d": 0.024,
+		        "cash": 8,
+		        "demonym": "Indian",
+		        "ks": "N",
+		        "kc": 78,
+		        "leader": "prime minister"
 		    },
-		    {
+		    fra: {
 		        "country": "France",
 		        "id": "FRA",
-		        "demonym": "French"
+		        "pop": 67055850,
+		        "cc": 191382,
+		        "pcc": 0.002854068660676138,
+		        "cd": 28837,
+		        "nc": 407,
+		        "nd": 32,
+		        "b": 0.179,
+		        "k": 0.18,
+		        "bt": 0,
+		        "d": 0.0202,
+		        "cash": 10,
+		        "demonym": "French",
+		        "ks": "F",
+		        "kc": 70,
+		        "leader": "president"
 		    },
-		    {
+		    deu: {
 		        "country": "Germany",
 		        "id": "DEU",
-		        "demonym": "German"
+		        "pop": 83092960,
+		        "cc": 183594,
+		        "pcc": 0.0022095012622007928,
+		        "cd": 8555,
+		        "nc": 184,
+		        "nd": 15,
+		        "b": 0.179,
+		        "k": 0.18,
+		        "bt": 0,
+		        "d": 0.0211,
+		        "cash": 10,
+		        "demonym": "German",
+		        "ks": "G",
+		        "kc": 71,
+		        "leader": "chancellor"
 		    },
-		    {
+		    per: {
 		        "country": "Peru",
 		        "id": "PER",
-		        "demonym": "Peruvian"
+		        "pop": 32510450,
+		        "cc": 170039,
+		        "pcc": 0.005230287492175593,
+		        "cd": 4634,
+		        "nc": 5563,
+		        "nd": 128,
+		        "b": 0.135,
+		        "k": 0.145,
+		        "bt": -0.00031667,
+		        "d": 0.0345,
+		        "cash": 6,
+		        "demonym": "Peruvian",
+		        "ks": "U",
+		        "kc": 85,
+		        "leader": "president"
 		    },
-		    {
+		    tur: {
 		        "country": "Turkey",
 		        "id": "TUR",
-		        "demonym": "Turkish"
+		        "pop": 83429620,
+		        "cc": 164769,
+		        "pcc": 0.0019749460683148264,
+		        "cd": 4563,
+		        "nc": 827,
+		        "nd": 23,
+		        "b": 0.167,
+		        "k": 0.167,
+		        "bt": 0.0000887,
+		        "d": 0.017,
+		        "cash": 6,
+		        "demonym": "Turkish",
+		        "ks": "T",
+		        "kc": 84,
+		        "leader": "president"
 		    },
-		    {
+		    irn: {
 		        "country": "Iran",
 		        "id": "IRN",
-		        "demonym": "Iranian"
+		        "pop": 82913910,
+		        "cc": 154445,
+		        "pcc": 0.001862715194591595,
+		        "cd": 7878,
+		        "nc": 2979,
+		        "nd": 81,
+		        "b": 0.153,
+		        "k": 0.153,
+		        "bt": 0.000013,
+		        "d": 0.0304,
+		        "cash": 6,
+		        "demonym": "Iranian",
+		        "ks": "I",
+		        "kc": 73,
+		        "leader": "president"
 		    },
-		    {
+		    chl: {
 		        "country": "Chile",
 		        "id": "CHL",
-		        "demonym": "Chilean"
+		        "pop": 18952040,
+		        "cc": 129020,
+		        "pcc": 0.006807710410066673,
+		        "cd": 1113,
+		        "nc": 5470,
+		        "nd": 59,
+		        "b": 0.157,
+		        "k": 0.1667,
+		        "bt": 0,
+		        "d": 0.025,
+		        "cash": 6,
+		        "demonym": "Chilean",
+		        "ks": "H",
+		        "kc": 72,
+		        "leader": "president"
 		    },
-		    {
+		    mex: {
 		        "country": "Mexico",
 		        "id": "MEX",
-		        "demonym": "Mexican"
+		        "pop": 127575530,
+		        "cc": 93435,
+		        "pcc": 0.0007323896675169604,
+		        "cd": 10167,
+		        "nc": 2771,
+		        "nd": 237,
+		        "b": 0.17,
+		        "k": 0.153,
+		        "bt": -0.0001667,
+		        "d": 0.055,
+		        "cash": 6,
+		        "demonym": "Mexican",
+		        "ks": "M",
+		        "kc": 77,
+		        "leader": "president"
 		    },
-		    {
+		    can: {
 		        "country": "Canada",
 		        "id": "CAN",
-		        "demonym": "Canadian"
+		        "pop": 37593380,
+		        "cc": 93288,
+		        "pcc": 0.002481500732309784,
+		        "cd": 7952,
+		        "nc": 809,
+		        "nd": 46,
+		        "b": 0.19,
+		        "k": 0.2,
+		        "bt": 0.00005,
+		        "d": 0.015,
+		        "cash": 8,
+		        "demonym": "Canadian",
+		        "ks": "C",
+		        "kc": 67,
+		        "leader": "prime minister"
 		    },
-		    {
+		    sau: {
 		        "country": "Saudi Arabia",
 		        "id": "SAU",
-		        "demonym": "Saudi"
+		        "pop": 34268530,
+		        "cc": 87142,
+		        "pcc": 0.0025429161974557996,
+		        "cd": 525,
+		        "nc": 1881,
+		        "nd": 22,
+		        "b": 0.1633,
+		        "k": 0.1667,
+		        "bt": -0.00333,
+		        "d": 0.0245,
+		        "cash": 6,
+		        "demonym": "Saudi",
+		        "ks": "D",
+		        "kc": 68,
+		        "leader": "king"
 		    },
-		    {
+		    chn: {
 		        "country": "China",
 		        "id": "CHN",
-		        "demonym": "Chinese"
+		        "pop": 1397715000,
+		        "cc": 84154,
+		        "pcc": 0.000060208268495365654,
+		        "cd": 4638,
+		        "nc": 8,
+		        "nd": 0,
+		        "b": 0.17,
+		        "k": 0.17,
+		        "bt": 0.00005,
+		        "d": 0.0238,
+		        "cash": 8,
+		        "demonym": "Chinese",
+		        "ks": "Z",
+		        "kc": 90,
+		        "leader": "president"
 		    },
-		    {
+		    pak: {
 		        "country": "Pakistan",
 		        "id": "PAK",
-		        "demonym": "Pakistani"
+		        "pop": 216565320,
+		        "cc": 76398,
+		        "pcc": 0.0003527711639148872,
+		        "cd": 1621,
+		        "nc": 3938,
+		        "nd": 78,
+		        "b": 0.1325,
+		        "k": 0.1458,
+		        "bt": -0.000067,
+		        "d": 0.0329,
+		        "cash": 6,
+		        "demonym": "Pakistani",
+		        "ks": "P",
+		        "kc": 80,
+		        "leader": "prime minister"
 		    }
-		];
+		}
 		const RELATIONS = JSON.parse("[[\"usa\",\"bra\",3.5],[\"usa\",\"rus\",1.5],[\"usa\",\"gbr\",4],[\"usa\",\"esp\",3.8],[\"usa\",\"ita\",3.8],[\"usa\",\"ind\",3.5],[\"usa\",\"fra\",4],[\"usa\",\"deu\",4],[\"usa\",\"per\",3.5],[\"usa\",\"tur\",2.3],[\"usa\",\"irn\",1],[\"usa\",\"chl\",3.5],[\"usa\",\"mex\",3.2],[\"usa\",\"can\",4],[\"usa\",\"sau\",2.9],[\"usa\",\"chn\",1.5],[\"usa\",\"pak\",2.8],[\"bra\",\"rus\",3.4],[\"bra\",\"gbr\",3.5],[\"bra\",\"esp\",3.5],[\"bra\",\"ita\",3.5],[\"bra\",\"ind\",3.8],[\"bra\",\"fra\",3.5],[\"bra\",\"deu\",3.5],[\"bra\",\"per\",3.8],[\"bra\",\"tur\",3.5],[\"bra\",\"irn\",3],[\"bra\",\"chl\",3.8],[\"bra\",\"mex\",3.8],[\"bra\",\"can\",3.5],[\"bra\",\"sau\",3.5],[\"bra\",\"chn\",3.5],[\"bra\",\"pak\",3.5],[\"rus\",\"gbr\",2.8],[\"rus\",\"esp\",3.2],[\"rus\",\"ita\",3.4],[\"rus\",\"ind\",3.8],[\"rus\",\"fra\",3.4],[\"rus\",\"deu\",2.8],[\"rus\",\"per\",3.4],[\"rus\",\"tur\",2.8],[\"rus\",\"irn\",3.8],[\"rus\",\"chl\",3.4],[\"rus\",\"mex\",3.5],[\"rus\",\"can\",3.2],[\"rus\",\"sau\",3.6],[\"rus\",\"chn\",3.7],[\"rus\",\"pak\",3.3],[\"gbr\",\"esp\",3.5],[\"gbr\",\"ita\",3.6],[\"gbr\",\"ind\",3.6],[\"gbr\",\"fra\",3.8],[\"gbr\",\"deu\",3.6],[\"gbr\",\"per\",3.5],[\"gbr\",\"tur\",3.6],[\"gbr\",\"irn\",2.8],[\"gbr\",\"chl\",3.5],[\"gbr\",\"mex\",3.5],[\"gbr\",\"can\",4],[\"gbr\",\"sau\",3.4],[\"gbr\",\"chn\",2],[\"gbr\",\"pak\",3.5],[\"esp\",\"ita\",3.8],[\"esp\",\"ind\",3.5],[\"esp\",\"fra\",3.8],[\"esp\",\"deu\",3.8],[\"esp\",\"per\",3.5],[\"esp\",\"tur\",3.6],[\"esp\",\"irn\",3],[\"esp\",\"chl\",3.5],[\"esp\",\"mex\",3.4],[\"esp\",\"can\",3.8],[\"esp\",\"sau\",3.5],[\"esp\",\"chn\",3],[\"esp\",\"pak\",3.5],[\"ita\",\"ind\",3.5],[\"ita\",\"fra\",4],[\"ita\",\"deu\",4],[\"ita\",\"per\",3.6],[\"ita\",\"tur\",3.5],[\"ita\",\"irn\",3.4],[\"ita\",\"chl\",3.5],[\"ita\",\"mex\",3.5],[\"ita\",\"can\",3.8],[\"ita\",\"sau\",3.5],[\"ita\",\"chn\",3.4],[\"ita\",\"pak\",3.5],[\"ind\",\"fra\",3.8],[\"ind\",\"deu\",3.5],[\"ind\",\"per\",3.5],[\"ind\",\"tur\",2.8],[\"ind\",\"irn\",3.3],[\"ind\",\"chl\",3.5],[\"ind\",\"mex\",3.8],[\"ind\",\"can\",3.5],[\"ind\",\"sau\",3.6],[\"ind\",\"chn\",2.5],[\"ind\",\"pak\",1],[\"fra\",\"deu\",4],[\"fra\",\"per\",3.5],[\"fra\",\"tur\",3.2],[\"fra\",\"irn\",2.8],[\"fra\",\"chl\",3.5],[\"fra\",\"mex\",3.5],[\"fra\",\"can\",4],[\"fra\",\"sau\",3.7],[\"fra\",\"chn\",3],[\"fra\",\"pak\",3.2],[\"deu\",\"per\",3.5],[\"deu\",\"tur\",3.2],[\"deu\",\"irn\",2.7],[\"deu\",\"chl\",3.5],[\"deu\",\"mex\",3.5],[\"deu\",\"can\",3.5],[\"deu\",\"sau\",3.3],[\"deu\",\"chn\",3.5],[\"deu\",\"pak\",3.4],[\"per\",\"tur\",3.5],[\"per\",\"irn\",3.3],[\"per\",\"chl\",3.4],[\"per\",\"mex\",3.8],[\"per\",\"can\",3.5],[\"per\",\"sau\",3.5],[\"per\",\"chn\",3.5],[\"per\",\"pak\",3.5],[\"tur\",\"irn\",3.3],[\"tur\",\"chl\",3.5],[\"tur\",\"mex\",3.6],[\"tur\",\"can\",3.3],[\"tur\",\"sau\",2.7],[\"tur\",\"chn\",3.5],[\"tur\",\"pak\",3.7],[\"irn\",\"chl\",3.3],[\"irn\",\"mex\",3.4],[\"irn\",\"can\",2],[\"irn\",\"sau\",1],[\"irn\",\"chn\",3.6],[\"irn\",\"pak\",3.4],[\"chl\",\"mex\",4],[\"chl\",\"can\",3.8],[\"chl\",\"sau\",3.5],[\"chl\",\"chn\",3.5],[\"chl\",\"pak\",3.3],[\"mex\",\"can\",3.5],[\"mex\",\"sau\",3.5],[\"mex\",\"chn\",3.8],[\"mex\",\"pak\",3.6],[\"can\",\"sau\",3.2],[\"can\",\"chn\",2.8],[\"can\",\"pak\",3.6],[\"sau\",\"chn\",3.8],[\"sau\",\"pak\",3.8],[\"chn\",\"pak\",3.7]]");
 		const CODON = [
 			{
@@ -315,8 +567,13 @@
 				$("p.text-danger").html("<p class = 'text-danger font-weight-bold'>Your high score: " + Number(localStorage.getItem("score")) + " <a href = '#' onclick = 'clearScore()' id = 'clearscore' class = 'ml-1'>clear</a>");
 			}
 		}
-		for (var i = 0; i < countries.length; i++) {
-			$("select").append("<option value = '" + i + "'>" + ((countries[i].id == "USA" || countries[i].id == "GBR") ? "the " + countries[i].country : countries[i].country) + "</option>");
+		var difficulties = {
+			"10": "Easy",
+			"8": "Medium",
+			"6": "Hard"
+		}
+		for (var i in data) {
+			$("optgroup[label=" + difficulties[data[i].cash + ""] + "]").append("<option value = '" + i + "'>" + ((data[i].id == "USA" || data[i].id == "GBR") ? "the " + data[i].country : data[i].country) + "</option>");
 		};
 		function canStart() {
 			if ($("select").val() != "null" && $("input").val().length != "") {
@@ -326,7 +583,7 @@
 			}
 		}
 		$("select").change(function() {
-			$("#demonym").html(countries[$("select").val()].demonym);
+			$("#demonym").html(data[$("select").val()].demonym);
 			canStart();
 		});
 		$("input").on("input", function() {
@@ -353,10 +610,11 @@
 			}
 			seq_c += (CODON[20].n)[Math.floor(Math.random() * 3)];
 			seq_p += "*";
+			sessionStorage.clear();
 			sessionStorage.setItem("seq_c", seq_c);
 			sessionStorage.setItem("seq_p", seq_p);
 			sessionStorage.setItem("company", $("input").val());
-			sessionStorage.setItem("facilities", JSON.stringify([[countries[$("select").val()].id.toLowerCase(), 2]]));
+			sessionStorage.setItem("facilities", JSON.stringify([[data[$("select").val()].id.toLowerCase(), 2]]));
 			sessionStorage.setItem("initial", Math.random() * (0.55 - 0.5) + 0.5);
 			$("#black").fadeIn(1200, function() {
 				window.open("tutorial.html", "_self");
