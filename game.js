@@ -1036,7 +1036,7 @@ function updateDoses() {
 	} else {
 		add = 0;
 	}
-	if (doses + add >= total) {
+	if (doses >= total) {
 		for (var l in distribution) {
 			data[l].doses += deliveries[l];
 		}
