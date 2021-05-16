@@ -2029,7 +2029,8 @@ function updateResearch() {
 		}
 		var v = [];
 		for (var m = 0; m < c.length; m++) {
-			if (c.charAt(m) == $("#bull").html()) {
+			console.log(encodeURIComponent(c.charAt(m)));
+			if (encodeURIComponent(c.charAt(m)) == "%E2%80%A2" || encodeURIComponent(c.charAt(m)) == encodeURIComponent("•"))  {
 				v[v.length] = m;
 			}
 		}
