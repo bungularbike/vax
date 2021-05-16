@@ -12,6 +12,10 @@
 	font-family: Ubuntu;
 }
 
+select, option {
+  font: -moz-pull-down-menu;
+}
+
 #black, #size {
 	background-color: black;
 	position: fixed;
