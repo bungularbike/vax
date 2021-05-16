@@ -1912,7 +1912,11 @@ function updateSpread() {
 		$("#" + country + "_i").html(((b * x.st * x.it) > 0 ? "(+" : "(") + toShort(data[country].pop * (b * x.st * x.it), 2) + ") " + toShort(data[country].cc, 2));
 		$("#" + country + "_d").html((ddt > 0 ? "(+" : "(") + toShort(data[country].nd, 2) + ") " + toShort(data[country].cd, 2));
 		if (x.approved) {
-			$("#" + country + "_v").html("(+" + toShort(dvt * x.pop, 2) + ") " + toShort(x.vt * x.pop, 2));
+			if (x.safe != false) {
+				$("#" + country + "_v").html("(0) " + toShort(x.vt * x.pop, 2));
+			} else {
+				$("#" + country + "_v").html("(+" + toShort(dvt * x.pop, 2) + ") " + toShort(x.vt * x.pop, 2));
+			}
 		}
 	}
 }
