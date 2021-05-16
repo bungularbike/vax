@@ -2033,7 +2033,6 @@ function updateResearch() {
 		}
 		var v = [];
 		for (var m = 0; m < c.length; m++) {
-			console.log(encodeURIComponent(c.charAt(m)));
 			if (encodeURIComponent(c.charAt(m)) == "%E2%80%A2" || encodeURIComponent(c.charAt(m)) == encodeURIComponent("•"))  {
 				v[v.length] = m;
 			}
