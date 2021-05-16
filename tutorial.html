@@ -272,7 +272,7 @@
 		<h3>Research: Preclinical</h3>
 		<br>
 		<p>Try translating the following codon into an amino acid. Use the codon chart and enter the shortened letter used to represent the amino acid.</p>
-		<p><input type = "text" size = "3" value = "AAA" class = "mr-5" readonly><input type = "text" size = "2" maxlength = "1" oninput = "checkValue()" tabindex = "-1"></p>
+		<p><input type = "text" size = "3" value = "AAA" class = "mr-5" readonly><input type = "text" size = "2" maxlength = "1" oninput = "checkValue()" tabindex = "-1" id = "input"></p>
 		<img src = "table.png" class = "mt-2 mb-3" style = "max-height: 30vh; border: 2px solid black; border-radius: 5px">
 		<p><button class = "btn btn-primary" onclick = "next(12)" disabled>Continue</button></p>
 		<p><a href = "#" onclick = "prev(12)" class = "text-small">Back</a></p>
@@ -822,11 +822,11 @@
 			$("#" + (id - 1)).removeClass("out").addClass("active");
 			$("#" + (id - 1) + " *").removeAttr("tabindex", "-1");
 			if (id == 13) {
-				$("#12 input:last-of-type").focus({ preventScroll: true });
-				$("#12 input:last-of-type").removeAttr("tabindex");
+				document.getElementById("input").focus({ preventScroll: true });
+				$("#input").removeAttr("tabindex");
 				window.scrollTo(0, 0);
 			} else {
-				$("#12 input:last-of-type").attr("tabindex", "-1");
+				$("#input").attr("tabindex", "-1");
 			}
 			$("#progress").html((id - 1) + "/16");
 		}
@@ -836,16 +836,16 @@
 			$("#" + (id + 1)).addClass("active");
 			$("#" + (id + 1) + " *").removeAttr("tabindex", "-1");
 			if (id == 11) {
-				$("#12 input:last-of-type").focus({ preventScroll: true });
-				$("#12 input:last-of-type").removeAttr("tabindex");
+				document.getElementById("input").focus({ preventScroll: true });
+				$("#input").removeAttr("tabindex");
 				// setTimeout(function() { window.scrollTo(0, 0) }, 10);
 			} else {
-				$("#12 input:last-of-type").attr("tabindex", "-1");
+				$("#input").attr("tabindex", "-1");
 			}
 			$("#progress").html((id + 1) + "/16");
 		}
 		function checkValue() {
-			if ($("#12 input:last-of-type").val() == "K") {
+			if ($("#input").val() == "K") {
 				$("#12 button").removeAttr("disabled");
 			} else {
 				$("#12 button").attr("disabled", "true");
