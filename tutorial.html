@@ -822,9 +822,9 @@
 			$("#" + (id - 1)).removeClass("out").addClass("active");
 			$("#" + (id - 1) + " *").removeAttr("tabindex", "-1");
 			if (id == 13) {
-				$("#12 input:last-of-type").focus();
-				window.scrollTo(0, 0);
+				$("#12 input:last-of-type").focus({ preventScroll: true });
 				$("#12 input:last-of-type").removeAttr("tabindex");
+				window.scrollTo(0, 0);
 			} else {
 				$("#12 input:last-of-type").attr("tabindex", "-1");
 			}
@@ -836,9 +836,9 @@
 			$("#" + (id + 1)).addClass("active");
 			$("#" + (id + 1) + " *").removeAttr("tabindex", "-1");
 			if (id == 11) {
-				$("#12 input:last-of-type").focus();
-				window.scrollTo(0, 0);
+				$("#12 input:last-of-type").focus({ preventScroll: true });
 				$("#12 input:last-of-type").removeAttr("tabindex");
+				// setTimeout(function() { window.scrollTo(0, 0) }, 10);
 			} else {
 				$("#12 input:last-of-type").attr("tabindex", "-1");
 			}
