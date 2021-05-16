@@ -1149,7 +1149,7 @@ var sm = 0;
 var smp = 0;
 var research = {};
 var trials_3 = {};
-var upgrades = [[["Enhanced delivery system", "Lipid nanoparticles added to improve vaccine targeting and delivery"], ["Spike formation", "Certain amino acids modified to induce active structure configuration on protein coat"], ["Signal peptide creation", "Specific cellular organelles targeted using glycoproteins signal peptides"], ["Untranslated region enhancement", "3’-UTR segment modified to increase stability, expression, and efficiency"], ["Poly-A tail elongation", "Polyadenylated tail length increased to extend time until degradation"], ["Nucleotide linker introduction", "10-nucleotide linker added to RNA sequence to increase transcription efficiency"]], [["Adjuvant concentration modification", "Adjuvant concentration decreased to lower severity of immune response"], ["Synonymous modifications", "Codon third bases substituted to decrease likelihood of immune over-response"], ["Uracil substitution", "RNA uracil bases replaced with synthetic version to decrease likelihood of immune over-response"], ["Acidity regulator", "Tromethamine hydrochloride added to balance pH and preserve vaccine"], ["Preservative concentration modification", "Preservative concentration increased to prevent contamination"], ["Antibiotic concentration modification", "Antibiotic concentration decreased to lower likelihood of allergic response"]]];
+var upgrades = [[["Enhanced delivery system", "Lipid nanoparticles added to improve vaccine targeting and delivery"], ["Spike formation", "Certain amino acids modified to induce active structure configuration on protein coat"], ["Signal peptide creation", "Specific cellular organelles targeted using glycoproteins signal peptides"], ["Untranslated region enhancement", "3'-UTR segment modified to increase stability, expression, and efficiency"], ["Poly-A tail elongation", "Polyadenylated tail length increased to extend time until degradation"], ["Nucleotide linker introduction", "10-nucleotide linker added to RNA sequence to increase transcription efficiency"]], [["Adjuvant concentration modification", "Adjuvant concentration decreased to lower severity of immune response"], ["Synonymous modifications", "Codon third bases substituted to decrease likelihood of immune over-response"], ["Uracil substitution", "RNA uracil bases replaced with synthetic version to decrease likelihood of immune over-response"], ["Acidity regulator", "Tromethamine hydrochloride added to balance pH and preserve vaccine"], ["Preservative concentration modification", "Preservative concentration increased to prevent contamination"], ["Antibiotic concentration modification", "Antibiotic concentration decreased to lower likelihood of allergic response"]]];
 function completeResearch() {
 	$("#d3 select, #d3 button").attr("disabled", "true");
 	$("#d3 > p").remove();
@@ -1854,7 +1854,7 @@ function updateVaccinations() {
 		}
 		if (data[country].it == 0 && data[country].safe == false) {
 			data[country].st = 0;
-			data[country].safe = currentDate;
+			data[country].safe = new Date(currentDate.getTime());
 			$("#console").append("<p><b class = 'text-success'>" + toDate(currentDate) + " " + data[country].country + " declared virus-free</b></p>");
 			for (var i in relations) {
 				if (relations[i] + 0.5 < 10) {
@@ -2051,7 +2051,7 @@ function updateResearch() {
 				}
 			}
 			$("#cc" + Math.floor(h / 3)).val(p);
-			if (p.indexOf($("#bull").html()) == -1) {
+			if (encodeURIComponent(p).indexOf("%E2%80%A2") == -1) {
 				$("#cc" + Math.floor(h / 3)).addClass("new");
 				$("#cp" + Math.floor(h / 3)).addClass("new");
 			}
