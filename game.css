@@ -126,8 +126,24 @@ select, option {
 	margin-bottom: 0.4rem;
 }
 
+@media (min-width: 1330px) {
+	#panel {
+		flex-direction: row !important;
+	}
+}
+@media (min-width: 1330px) {
+	#code-p {
+		margin-right: auto !important;
+	}
+}
+@media (min-width: 1330px) {
+	#right {
+		margin-top: 0 !important;
+	}
+}
+
 #dp input {
-	font-size: 0.6rem;
+	font-size: 0.9vw;
 	font-family: monospace !important;
 	text-align: center !important;
 	border: 0 !important;

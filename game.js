@@ -1025,7 +1025,7 @@ function updateDoses() {
 		}
 	} else {
 		for (var l in distribution) {
-			addm += (20 * (distribution[l] * doses));
+			addm += (20 * (distribution[l] * (doses + add)));
 		}
 	}
 	if (money + addm >= deductm) {
@@ -1043,9 +1043,9 @@ function updateDoses() {
 		deduct = total;
 	} else {
 		for (var l in distribution) {
-			data[l].doses += (distribution[l] * doses);
+			data[l].doses += (distribution[l] * (doses + add));
 		}
-		deduct = doses;
+		deduct = (doses + add);
 	}
 	dmoney = (addm - deductm);
 	updateMoney();

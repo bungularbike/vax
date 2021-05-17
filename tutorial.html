@@ -828,7 +828,7 @@
 			if (id == 13) {
 				document.getElementById("input").focus({ preventScroll: true });
 				$("#input").removeAttr("tabindex");
-				window.scrollTo(0, 0);
+				setTimeout(function() { window.scrollTo(0, 0) }, 0);
 			} else {
 				$("#input").attr("tabindex", "-1");
 			}
@@ -842,7 +842,7 @@
 			if (id == 11) {
 				document.getElementById("input").focus({ preventScroll: true });
 				$("#input").removeAttr("tabindex");
-				// setTimeout(function() { window.scrollTo(0, 0) }, 10);
+				setTimeout(function() { window.scrollTo(0, 0) }, 0);
 			} else {
 				$("#input").attr("tabindex", "-1");
 			}
