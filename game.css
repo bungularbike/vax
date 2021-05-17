@@ -48,11 +48,11 @@ select, option {
 	border-color: rgba(255, 255, 255, .5);
 	color: rgba(255, 255, 255, .5);
 }
-#resetb {
+#resetb, #helpb {
 	border-color: rgba(255, 255, 255, 0);
 	color: rgba(255, 255, 255, .5);
 }
-#pause:hover, #resetb:hover {
+#pause:hover, #resetb:hover, #helpb:hover {
 	background-color: rgba(255, 255, 255, .5);
 }
 
@@ -116,7 +116,7 @@ select, option {
 	padding: 0.5rem 0.75rem;
 }
 
-:not(#loan, #victory, #reset) > .modal-dialog {
+:not(#loan, #victory, #reset, #help) > .modal-dialog {
 	margin-top: 5em !important;
 	margin-bottom: 5em !important;
 }

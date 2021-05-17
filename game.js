@@ -2225,6 +2225,7 @@ $("#pause").click(function() {
 	} else if (!won) {
 		paused = false;
 		waspaused = false;
+		clearInterval(dateInterval);
 		dateInterval = setInterval(advanceDay, CLOCK);
 		$("#pause").html("pause");
 	}
@@ -2247,6 +2248,7 @@ $("body").keydown(function(event) {
 				CLOCK = 2000;
 				clearInterval(dateInterval);
 				if (!paused && !won) {
+					clearInterval(dateInterval);
 					dateInterval = setInterval(advanceDay, CLOCK);
 				}
 				$("#speed").html("(speed: x1)");
@@ -2255,6 +2257,7 @@ $("body").keydown(function(event) {
 				CLOCK = 1000;
 				clearInterval(dateInterval);
 				if (!paused && !won) {
+					clearInterval(dateInterval);
 					dateInterval = setInterval(advanceDay, CLOCK);
 				}
 				$("#speed").html("(speed: x2)");
@@ -2263,6 +2266,7 @@ $("body").keydown(function(event) {
 				CLOCK = 667;
 				clearInterval(dateInterval);
 				if (!paused && !won) {
+					clearInterval(dateInterval);
 					dateInterval = setInterval(advanceDay, CLOCK);
 				}
 				$("#speed").html("(speed: x3)");
