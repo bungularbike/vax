@@ -1045,7 +1045,7 @@ function updateDoses() {
 		for (var l in distribution) {
 			data[l].doses += (distribution[l] * (doses + add));
 		}
-		deduct = (doses + add);
+		deduct = doses;
 	}
 	dmoney = (addm - deductm);
 	updateMoney();
