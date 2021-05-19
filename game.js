@@ -958,6 +958,7 @@ var deliveries = {};
 
 var rc = 0;
 var rf = 0;
+var cheated = false;
 function updateMoney() {
 	if (money <= 0) {
 		money = 0;
@@ -976,6 +977,13 @@ function updateMoney() {
 		}
 	}
 	$("#cash").html((dmoney == 0 ? "" : "(" + (dmoney > 0 ? "+$" + toShort(dmoney, 2) : "-$" + (toShort(dmoney * -1, 2))) + ") ") + "$" + toShort(money, 3));
+	if (money > data[facilities[0][0]].cash * 150000 + rf && cleared.length <= 3 && !cheated) {
+		cheated = true;
+		alert("No cheating allowed!");
+		sessionStorage.clear();
+		hideWarning = true;
+		window.open("index.html", "_self");
+	}
 }
 
 function selectProtein(n) {
@@ -1686,7 +1694,7 @@ function countryModal(country) {
 			}
 			const upgradecost = ((data[country].cash / 5) + (2.25 ** (4 - relations[country] + facilities[found][1])) - 1) * 100000 * 2;
 			$("#country .modal-body").append("<h6>Facility</h6><p>" + name + " currently has a Level " + facilities[found][1] + " facility in " + cname + "." + (found == 0 ? (" This facility is also the headquarters of " + name + ".") : "") + "</p>");
-			$("#country .modal-body").append("<p>The " + (facilities[found][1] * 10) + (cleared.length == 4 ? " workers" : " researchers") + " at this facility are each being paid $" + (per_c == 1 ? 0 : toShort(data[facilities[found][0]].cash * 10000 / 365, 2)) + " per day for a total of $" + (per_c == 1 ? 0 : toShort((facilities[found][1] * 10) * data[facilities[found][0]].cash * 10000 / 365, 2)) + ".</p>");
+			$("#country .modal-body").append("<p>The " + (facilities[found][1] * 10) + (cleared.length == 4 ? " workers" : " researchers") + " at this facility are each being paid $" + (toShort(data[facilities[found][0]].cash * 10000 / 365, 2)) + " per day for a total of $" + (per_c == 1 ? 0 : toShort((facilities[found][1] * 10) * data[facilities[found][0]].cash * 10000 / 365, 2)) + ".</p>");
 			if (facilities[found][1] < 3) {
 				$("#country .modal-body").append("<p>Upgrading this facility to Level " + (facilities[found][1] + 1) + " will cost $" + toShort(upgradecost, 2) + " and will:</p><ul class = 'mb-0'><li>Increase its research speed</li><li>Increase the speed at which clinical trials take place</li><li>Increase its manufacturing capabilities</li><li>Increase its research & operations costs</li><li>Increase this country's WTC</li></ul><p class = 'mb-3'>Upgrading a facility will not shorten the duration of any currently ongoing clinical trials.</p>");
 				$("#country .modal-body").append("<p><button class = 'btn btn-primary btn-sm' " + (money < upgradecost ? "disabled" : "") + " onclick = 'javascript:upgradeFacility(\"" + country + "\")'>Upgrade Facility to Level " + (facilities[found][1] + 1) + " - $" + toShort(upgradecost, 2) + "</button></p>");
